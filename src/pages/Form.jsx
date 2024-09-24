@@ -55,14 +55,14 @@ export default function Form() {
       <div className="w-full max-w-md bg-base-200 shadow-2xl rounded-lg overflow-hidden">
         <form onSubmit={handleSubmit} className="space-y-6 p-6">
           <div className="space-y-2">
-            <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="fullName" className="block text-sm font-medium">
               ФИО
             </label>
             <input
               id="fullName"
               name="fullName"
               type="text"
-              className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
+              className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
               placeholder="Введите ФИО (Фамилия Имя Отчество)"
               required
               value={formData.fullName}
@@ -71,14 +71,14 @@ export default function Form() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="location" className="block text-sm font-medium">
               Локация
             </label>
             <input
               id="location"
               name="location"
               type="text"
-              className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
+              className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
               placeholder="Введите Адрес"
               required
               value={formData.location}
