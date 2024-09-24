@@ -1,18 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Form() {
   const navigate = useNavigate();
+  
+  const [formData, setFormData] = useState({
+    fullName: '',
+    location: '',
+    phonePrefix: '+998', // Added phone prefix state
+    phoneNumber: ''
+  });
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
-    // You can add validation or data processing here if needed
-    navigate('/course-info'); // Redirect to the desired route
+    e.preventDefault();
+    // Perform validation or any other action here if needed
+    navigate('/course-info');
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handlePhoneNumberChange = (e) => {
+    const value = e.target.value;
+    const formattedValue = formatPhoneNumber(value);
+    setFormData({ ...formData, phoneNumber: formattedValue });
+  };
+
+  const formatPhoneNumber = (value) => {
+    // Remove all non-numeric characters
+    const cleaned = value.replace(/\D/g, '');
+
+    let formatted = '';
+
+    if (cleaned.length > 0) {
+      formatted += `(${cleaned.slice(0, 2)})`;
+    }
+    if (cleaned.length > 2) {
+      formatted += `${cleaned.slice(2, 5)}`;
+    }
+    if (cleaned.length > 5) {
+      formatted += `-${cleaned.slice(5, 7)}`;
+    }
+    if (cleaned.length > 7) {
+      formatted += `-${cleaned.slice(7, 9)}`;
+    }
+
+    return formatted;
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-      <div className="w-full max-w-md bg-white shadow-2xl rounded-lg overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-base-100 p-4">
+      <div className="w-full max-w-md bg-base-200 shadow-2xl rounded-lg overflow-hidden">
         <form onSubmit={handleSubmit} className="space-y-6 p-6">
           <div className="space-y-2">
             <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
@@ -20,62 +60,69 @@ export default function Form() {
             </label>
             <input
               id="fullName"
+              name="fullName"
               type="text"
-              className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
+              className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
               placeholder="Введите ФИО (Фамилия Имя Отчество)"
+              required
+              value={formData.fullName}
+              onChange={handleChange}
             />
           </div>
+
           <div className="space-y-2">
             <label htmlFor="location" className="block text-sm font-medium text-gray-700">
               Локация
             </label>
-            <select
+            <input
               id="location"
-              className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
+              name="location"
+              type="text"
+              className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
+              placeholder="Введите Адрес"
+              required
+              value={formData.location}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className='flex'>
+          <div className="space-y-2">
+            <label htmlFor="phonePrefix" className="block text-sm font-medium">
+              Код страны
+            </label>
+            <select
+              id="phonePrefix"
+              name="phonePrefix"
+              className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
+              value={formData.phonePrefix}
+              onChange={handleChange}
             >
-              <option value="">Выберите город</option>
-              <option value="tashkent">Ташкент</option>
-              <option value="samarkand">Самарканд</option>
-              <option value="bukhara">Бухара</option>
-              <option value="andijan">Андижан</option>
-              <option value="namangan">Наманган</option>
-              <option value="fergana">Фергана</option>
-              <option value="kokand">Коканд</option>
-              <option value="margilan">Маргилан</option>
-              <option value="nukus">Нукус</option>
-              <option value="urgench">Ургенч</option>
-              <option value="khiva">Хива</option>
-              <option value="navoi">Навои</option>
-              <option value="jizzakh">Джизак</option>
-              <option value="termez">Термез</option>
-              <option value="karshi">Карши</option>
-              <option value="shakhrisabz">Шахрисабз</option>
-              <option value="gulistan">Гулистан</option>
-              <option value="chirchiq">Чирчик</option>
-              <option value="angren">Ангрен</option>
+              <option value="+998">+998</option>
+              <option value="+1">+1</option>
+              <option value="+7">+7</option>
+              <option value="+44">+44</option>
+              <option value="+91">+91</option>
             </select>
           </div>
-          <div className="space-y-2">
-            <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+
+          <div className="space-y-2 flex-1">
+            <label htmlFor="phoneNumber" className="block text-sm font-medium">
               Номер телефона
             </label>
-            <div className="flex">
-              <select
-                id="countryCode"
-                className="px-3 py-3 bg-white border-2 border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
-              >
-                <option value="+998">+998 (UZ)</option>
-                <option value="+7">+7 (RU)</option>
-                <option value="+1">+1 (US)</option>
-              </select>
-              <input
-                id="phoneNumber"
-                type="tel"
-                className="flex-1 px-4 py-3 bg-white border-2 border-l-0 border-gray-300 text-gray-900 text-sm rounded-r-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
-                placeholder="Введите номер телефона"
-              />
-            </div>
+            <input
+              id="phoneNumber"
+              name="phoneNumber"
+              type="tel"
+              className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
+              placeholder="(__)___-__-__"
+              required
+              value={formData.phoneNumber}
+              onChange={handlePhoneNumberChange}
+            />
           </div>
+          </div>
+
           <button
             type="submit"
             className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"

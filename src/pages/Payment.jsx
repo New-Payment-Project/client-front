@@ -21,7 +21,6 @@ const Payment = () => {
   };
 
   const handlePurchase = () => {
-    // Handle purchase logic here
     alert(`You have selected ${selectedPaymentMethod} as the payment method.`);
   };
 
