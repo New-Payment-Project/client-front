@@ -15,7 +15,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
-      { path: "/form", element: <FormPage /> },  // Use the renamed custom FormPage here
+      { path: "/", element: <FormPage /> },  // Use the renamed custom FormPage here
       { path: "/course-info", element: <Payment /> },
     ],
   },
