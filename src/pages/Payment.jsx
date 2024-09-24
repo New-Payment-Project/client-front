@@ -28,9 +28,9 @@ const Payment = () => {
   return (
     <div className="min-h-screen p-4">
 
-      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+      <div className="max-w-4xl mx-auto bg-base-200 shadow-lg rounded-lg overflow-hidden">
         
-        <div className="p-4 bg-base-200 flex justify-between items-center">
+        <div className="p-4 bg-base-300 flex justify-between items-center">
       <img src="norbekov.png" className='lg:h-[60px] h-[40px]' alt="" />
           
         </div>
