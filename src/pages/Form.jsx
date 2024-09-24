@@ -94,7 +94,7 @@ export default function Form() {
             <select
               id="phonePrefix"
               name="phonePrefix"
-              className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
+              className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
               value={formData.phonePrefix}
               onChange={handleChange}
             >
@@ -114,7 +114,7 @@ export default function Form() {
               id="phoneNumber"
               name="phoneNumber"
               type="tel"
-              className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
+              className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300  text-sm rounded-r-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
               placeholder="(__)___-__-__"
               required
               value={formData.phoneNumber}
