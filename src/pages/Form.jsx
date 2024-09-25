@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setAuthData } from "../redux/slices/AuthSlice";
+import axios from "axios";
 
 export default function Form() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const authData = useSelector((state) => state.auth);
-  
 
   const [formData, setFormData] = useState({
-    fullName: authData?.fullName || "",
-    location: authData?.address || "",
-    phonePrefix: authData?.phone?.slice(0, authData?.phone?.length - 12) || "+998",
-    phoneNumber: authData?.phone?.slice(-12) || "",
-    email: authData?.email || "",
+    fullName: "",
+    location: "",
+    phonePrefix: "+998",
+    phoneNumber: "",
+    email: "",
   });
 
   const validateForm = (e) => {
@@ -30,17 +31,28 @@ export default function Form() {
     return handleSubmit(e);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(
-      setAuthData({
-        fullName: formData.fullName,
-        address: formData.location,
-        email: formData.email,
-        phone: `${formData.phonePrefix} ${formData.phoneNumber}`,
-      })
-    );
-    navigate("/course-info");
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/invoices`,
+        {
+          clientName: formData?.fullName,
+          clientAddress: formData?.location,
+          clientPhone: `${formData?.phonePrefix} ${formData?.phoneNumber}`,
+          email: formData?.email,
+        }
+      );
+
+      dispatch(setAuthData(response.data));
+      navigate("/course-info");
+    } catch (error) {
+      setError(error.message);
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -174,7 +186,11 @@ export default function Form() {
             type="submit"
             className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
           >
-            Отправить
+            {loading ? (
+              <span className="loading loading-dots loading-md"></span>
+            ) : (
+              "Отправить"
+            )}
           </button>
         </form>
       </div>

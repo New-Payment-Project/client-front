@@ -1,24 +1,51 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
-const authData = JSON.parse(localStorage.getItem('authData'))
+const authData = JSON.parse(localStorage.getItem("authData"));
+
+export const fetchClients = createAsyncThunk(
+  "fetchClients",
+  async function (_, { rejectWithValue }) {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/invoices/${authData._id}`
+      );
+      console.log(response);
+      
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 const AuthSlice = createSlice({
   name: "auth",
   initialState: {
-    fullName: authData?.fullName || null,
-    email: authData?.email || null,
-    phone: authData?.phone || null,
-    address: authData?.address || null,
+    clientData: authData ||  {},
+    status: null,
+    error: null,
   },
   reducers: {
     setAuthData: (state, action) => {
-      state.fullName = action.payload.fullName;
-      state.email = action.payload.email;
-      state.phone = action.payload.phone;
-      state.address = action.payload.address;
+      state.clientData = action.payload;
 
-      localStorage.setItem("authData", JSON.stringify(state));
+      localStorage.setItem("authData", JSON.stringify(state.clientData));
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchClients.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchClients.fulfilled, (state, action) => {
+        state.status = "success";
+        state.clientData = action.payload;
+      })
+      .addCase(fetchClients.rejected, (state, action) => {
+        state.status = "failed";
+        // state.clientData = action.payload;
+      });
   },
 });
 

@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { fetchClients } from "../redux/slices/AuthSlice";
 
 const Payment = () => {
-  const [orderId, setOrderId] = useState("2038234");
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
-  const [paymentStatus, setPaymentStatus] = useState("НЕ ОПЛАЧЕН")
-  const authData = useSelector((state) => state.auth);
+  const clientData = useSelector((state) => state.auth.clientData);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (Object.values(authData).includes(null)) {
+    dispatch(fetchClients());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (
+      Object.keys(clientData).length === 0 ||
+      Object.values(clientData).includes(null || undefined)
+    ) {
       navigate("/");
     }
-  }, []);
+  }, [clientData, navigate]);
 
   const formatDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
@@ -30,10 +37,6 @@ const Payment = () => {
     setSelectedPaymentMethod(method);
   };
 
-  const handlePurchase = () => {
-    alert(`You have selected ${selectedPaymentMethod} as the payment method.`);
-  };
-
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-4xl mx-auto bg-base-200 shadow-lg rounded-lg overflow-hidden">
@@ -43,7 +46,7 @@ const Payment = () => {
 
         <div className="p-6">
           <h1 className="text-xl lg:text-2xl font-bold text-center mb-6">
-            СЧЕТ НА ОПЛАТУ № {orderId} от {todayDate}
+            СЧЕТ НА ОПЛАТУ № {clientData.invoiceNumber} от {todayDate}
             <br />к Договору № ДХ-1404-06/20 от 03.06.2020
           </h1>
 
@@ -83,15 +86,17 @@ const Payment = () => {
               </p>
             </div>
             <div>
-              <h2 className="font-bold">Заказчик: {authData.fullName}</h2>
+              <h2 className="font-bold">Заказчик: {clientData.clientName}</h2>
               <p>
-                <span className="font-bold">Адрес:</span> {authData.address}
+                <span className="font-bold">Адрес:</span>{" "}
+                {clientData.clientAddress}
               </p>
               <p>
-                <span className="font-bold">Телефон:</span> {authData.phone}
+                <span className="font-bold">Телефон:</span>{" "}
+                {clientData.clientPhone}
               </p>
               <p>
-                <span className="font-bold">Эл.почта:</span> {authData.email}
+                <span className="font-bold">Эл.почта:</span> {clientData.email}
               </p>
             </div>
           </div>
@@ -125,7 +130,7 @@ const Payment = () => {
 
           <div className="mt-6 text-center">
             <h2 className="lg:text-3xl text-xl md:text-2xl font-bold text-red-500">
-              {paymentStatus}
+              {clientData.status}
             </h2>
             <p>Срок оплаты: {dueDate}</p>
           </div>
@@ -173,12 +178,11 @@ const Payment = () => {
               </div>
               {selectedPaymentMethod === "PayMe" && (
                 <div className="mt-4">
-                  <button
-                    className="w-full bg-green-500 text-white p-3 rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out transform hover:scale-105"
-                    onClick={handlePurchase}
-                  >
-                    Купить
-                  </button>
+                  <a href="https://payme.uz/checkout/66f3f7c6aefc1a4dd45f78ad?back=http:%2F%2Flocalhost:3000%2F&timeout=15000&lang=ru">
+                    <button className="w-full bg-green-500 text-white p-3 rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out transform hover:scale-105">
+                      Купить
+                    </button>
+                  </a>
                 </div>
               )}
 
@@ -204,12 +208,11 @@ const Payment = () => {
               </div>
               {selectedPaymentMethod === "Click" && (
                 <div className="mt-4">
-                  <button
-                    className="w-full bg-green-500 text-white p-3 rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out transform hover:scale-105"
-                    onClick={handlePurchase}
-                  >
-                    Купить
-                  </button>
+                  <a href="https://my.click.uz/services/pay/AD8A4BD75F904C4CBBB2106005AD3557">
+                    <button className="w-full bg-green-500 text-white p-3 rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out transform hover:scale-105">
+                      Купить
+                    </button>
+                  </a>
                 </div>
               )}
 
@@ -235,12 +238,11 @@ const Payment = () => {
               </div>
               {selectedPaymentMethod === "Uzum Bank" && (
                 <div className="mt-4">
-                  <button
-                    className="w-full bg-green-500 text-white p-3 rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out transform hover:scale-105"
-                    onClick={handlePurchase}
-                  >
-                    Купить
-                  </button>
+                  <a href="https://payment.apelsin.uz/merchant?serviceId=498614016">
+                    <button className="w-full bg-green-500 text-white p-3 rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out transform hover:scale-105">
+                      Купить
+                    </button>
+                  </a>
                 </div>
               )}
             </div>
