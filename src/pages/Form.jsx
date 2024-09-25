@@ -7,13 +7,12 @@ export default function Form() {
   const [formData, setFormData] = useState({
     fullName: '',
     location: '',
-    phonePrefix: '+998', // Added phone prefix state
+    phonePrefix: '+998',
     phoneNumber: ''
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Perform validation or any other action here if needed
     navigate('/course-info');
   };
 
@@ -29,7 +28,6 @@ export default function Form() {
   };
 
   const formatPhoneNumber = (value) => {
-    // Remove all non-numeric characters
     const cleaned = value.replace(/\D/g, '');
 
     let formatted = '';
