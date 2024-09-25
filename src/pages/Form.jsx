@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setAuthData } from "../redux/slices/AuthSlice";
+import { setAuthData, setRoute } from "../redux/slices/AuthSlice";
 import axios from "axios";
+import { Bounce, toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Form() {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { route } = useParams();
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -23,10 +25,30 @@ export default function Form() {
     const splitedName = formData.fullName.trim().split(" ").length;
 
     if (splitedName < 3 || splitedName > 4) {
-      return console.log("Invalid FIO");
+      return toast.warning("Введите полное Ф.И.О.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
     }
     if (formData.location.length < 25) {
-      return console.log("Invalid Location");
+      return toast.warning("Введите полный адрес проживания", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
     }
     return handleSubmit(e);
   };
@@ -45,10 +67,21 @@ export default function Form() {
         }
       );
 
-      dispatch(setAuthData(response.data));
+      dispatch(setAuthData(response.data._id));
+      dispatch(setRoute(route))
       navigate("/course-info");
     } catch (error) {
-      setError(error.message);
+      toast.error("Возникла ошибка при выполнении", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
       console.log(error);
     } finally {
       setLoading(false);
@@ -89,6 +122,18 @@ export default function Form() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-100 p-4">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <div className="w-full max-w-md bg-base-200 shadow-2xl rounded-lg overflow-hidden">
         <form onSubmit={validateForm} className="space-y-6 p-6">
           <div className="space-y-2">
@@ -109,7 +154,7 @@ export default function Form() {
 
           <div className="space-y-2">
             <label htmlFor="location" className="block text-sm font-medium">
-              Локация
+              Адрес
             </label>
             <input
               id="location"

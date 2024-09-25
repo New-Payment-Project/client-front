@@ -1,26 +1,55 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { fetchClients } from "../redux/slices/AuthSlice";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Payment = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
-  const clientData = useSelector((state) => state.auth.clientData);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [courseInfo, setCourseInfo] = useState([]);
+  const [invoice, setInvoice] = useState([]);
+  const clientId = useSelector((state) => state.auth.clientId);
+  const route = useSelector((state) => state.auth.route);
 
   useEffect(() => {
-    dispatch(fetchClients());
-  }, [dispatch]);
+    const fetchCourses = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/courses`
+        );
 
-  useEffect(() => {
-    if (
-      Object.keys(clientData).length === 0 ||
-      Object.values(clientData).includes(null || undefined)
-    ) {
-      navigate("/");
-    }
-  }, [clientData, navigate]);
+        const filteredData = response.data.filter(
+          (course) => course.route === route
+        );
+        setCourseInfo(filteredData);
+        console.log(filteredData);
+        
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchInvoices = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/invoices/${clientId}`
+        );
+        setInvoice(response.data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInvoices();
+    fetchCourses();
+  }, [clientId, route]);
 
   const formatDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
@@ -37,6 +66,30 @@ const Payment = () => {
     setSelectedPaymentMethod(method);
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-red-500 text-xl">Ошибка загрузки данных</p>
+      </div>
+    );
+  }
+
+  if (courseInfo.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-red-500 text-xl">Курс не найден</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-4xl mx-auto bg-base-200 shadow-lg rounded-lg overflow-hidden">
@@ -46,7 +99,7 @@ const Payment = () => {
 
         <div className="p-6">
           <h1 className="text-xl lg:text-2xl font-bold text-center mb-6">
-            СЧЕТ НА ОПЛАТУ № {clientData.invoiceNumber} от {todayDate}
+            СЧЕТ НА ОПЛАТУ № {invoice.invoiceNumber} от {todayDate}
             <br />к Договору № ДХ-1404-06/20 от 03.06.2020
           </h1>
 
@@ -86,17 +139,17 @@ const Payment = () => {
               </p>
             </div>
             <div>
-              <h2 className="font-bold">Заказчик: {clientData.clientName}</h2>
+              <h2 className="font-bold">Заказчик: {invoice.clientName}</h2>
               <p>
                 <span className="font-bold">Адрес:</span>{" "}
-                {clientData.clientAddress}
+                {invoice.clientAddress}
               </p>
               <p>
                 <span className="font-bold">Телефон:</span>{" "}
-                {clientData.clientPhone}
+                {invoice.clientPhone}
               </p>
               <p>
-                <span className="font-bold">Эл.почта:</span> {clientData.email}
+                <span className="font-bold">Эл.почта:</span> {invoice.email}
               </p>
             </div>
           </div>
@@ -110,19 +163,23 @@ const Payment = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    Регистрация домена - qwertyuio.uz - 1 год(а) ({todayDate} -{" "}
-                    {formatDate(
-                      new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
-                    )}
-                    )
-                  </td>
-                  <td>27000 сум</td>
-                </tr>
+                {courseInfo.map((item, id) => (
+                  <tr key={id}>
+                    <td>
+                      {item.title}
+                      <span className="block text-xs text-gray-500">
+                        {item.description}
+                      </span>
+                    </td>
+                    <td>{item.price} сум</td>
+                  </tr>
+                ))}
                 <tr className="font-bold">
                   <td>Итого к оплате</td>
-                  <td>27000 сум</td>
+                  <td>
+                    {courseInfo.reduce((total, item) => total + item.price, 0)}{" "}
+                    сум
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -130,7 +187,7 @@ const Payment = () => {
 
           <div className="mt-6 text-center">
             <h2 className="lg:text-3xl text-xl md:text-2xl font-bold text-red-500">
-              {clientData.status}
+              {invoice.status}
             </h2>
             <p>Срок оплаты: {dueDate}</p>
           </div>
@@ -146,8 +203,8 @@ const Payment = () => {
             <p className="mt-2">
               Уведомление об оплате необязательно. Услуги предоставляются по
               факту поступления денежных средств на наш расчетный счет. После
-              предоставления услуги, мы отправим уведомление об этом вам на ваш
-              JalilovAbduvaliy@gmail.com электронный почтовый адрес.
+              предоставления услуги, мы отправим уведомление об этом вам на ваш{" "}
+              {invoice.email} электронный почтовый адрес.
             </p>
           </div>
 

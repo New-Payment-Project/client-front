@@ -7,16 +7,18 @@ import Payment from "./pages/Payment";
 import FormPage from "./pages/Form";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import NotFound from "./pages/NotFound";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      { path: "/", element: <FormPage /> },
+      { path: "/:route", element: <FormPage /> },
       { path: "/course-info", element: <Payment /> },
     ],
   },
+  { path: "/*", element: <NotFound /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

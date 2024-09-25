@@ -1,53 +1,25 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice } from "@reduxjs/toolkit";
 
-const authData = JSON.parse(localStorage.getItem("authData"));
-
-export const fetchClients = createAsyncThunk(
-  "fetchClients",
-  async function (_, { rejectWithValue }) {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/invoices/${authData._id}`
-      );
-      console.log(response);
-      
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
+const route = localStorage.getItem("route");
+const clientId = JSON.parse(localStorage.getItem("clientId"));
 
 const AuthSlice = createSlice({
   name: "auth",
   initialState: {
-    clientData: authData ||  {},
-    status: null,
-    error: null,
+    clientId: clientId || null,
+    route: route || null,
   },
   reducers: {
     setAuthData: (state, action) => {
-      state.clientData = action.payload;
-
-      localStorage.setItem("authData", JSON.stringify(state.clientData));
+      state.clientId = action.payload;
+      localStorage.setItem("clientId", JSON.stringify(state.clientId));
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchClients.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchClients.fulfilled, (state, action) => {
-        state.status = "success";
-        state.clientData = action.payload;
-      })
-      .addCase(fetchClients.rejected, (state, action) => {
-        state.status = "failed";
-        // state.clientData = action.payload;
-      });
+    setRoute: (state, action) => {
+      state.route = action.payload;
+      localStorage.setItem("route", state.route);
+    },
   },
 });
 
 export default AuthSlice.reducer;
-export const { setAuthData } = AuthSlice.actions;
+export const { setAuthData, setRoute } = AuthSlice.actions;
