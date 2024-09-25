@@ -11,9 +11,22 @@ export default function Form() {
     phoneNumber: ''
   });
 
+  const validateForm = (e) => {
+    e.preventDefault();
+    const splitedName = formData.fullName.split(' ').length
+    
+    if (splitedName < 3 || splitedName > 4) {
+      return console.log('Invalid FIO')
+    }
+    if (formData.location.length < 25) {
+      return console.log('Invalid Location') 
+    }
+    return handleSubmit(e)
+  }
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Perform validation or any other action here if needed
     navigate('/course-info');
   };
 
@@ -53,7 +66,7 @@ export default function Form() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-100 p-4">
       <div className="w-full max-w-md bg-base-200 shadow-2xl rounded-lg overflow-hidden">
-        <form onSubmit={handleSubmit} className="space-y-6 p-6">
+        <form onSubmit={validateForm} className="space-y-6 p-6">
           <div className="space-y-2">
             <label htmlFor="fullName" className="block text-sm font-medium">
               ФИО

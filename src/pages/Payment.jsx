@@ -59,7 +59,6 @@ const Payment = () => {
               <p><span className="font-bold">Адрес:</span> 100000, Узбекистан, Ташкент, Кара-камыш-1/2, дом-28, кв. 22</p>
               <p><span className="font-bold">Телефон:</span> +998957170555</p>
               <p><span className="font-bold">Эл.почта:</span> JalilovAbduvaliy@gmail.com</p>
-              <p><span className="font-bold">ПИНФЛ:</span> 51112016610031</p>
             </div>
           </div>
           
