@@ -17,14 +17,13 @@ export default function Form() {
     location: "",
     phonePrefix: "+998",
     phoneNumber: "",
-    email: "",
   });
 
   const validateForm = (e) => {
     e.preventDefault();
     const splitedName = formData.fullName.trim().split(" ").length;
 
-    if (splitedName < 3 || splitedName > 4) {
+    if (splitedName < 2) {
       return toast.warning("Введите полное Ф.И.О.", {
         position: "top-right",
         autoClose: 5000,
@@ -63,7 +62,7 @@ export default function Form() {
           clientName: formData?.fullName,
           clientAddress: formData?.location,
           clientPhone: `${formData?.phonePrefix} ${formData?.phoneNumber}`,
-          email: formData?.email,
+          email: "saadadas",
         }
       );
 
@@ -82,7 +81,6 @@ export default function Form() {
         theme: "dark",
         transition: Bounce,
       });
-      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -209,22 +207,6 @@ export default function Form() {
                 onChange={handlePhoneNumberChange}
               />
             </div>
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="email" className="block text-sm font-medium">
-              Электронный адрес
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="text"
-              className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
-              placeholder="Введите Email (Электронный адрес)"
-              required
-              value={formData.email}
-              onChange={handleChange}
-            />
           </div>
 
           <button

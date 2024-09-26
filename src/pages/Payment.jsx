@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import PaymeForm from "../components/PaymeForm";
+import UzumForm from "../components/UzumForm";
+import ClickForm from "../components/ClickForm";
 
 const Payment = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
@@ -25,7 +28,6 @@ const Payment = () => {
         );
         setCourseInfo(filteredData);
         console.log(filteredData);
-        
       } catch (error) {
         setError(error.message);
       } finally {
@@ -148,9 +150,6 @@ const Payment = () => {
                 <span className="font-bold">Телефон:</span>{" "}
                 {invoice.clientPhone}
               </p>
-              <p>
-                <span className="font-bold">Эл.почта:</span> {invoice.email}
-              </p>
             </div>
           </div>
 
@@ -235,11 +234,16 @@ const Payment = () => {
               </div>
               {selectedPaymentMethod === "PayMe" && (
                 <div className="mt-4">
-                  <a href="https://payme.uz/checkout/66f3f7c6aefc1a4dd45f78ad?back=http:%2F%2Flocalhost:3000%2F&timeout=15000&lang=ru">
-                    <button className="w-full bg-green-500 text-white p-3 rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out transform hover:scale-105">
-                      Купить
-                    </button>
-                  </a>
+                  <PaymeForm
+                    amount={courseInfo.reduce(
+                      (total, item) => total + item.price,
+                      0
+                    )}
+                    name={invoice.clientName}
+                    phone={invoice.clientPhone}
+                    courseName={courseInfo.map(item => item.title).join(", ")}
+                    courseDescription={courseInfo.map(item => item.description).join(", ")}
+                  />
                 </div>
               )}
 
@@ -265,11 +269,12 @@ const Payment = () => {
               </div>
               {selectedPaymentMethod === "Click" && (
                 <div className="mt-4">
-                  <a href="https://my.click.uz/services/pay/AD8A4BD75F904C4CBBB2106005AD3557">
-                    <button className="w-full bg-green-500 text-white p-3 rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out transform hover:scale-105">
-                      Купить
-                    </button>
-                  </a>
+                  <ClickForm
+                    amount={courseInfo.reduce(
+                      (total, item) => total + item.price,
+                      0
+                    )}
+                  />
                 </div>
               )}
 
@@ -295,11 +300,16 @@ const Payment = () => {
               </div>
               {selectedPaymentMethod === "Uzum Bank" && (
                 <div className="mt-4">
-                  <a href="https://payment.apelsin.uz/merchant?serviceId=498614016">
-                    <button className="w-full bg-green-500 text-white p-3 rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out transform hover:scale-105">
-                      Купить
-                    </button>
-                  </a>
+                  <UzumForm
+                    amount={courseInfo.reduce(
+                      (total, item) => total + item.price,
+                      0
+                    )}
+                    name={invoice.clientName}
+                    phone={invoice.clientPhone}
+                    courseName={courseInfo[0].title}
+                    courseDescription={courseInfo[0].description}
+                  />
                 </div>
               )}
             </div>
