@@ -1,10 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import PaymeForm from "../components/PaymentForms/PaymeForm";
+import UzumForm from "../components/PaymentForms/UzumForm";
+import ClickForm from "../components/PaymentForms/ClickForm";
 
 const Payment = () => {
-  const [orderId, setOrderId] = useState("2038234");
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [courseInfo, setCourseInfo] = useState([]);
+  const [invoice, setInvoice] = useState([]);
+  const clientId = useSelector((state) => state.auth.clientId);
+  const route = useSelector((state) => state.auth.route);
 
-  // Function to format dates
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/courses`
+        );
+
+        const filteredData = response.data.filter(
+          (course) => course.route === route
+        );
+        setCourseInfo(filteredData);
+        console.log(filteredData);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchInvoices = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/invoices/${clientId}`
+        );
+        setInvoice(response.data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInvoices();
+    fetchCourses();
+  }, [clientId, route]);
+
   const formatDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -12,34 +60,48 @@ const Payment = () => {
     return `${day}.${month}.${year}`;
   };
 
-  // Get today's date and due date for payment
   const todayDate = formatDate(new Date());
+
   const dueDate = formatDate(new Date(Date.now() + 3 * 24 * 60 * 60 * 1000));
 
-  // Handle the selection of payment method
   const handlePaymentMethodSelect = (method) => {
     setSelectedPaymentMethod(method);
   };
 
-  // Handle the purchase action
-  const handlePurchase = () => {
-    alert(`You have selected ${selectedPaymentMethod} as the payment method.`);
-  };
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-red-500 text-xl">Ошибка загрузки данных</p>
+      </div>
+    );
+  }
+
+  if (courseInfo.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-red-500 text-xl">Курс не найден</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-4xl mx-auto bg-base-200 shadow-lg rounded-lg overflow-hidden">
         <div className="p-4 bg-base-300 flex justify-between items-center">
-          <img
-            src="norbekov.png"
-            className="lg:h-[60px] h-[40px]"
-            alt="Company Logo"
-          />
+          <img src="norbekov.png" className="lg:h-[60px] h-[40px]" alt="" />
         </div>
 
         <div className="p-6">
           <h1 className="text-xl lg:text-2xl font-bold text-center mb-6">
-            СЧЕТ НА ОПЛАТУ № {orderId} от {todayDate}
+            СЧЕТ НА ОПЛАТУ № {invoice.invoiceNumber} от {todayDate}
             <br />к Договору № ДХ-1404-06/20 от 03.06.2020
           </h1>
 
@@ -79,22 +141,14 @@ const Payment = () => {
               </p>
             </div>
             <div>
-              <h2 className="font-bold">
-                Заказчик: Jalilov Abduvali Abdukarim o'g'li
-              </h2>
+              <h2 className="font-bold">Заказчик: {invoice.clientName}</h2>
               <p>
-                <span className="font-bold">Адрес:</span> 100000, Узбекистан,
-                Ташкент, Кара-камыш-1/2, дом-28, кв. 22
+                <span className="font-bold">Адрес:</span>{" "}
+                {invoice.clientAddress}
               </p>
               <p>
-                <span className="font-bold">Телефон:</span> +998957170555
-              </p>
-              <p>
-                <span className="font-bold">Эл.почта:</span>{" "}
-                JalilovAbduvaliy@gmail.com
-              </p>
-              <p>
-                <span className="font-bold">ПИНФЛ:</span> 51112016610031
+                <span className="font-bold">Телефон:</span>{" "}
+                {invoice.clientPhone}
               </p>
             </div>
           </div>
@@ -108,19 +162,23 @@ const Payment = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    Регистрация домена - qwertyuio.uz - 1 год(а) ({todayDate} -{" "}
-                    {formatDate(
-                      new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
-                    )}
-                    )
-                  </td>
-                  <td>27000 сум</td>
-                </tr>
+                {courseInfo.map((item, id) => (
+                  <tr key={id}>
+                    <td>
+                      {item.title}
+                      <span className="block text-xs text-gray-500">
+                        {item.description}
+                      </span>
+                    </td>
+                    <td>{item.price} сум</td>
+                  </tr>
+                ))}
                 <tr className="font-bold">
                   <td>Итого к оплате</td>
-                  <td>27000 сум</td>
+                  <td>
+                    {courseInfo.reduce((total, item) => total + item.price, 0)}{" "}
+                    сум
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -128,33 +186,33 @@ const Payment = () => {
 
           <div className="mt-6 text-center">
             <h2 className="lg:text-3xl text-xl md:text-2xl font-bold text-red-500">
-              НЕ ОПЛАЧЕН
+              {invoice.status}
             </h2>
             <p>Срок оплаты: {dueDate}</p>
           </div>
+
           <div className="mt-6">
             <p className="font-bold">
               Внимание! Оплата данного счета означает согласие с{" "}
-              <a href="#" className="link link-primary">
+              <Link to="#" className="link link-primary">
                 условиями предоставления услуг
-              </a>
+              </Link>
               .
             </p>
             <p className="mt-2">
               Уведомление об оплате необязательно. Услуги предоставляются по
               факту поступления денежных средств на наш расчетный счет. После
-              предоставления услуги, мы отправим уведомление об этом вам на ваш
-              JalilovAbduvaliy@gmail.com электронный почтовый адрес.
+              предоставления услуги, мы отправим уведомление об этом вам на ваш{" "}
+              {invoice.email} электронный почтовый адрес.
             </p>
           </div>
 
-          <div className="mt-6">
+          <div className="mt-6 flex flex-col items-start">
             <h2 className="label-text font-bold mb-4">
               Выберите метод оплаты:
             </h2>
-            <div className="flex justify-around items-center mb-4 flex-wrap">
-              {/* PayMe Payment Method */}
-              <div className="flex items-center space-x-2">
+            <div className="flex items-center justify-around w-full">
+              <div className="flex items-center space-x-4 bg-base-content px-5 py-3 rounded-2xl">
                 <input
                   type="radio"
                   name="paymentMethod"
@@ -175,8 +233,7 @@ const Payment = () => {
                 </label>
               </div>
 
-              {/* Click Payment Method */}
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-4 bg-base-content px-5 py-3 rounded-2xl">
                 <input
                   type="radio"
                   name="paymentMethod"
@@ -197,8 +254,7 @@ const Payment = () => {
                 </label>
               </div>
 
-              {/* Uzum Bank Payment Method */}
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-4 bg-base-content px-5 py-3 rounded-2xl">
                 <input
                   type="radio"
                   name="paymentMethod"
@@ -219,14 +275,50 @@ const Payment = () => {
                 </label>
               </div>
             </div>
+            <div className="w-full">
+              {selectedPaymentMethod === "PayMe" && (
+                <div className="mt-4">
+                  <PaymeForm
+                    amount={courseInfo.reduce(
+                      (total, item) => total + item.price,
+                      0
+                    )}
+                    name={invoice.clientName}
+                    phone={invoice.clientPhone}
+                    courseName={courseInfo.map((item) => item.title).join(", ")}
+                    courseDescription={courseInfo
+                      .map((item) => item.description)
+                      .join(", ")}
+                  />
+                </div>
+              )}
 
-            <button
-              className="w-full bg-primary text-white p-3 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out transform hover:scale-105"
-              onClick={handlePurchase}
-              disabled={!selectedPaymentMethod}
-            >
-              Купить
-            </button>
+              {selectedPaymentMethod === "Click" && (
+                <div className="mt-4">
+                  <ClickForm
+                    amount={courseInfo.reduce(
+                      (total, item) => total + item.price,
+                      0
+                    )}
+                  />
+                </div>
+              )}
+
+              {selectedPaymentMethod === "Uzum Bank" && (
+                <div className="mt-4">
+                  <UzumForm
+                    amount={courseInfo.reduce(
+                      (total, item) => total + item.price,
+                      0
+                    )}
+                    name={invoice.clientName}
+                    phone={invoice.clientPhone}
+                    courseName={courseInfo[0].title}
+                    courseDescription={courseInfo[0].description}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

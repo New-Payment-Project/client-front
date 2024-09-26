@@ -24,7 +24,7 @@ const UzumForm = ({ name, phone, amount, courseName, courseDescription }) => {
       <input type="hidden" name="extraData" value={courseName} />
 
       <button className="w-full bg-green-500 text-white p-3 rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out transform hover:scale-105">
-        Купить
+        Оплатить
       </button>
     </form>
   );
