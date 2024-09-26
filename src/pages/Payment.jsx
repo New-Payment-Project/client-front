@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import PaymeForm from "../components/PaymeForm";
-import UzumForm from "../components/UzumForm";
-import ClickForm from "../components/ClickForm";
+import PaymeForm from "../components/PaymentForms/PaymeForm";
+import UzumForm from "../components/PaymentForms/UzumForm";
+import ClickForm from "../components/PaymentForms/ClickForm";
 
 const Payment = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");

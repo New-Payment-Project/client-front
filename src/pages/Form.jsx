@@ -3,14 +3,21 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuthData, setRoute } from "../redux/slices/AuthSlice";
 import axios from "axios";
-import { Bounce, toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import constants from "../constants/constants";
+import phoneValidation from "../components/validations/phoneValidation";
+import warningToastify from "../components/toastify/warningToastify";
+import errorToastify from "../components/toastify/errorToastify";
 
 export default function Form() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { route } = useParams();
+
+  const { phoneFormats, phonePlaceholders } = constants();
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -19,35 +26,40 @@ export default function Form() {
     phoneNumber: "",
   });
 
+  const { formatPhoneNumber } = phoneValidation({
+    formData: formData,
+    phoneFormats: phoneFormats,
+  });
+
+  const containsNumber = (str) => {
+    const regex = /\d/;
+    return regex.test(str);
+  };
+
   const validateForm = (e) => {
     e.preventDefault();
-    const splitedName = formData.fullName.trim().split(" ").length;
+    const splitedName = formData.fullName.trim().split(" ");
 
-    if (splitedName < 2) {
-      return toast.warning("Введите полное Ф.И.О.", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-      });
+    if (splitedName.length < 2) {
+      return warningToastify("Введите полное Ф.И.О");
     }
+
+    if (containsNumber(formData.fullName)) {
+      return warningToastify("Имя не может содержать цифры");
+    }
+
     if (formData.location.length < 25) {
-      return toast.warning("Введите полный адрес проживания", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-      });
+      return warningToastify("Введите полный адрес проживания");
+    }
+
+    const phoneRegex = phoneFormats[formData.phonePrefix];
+    const cleanedPhoneNumber = formData.phoneNumber.replace(/\s+/g, "");
+    const expectedLength = String(phoneRegex)
+      .match(/\d/g)
+      .reduce((total, current) => total + parseInt(current), 0);
+
+    if (cleanedPhoneNumber.length !== expectedLength) {
+      return warningToastify("Введите номер телефона в правильном формате");
     }
     return handleSubmit(e);
   };
@@ -62,25 +74,14 @@ export default function Form() {
           clientName: formData?.fullName,
           clientAddress: formData?.location,
           clientPhone: `${formData?.phonePrefix} ${formData?.phoneNumber}`,
-          email: "saadadas",
         }
       );
 
       dispatch(setAuthData(response.data._id));
-      dispatch(setRoute(route))
+      dispatch(setRoute(route));
       navigate("/course-info");
     } catch (error) {
-      toast.error("Возникла ошибка при выполнении", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-      });
+      errorToastify("Возникла ошибка при выполнении");
     } finally {
       setLoading(false);
     }
@@ -88,34 +89,17 @@ export default function Form() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if (name === "phonePrefix") {
+      setFormData({ ...formData, phonePrefix: value, phoneNumber: "" });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handlePhoneNumberChange = (e) => {
     const value = e.target.value;
     const formattedValue = formatPhoneNumber(value);
     setFormData({ ...formData, phoneNumber: formattedValue });
-  };
-
-  const formatPhoneNumber = (value) => {
-    const cleaned = value.replace(/\D/g, "");
-
-    let formatted = "";
-
-    if (cleaned.length > 0) {
-      formatted += `${cleaned.slice(0, 2)}`;
-    }
-    if (cleaned.length > 2) {
-      formatted += ` ${cleaned.slice(2, 5)}`;
-    }
-    if (cleaned.length > 5) {
-      formatted += `-${cleaned.slice(5, 7)}`;
-    }
-    if (cleaned.length > 7) {
-      formatted += `-${cleaned.slice(7, 9)}`;
-    }
-
-    return formatted;
   };
 
   return (
@@ -181,11 +165,11 @@ export default function Form() {
                 value={formData.phonePrefix}
                 onChange={handleChange}
               >
-                <option value="+998">+998</option>
-                <option value="+1">+1</option>
-                <option value="+7">+7</option>
-                <option value="+44">+44</option>
-                <option value="+91">+91</option>
+                {Object.keys(phoneFormats).map((prefix) => (
+                  <option key={prefix} value={prefix}>
+                    {prefix}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -201,7 +185,7 @@ export default function Form() {
                 name="phoneNumber"
                 type="tel"
                 className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300  text-sm rounded-r-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
-                placeholder="(__)___-__-__"
+                placeholder={phonePlaceholders[formData.phonePrefix]}
                 required
                 value={formData.phoneNumber}
                 onChange={handlePhoneNumberChange}
@@ -211,7 +195,8 @@ export default function Form() {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-3 rounded-lg transition duration-200 ease-in-out"
+            disabled={loading}
           >
             {loading ? (
               <span className="loading loading-dots loading-md"></span>
