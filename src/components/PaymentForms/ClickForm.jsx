@@ -8,7 +8,7 @@ const ClickForm = ({ amount }) => {
     const merchant_id = "12110";
     const transaction_param = "ORD-" + new Date().getTime();
     const merchant_user_id = "46320";
-    const return_url = "http://localhost:3000";
+    const return_url = "http://localhost:3000/course-info";
 
     const paymentUrl = `https://my.click.uz/services/pay/?service_id=${service_id}&merchant_id=${merchant_id}&merchant_user_id=${merchant_user_id}&transaction_param=${transaction_param}&amount=${amount}&return_url=${encodeURIComponent(
       return_url
@@ -19,9 +19,9 @@ const ClickForm = ({ amount }) => {
   return (
     <button
       onClick={handlePayment}
-      className="w-full bg-green-500 text-white p-3 rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out transform"
+      className="flex items-center justify-center cursor-pointer space-x-2 p-4 w-48 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"
     >
-      Оплатить
+      <img src={`click.png`} className="h-6" alt={`Click Logo`} />
     </button>
   );
 };

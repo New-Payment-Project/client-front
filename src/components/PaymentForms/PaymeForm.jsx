@@ -10,8 +10,8 @@ const PaymeForm = ({ name, phone, amount, courseName, courseDescription }) => {
       <input type="hidden" name="account[phone]" value={phone} />
       <input type="hidden" name="account[payment]" value={courseName} />
 
-      <button className="w-full bg-green-500 text-white p-3 rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 transition duration-300 ease-in-out transform hover:scale-105">
-        Оплатить
+      <button className="flex items-center justify-center cursor-pointer space-x-2 p-4 w-48 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105">
+        <img src={`payme.png`} className="h-6" alt={`Payme Logo`} />
       </button>
     </form>
   );

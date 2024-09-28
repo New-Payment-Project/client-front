@@ -103,7 +103,7 @@ export default function Form() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -116,18 +116,25 @@ export default function Form() {
         pauseOnHover
         theme="dark"
       />
-      <div className="w-full max-w-md bg-base-200 shadow-2xl rounded-lg overflow-hidden">
-        <form onSubmit={validateForm} className="space-y-6 p-6">
+      <div className="w-full max-w-lg bg-white shadow-2xl rounded-xl overflow-hidden">
+        <div className="bg-gradient-to-r from-indigo-600 to-blue-500 text-white p-6 text-center rounded-t-xl">
+          <h2 className="text-xl lg:text-2xl font-bold">Форма регистрации</h2>
+        </div>
+
+        <form onSubmit={validateForm} className="space-y-6 p-8 bg-gray-50">
           <div className="space-y-2">
-            <label htmlFor="fullName" className="block text-sm font-medium">
+            <label
+              htmlFor="fullName"
+              className="block text-sm font-medium text-gray-700"
+            >
               ФИО
             </label>
             <input
               id="fullName"
               name="fullName"
               type="text"
-              className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
-              placeholder="Введите ФИО (Фамилия Имя Отчество)"
+              className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block transition duration-200 ease-in-out"
+              placeholder="Введите ФИО"
               required
               value={formData.fullName}
               onChange={handleChange}
@@ -135,14 +142,17 @@ export default function Form() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="location" className="block text-sm font-medium">
+            <label
+              htmlFor="location"
+              className="block text-sm font-medium text-gray-700"
+            >
               Адрес
             </label>
             <input
               id="location"
               name="location"
               type="text"
-              className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
+              className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block transition duration-200 ease-in-out"
               placeholder="Введите Адрес"
               required
               value={formData.location}
@@ -150,18 +160,18 @@ export default function Form() {
             />
           </div>
 
-          <div className="flex">
+          <div className="flex gap-4">
             <div className="space-y-2">
               <label
                 htmlFor="phonePrefix"
-                className="block text-sm font-medium"
+                className="block text-sm font-medium text-gray-700"
               >
                 Код страны
               </label>
               <select
                 id="phonePrefix"
                 name="phonePrefix"
-                className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
+                className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 ease-in-out"
                 value={formData.phonePrefix}
                 onChange={handleChange}
               >
@@ -173,10 +183,10 @@ export default function Form() {
               </select>
             </div>
 
-            <div className="space-y-2 flex-1">
+            <div className="flex-1 space-y-2">
               <label
                 htmlFor="phoneNumber"
-                className="block text-sm font-medium"
+                className="block text-sm font-medium text-gray-700"
               >
                 Номер телефона
               </label>
@@ -184,7 +194,7 @@ export default function Form() {
                 id="phoneNumber"
                 name="phoneNumber"
                 type="tel"
-                className="w-full px-4 py-3 bg-base-100 border-2 border-gray-300  text-sm rounded-r-lg focus:ring-blue-500 focus:border-blue-500 block transition duration-200 ease-in-out hover:border-blue-300"
+                className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block transition duration-200 ease-in-out"
                 placeholder={phonePlaceholders[formData.phonePrefix]}
                 required
                 value={formData.phoneNumber}
@@ -195,7 +205,7 @@ export default function Form() {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-3 rounded-lg transition duration-200 ease-in-out"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm py-3 rounded-lg transition duration-200 ease-in-out"
             disabled={loading}
           >
             {loading ? (
