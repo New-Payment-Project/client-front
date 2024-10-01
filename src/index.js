@@ -12,10 +12,14 @@ import NotFound from "./pages/NotFound";
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <NotFound />,
+  },
+  {
+    path: "/:route",
     element: <App />,
     children: [
-      { path: "/:route", element: <FormPage /> },
-      { path: "/course-info", element: <Payment /> },
+      { path: "", element: <FormPage /> },
+      { path: "course-info", element: <Payment /> },
     ],
   },
   { path: "/*", element: <NotFound /> },
