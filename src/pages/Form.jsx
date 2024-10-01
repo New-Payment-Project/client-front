@@ -121,7 +121,7 @@ export default function Form() {
         theme="dark"
       />
       <div className="w-full max-w-lg bg-white shadow-2xl rounded-xl overflow-hidden">
-        <div className="bg-gradient-to-r from-indigo-600 to-blue-500 text-white p-6 text-center rounded-t-xl">
+        <div className="bg-gradient-to-r from-[#bed6fd] to-[#60a5fa] text-white p-6 text-center rounded-t-xl">
           <h2 className="text-xl lg:text-2xl font-bold">Форма регистрации</h2>
         </div>
 
@@ -206,7 +206,7 @@ export default function Form() {
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm py-3 rounded-lg transition duration-200 ease-in-out"
+            className="w-full bg-[#60a5fa] hover:bg-[#488eff] text-white text-sm py-3 rounded-lg transition duration-200 ease-in-out"
             disabled={loading}
           >
             {loading ? (

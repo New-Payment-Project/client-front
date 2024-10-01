@@ -91,7 +91,7 @@ const Payment = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-        <div className="p-6 bg-gradient-to-r from-indigo-600 to-blue-500 flex justify-between items-center text-white rounded-t-xl">
+        <div className="p-6 bg-gradient-to-r from-[#bed6fd] to-[#60a5fa] flex justify-between items-center text-white rounded-t-xl">
           <img src="norbekov.png" className="lg:h-[60px] h-[40px]" alt="Logo" />
           <h1 className="text-lg lg:text-2xl font-bold">Оплата услуг</h1>
         </div>
@@ -163,7 +163,7 @@ const Payment = () => {
           <div className="overflow-x-auto mb-6">
             <table className="table-auto w-full bg-gray-50 rounded-lg shadow-md">
               <thead>
-                <tr className="bg-indigo-500 text-white">
+                <tr className="bg-[#60a5fa] text-white">
                   <th className="p-3 text-left">Услуги</th>
                   <th className="p-3 text-right">Стоимость</th>
                 </tr>
