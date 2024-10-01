@@ -40,6 +40,10 @@ export default function Form() {
     e.preventDefault();
     const splitedName = formData.fullName.trim().split(" ");
 
+    if (!formData.fullName || !formData.location || !formData.phoneNumber) {
+      return warningToastify("Заполните данные для оплаты");
+    }
+
     if (splitedName.length < 2) {
       return warningToastify("Введите полное Ф.И.О");
     }
@@ -135,7 +139,6 @@ export default function Form() {
               type="text"
               className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block transition duration-200 ease-in-out"
               placeholder="Введите ФИО"
-              required
               value={formData.fullName}
               onChange={handleChange}
             />
@@ -154,7 +157,6 @@ export default function Form() {
               type="text"
               className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block transition duration-200 ease-in-out"
               placeholder="Введите Адрес"
-              required
               value={formData.location}
               onChange={handleChange}
             />
@@ -196,7 +198,6 @@ export default function Form() {
                 type="tel"
                 className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block transition duration-200 ease-in-out"
                 placeholder={phonePlaceholders[formData.phonePrefix]}
-                required
                 value={formData.phoneNumber}
                 onChange={handlePhoneNumberChange}
               />
