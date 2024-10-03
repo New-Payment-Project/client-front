@@ -26,6 +26,7 @@ const Payment = () => {
           (course) => course.route === route
         );
         setCourseInfo(filteredData);
+        console.log(filteredData);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -226,6 +227,7 @@ const Payment = () => {
                 )}
                 name={invoice.clientName}
                 phone={invoice.clientPhone}
+                courseId={courseInfo[0]._id}
                 courseName={courseInfo.map((item) => item.title).join(", ")}
                 courseDescription={courseInfo
                   .map((item) => item.description)
