@@ -6,7 +6,7 @@ const UzumForm = ({ name, phone, amount, courseName, courseDescription }) => {
       method="GET"
       action="https://www.uzumbank.uz/open-service?serviceId=498614016"
     >
-      <input type="hidden" name="cash" value={amount} />
+      <input type="hidden" name="cash" value={`${amount}`} />
 
       <input
         type="hidden"
@@ -14,9 +14,9 @@ const UzumForm = ({ name, phone, amount, courseName, courseDescription }) => {
         value="http://localhost:3000/course-info"
       />
 
-      <input type="hidden" name="description" value={courseDescription} />
+      <input type="hidden" name="description" value={`${courseDescription}`} />
 
-      <input type="hidden" name="extraData" value={courseName} />
+      <input type="hidden" name="extraData" value={`${courseName}`} />
 
       <button className="flex items-center justify-center cursor-pointer space-x-2 p-4 w-48 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105">
         <img src={`uzum-bank.png`} className="h-6" alt={`Uzum Bank Logo`} />
