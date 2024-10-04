@@ -13,9 +13,8 @@ const PaymeForm = ({
   invoiceId,
 }) => {
   const formRef = useRef(null);
-  const [paymentStatus, setPaymentStatus] = useState(""); // To track payment status
+  const [paymentStatus, setPaymentStatus] = useState("");
 
-  // Function to create a transaction
   const createTransaction = async () => {
     const transactionTime = Date.now();
 
