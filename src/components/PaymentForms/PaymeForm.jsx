@@ -49,7 +49,7 @@ const PaymeForm = ({
     }
   };
 
-  const performTransaction = async (transactionId) => {
+const performTransaction = async (transactionId) => {
     try {
       const response = await axios.post(
         "https://course-server-327v.onrender.com/",
