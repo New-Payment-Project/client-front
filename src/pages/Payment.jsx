@@ -229,7 +229,7 @@ const Payment = () => {
                 phone={invoice.clientPhone}
                 address={invoice.clientAddress}
                 courseId={courseInfo[0]._id}
-                invoiceId={courseInfo[0]._id}
+                invoiceId={invoice._id}
                 courseName={courseInfo.map((item) => item.title).join(", ")}
                 courseDescription={courseInfo
                   .map((item) => item.description)
