@@ -49,7 +49,7 @@ const PaymeForm = ({
     }
   };
 
-const performTransaction = async (transactionId) => {
+  const performTransaction = async (transactionId) => {
     try {
       const response = await axios.post(
         "https://course-server-327v.onrender.com/",
@@ -143,9 +143,8 @@ const performTransaction = async (transactionId) => {
 
       {paymentStatus && (
         <div
-          className={`mt-4 text-lg ${
-            paymentStatus === "Оплачено" ? "text-green-500" : "text-red-500"
-          }`}
+          className={`mt-4 text-lg ${paymentStatus === "Оплачено" ? "text-green-500" : "text-red-500"
+            }`}
         >
           Статус оплаты: {paymentStatus}
         </div>

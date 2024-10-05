@@ -120,10 +120,10 @@ const Payment = () => {
                 Olmazor tumani, Yuqori Sebzor MFY, Sebzor S17/18, 52A uy
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Телефоны:</span> 
+                <span className="font-bold">Телефоны:</span>
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Эл.почта:</span> 
+                <span className="font-bold">Эл.почта:</span>
               </p>
               <p className="text-gray-600">
                 <span className="font-bold">Расчетный счет:</span>{" "}
@@ -142,7 +142,7 @@ const Payment = () => {
                 <span className="font-bold">ОКПО:</span> 28940182
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Рег. код НДС:</span> 
+                <span className="font-bold">Рег. код НДС:</span>
               </p>
             </div>
             <div className="bg-gray-50 p-6 rounded-lg shadow-md">
@@ -229,7 +229,7 @@ const Payment = () => {
                 phone={invoice.clientPhone}
                 address={invoice.clientAddress}
                 courseId={courseInfo[0]._id}
-                invoiceId={invoice._id}
+                invoiceId={invoice.invoiceNumber}
                 courseName={courseInfo.map((item) => item.title).join(", ")}
                 courseDescription={courseInfo
                   .map((item) => item.description)
