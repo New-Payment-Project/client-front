@@ -40,6 +40,7 @@ const Payment = () => {
           `${process.env.REACT_APP_API_URL}/invoices/${clientId}`
         );
         setInvoice(response.data);
+        console.log(response.data);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -226,6 +227,9 @@ const Payment = () => {
                 )}
                 name={invoice.clientName}
                 phone={invoice.clientPhone}
+                address={invoice.clientAddress}
+                courseId={courseInfo[0]._id}
+                invoiceId={invoice._id}
                 courseName={courseInfo.map((item) => item.title).join(", ")}
                 courseDescription={courseInfo
                   .map((item) => item.description)
