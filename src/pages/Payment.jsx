@@ -15,41 +15,33 @@ const Payment = () => {
   const route = useSelector((state) => state.auth.route);
 
   useEffect(() => {
-    const fetchCourses = async () => {
+    const fetchAPI = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
+        const invoiceResponse = await axios.get(
+          `${process.env.REACT_APP_API_URL}/invoices/${clientId}`
+        );
+        const courseResponse = await axios.get(
           `${process.env.REACT_APP_API_URL}/courses`
         );
 
-        const filteredData = response.data.filter(
+        const filteredCourse = courseResponse.data.filter(
           (course) => course.route === route
         );
-        setCourseInfo(filteredData);
+
+        setInvoice(invoiceResponse.data);
+        setCourseInfo(filteredCourse);
+        console.log("invoice: ", invoiceResponse.data);
+        console.log("course: ", courseResponse.data);
       } catch (error) {
         setError(error.message);
+        console.log(error);
       } finally {
         setLoading(false);
       }
     };
 
-    const fetchInvoices = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/invoices/${clientId}`
-        );
-        setInvoice(response.data);
-        console.log(response.data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchInvoices();
-    fetchCourses();
+    fetchAPI();
   }, [clientId, route]);
 
   const formatDate = (date) => {
@@ -120,17 +112,18 @@ const Payment = () => {
                 Olmazor tumani, Yuqori Sebzor MFY, Sebzor S17/18, 52A uy
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Телефоны:</span> 
+                <span className="font-bold">Телефоны:</span>
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Эл.почта:</span> 
+                <span className="font-bold">Эл.почта:</span>
               </p>
               <p className="text-gray-600">
                 <span className="font-bold">Расчетный счет:</span>{" "}
                 20208000005113167001
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Банк:</span> MILLIY BANK, Головной офис
+                <span className="font-bold">Банк:</span> MILLIY BANK, Головной
+                офис
               </p>
               <p className="text-gray-600">
                 <span className="font-bold">МФО:</span> 00450
@@ -142,7 +135,7 @@ const Payment = () => {
                 <span className="font-bold">ОКПО:</span> 28940182
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Рег. код НДС:</span> 
+                <span className="font-bold">Рег. код НДС:</span>
               </p>
             </div>
             <div className="bg-gray-50 p-6 rounded-lg shadow-md">
@@ -191,8 +184,16 @@ const Payment = () => {
           </div>
 
           <div className="mt-6 text-center">
-            <h2 className="lg:text-3xl text-xl md:text-2xl font-bold text-red-500">
-              {invoice.status}
+            <h2
+              className={`lg:text-3xl text-xl md:text-2xl font-bold ${
+                order.status === "НЕ ОПЛАЧЕНО"
+                  ? "text-red-500"
+                  : order.status === "ВЫСТАВЛЕНО"
+                  ? "text-orange-500"
+                  : "text-green-500"
+              } `}
+            >
+              {order.status}
             </h2>
             <p className="text-gray-500">
               Срок оплаты: {expirationDate(invoice.createdAt)}
@@ -229,7 +230,7 @@ const Payment = () => {
                 phone={invoice.clientPhone}
                 address={invoice.clientAddress}
                 courseId={courseInfo[0]._id}
-                invoiceId={invoice._id}
+                invoiceId={invoice.invoiceNumber}
                 courseName={courseInfo.map((item) => item.title).join(", ")}
                 courseDescription={courseInfo
                   .map((item) => item.description)

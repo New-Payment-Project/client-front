@@ -147,9 +147,8 @@ const PaymeForm = ({
 
       {paymentStatus && (
         <div
-          className={`mt-4 text-lg ${
-            paymentStatus === "Оплачено" ? "text-green-500" : "text-red-500"
-          }`}
+          className={`mt-4 text-lg ${paymentStatus === "Оплачено" ? "text-green-500" : "text-red-500"
+            }`}
         >
           Статус оплаты: {paymentStatus}
         </div>
