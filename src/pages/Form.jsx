@@ -52,10 +52,6 @@ export default function Form() {
       return warningToastify("Имя не может содержать цифры");
     }
 
-    if (formData.location.length < 25) {
-      return warningToastify("Введите полный адрес проживания");
-    }
-
     const phoneRegex = phoneFormats[formData.phonePrefix];
     const cleanedPhoneNumber = formData.phoneNumber.replace(/\s+/g, "");
     const expectedLength = String(phoneRegex)
