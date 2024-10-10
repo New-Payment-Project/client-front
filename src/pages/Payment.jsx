@@ -186,14 +186,14 @@ const Payment = () => {
           <div className="mt-6 text-center">
             <h2
               className={`lg:text-3xl text-xl md:text-2xl font-bold ${
-                order.status === "НЕ ОПЛАЧЕНО"
+                invoice?.status === "НЕ ОПЛАЧЕНО"
                   ? "text-red-500"
-                  : order.status === "ВЫСТАВЛЕНО"
+                  : invoice?.status === "ВЫСТАВЛЕНО"
                   ? "text-orange-500"
                   : "text-green-500"
               } `}
             >
-              {order.status}
+              {invoice?.status}
             </h2>
             <p className="text-gray-500">
               Срок оплаты: {expirationDate(invoice.createdAt)}

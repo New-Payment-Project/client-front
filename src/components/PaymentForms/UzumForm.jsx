@@ -3,8 +3,8 @@ import React from "react";
 const UzumForm = ({ name, phone, amount, courseName, courseDescription }) => {
   return (
     <form
-      method="GET"
-      action="https://www.uzumbank.uz/open-service?serviceId=498614016"
+      method="POST"
+      action="https://www.apelsin.uz/open-service?serviceId=498614016"
     >
       <input type="hidden" name="cash" value={`${amount}`} />
 
@@ -15,6 +15,8 @@ const UzumForm = ({ name, phone, amount, courseName, courseDescription }) => {
       />
 
       <input type="hidden" name="description" value={`${courseDescription}`} />
+      <input type="hidden" name="phone" value={`${phone}`} />
+      <input type="hidden" name="name" value={`${name}`} />
 
       <input type="hidden" name="extraData" value={`${courseName}`} />
 
