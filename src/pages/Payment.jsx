@@ -225,9 +225,9 @@ const Payment = () => {
                   (total, item) => total + item.price,
                   0
                 )}
-                name={invoice.clientName}
-                phone={invoice.clientPhone}
-                address={invoice.clientAddress}
+                clientName={invoice.clientName}
+                clientPhone={invoice.clientPhone}
+                clientAddress={invoice.clientAddress}
                 courseId={courseInfo[0]._id}
                 invoiceId={invoice._id}
                 courseName={courseInfo.map((item) => item.title).join(", ")}
