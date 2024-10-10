@@ -113,9 +113,11 @@ const Payment = () => {
               </p>
               <p className="text-gray-600">
                 <span className="font-bold">Телефоны:</span>
+                +998 99 846 66 17
               </p>
               <p className="text-gray-600">
                 <span className="font-bold">Эл.почта:</span>
+                Info@norbekovmarkazi.uz
               </p>
               <p className="text-gray-600">
                 <span className="font-bold">Расчетный счет:</span>{" "}
@@ -133,9 +135,6 @@ const Payment = () => {
               </p>
               <p className="text-gray-600">
                 <span className="font-bold">ОКПО:</span> 28940182
-              </p>
-              <p className="text-gray-600">
-                <span className="font-bold">Рег. код НДС:</span>
               </p>
             </div>
             <div className="bg-gray-50 p-6 rounded-lg shadow-md">
@@ -216,8 +215,7 @@ const Payment = () => {
             </p>
           </div>
 
-          {invoice?.status !== "ОТМЕНЕНО" &&
-          invoice?.status !== "ОПЛАЧЕНО" ? (
+          {invoice?.status !== "ОТМЕНЕНО" && invoice?.status !== "ОПЛАЧЕНО" ? (
             <div className="flex flex-col items-start mt-8 space-y-4">
               <h2 className="font-bold text-lg text-gray-500">
                 Выберите метод оплаты:
