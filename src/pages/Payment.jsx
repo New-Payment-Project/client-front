@@ -216,44 +216,47 @@ const Payment = () => {
             </p>
           </div>
 
-          <div className="flex flex-col items-start mt-8 space-y-4">
-            <h2 className="font-bold text-lg text-gray-500">
-              Выберите метод оплаты:
-            </h2>
-            <div className="flex items-center justify-start gap-3 md:flex-row lg:flex-row flex-col">
-              <PaymeForm
-                amount={courseInfo.reduce(
-                  (total, item) => total + item.price,
-                  0
-                )}
-                name={invoice.clientName}
-                phone={invoice.clientPhone}
-                address={invoice.clientAddress}
-                courseId={courseInfo[0]._id}
-                invoiceId={invoice.invoiceNumber}
-                courseName={courseInfo.map((item) => item.title).join(", ")}
-                courseDescription={courseInfo
-                  .map((item) => item.description)
-                  .join(", ")}
-              />
-              <ClickForm
-                amount={courseInfo.reduce(
-                  (total, item) => total + item.price,
-                  0
-                )}
-              />
-              <UzumForm
-                amount={courseInfo.reduce(
-                  (total, item) => total + item.price,
-                  0
-                )}
-                name={invoice.clientName}
-                phone={invoice.clientPhone}
-                courseName={courseInfo[0].title}
-                courseDescription={courseInfo[0].description}
-              />
+          {invoice?.status !== "ОТМЕНЕНО" &&
+          invoice?.status !== "ОПЛАЧЕНО" ? (
+            <div className="flex flex-col items-start mt-8 space-y-4">
+              <h2 className="font-bold text-lg text-gray-500">
+                Выберите метод оплаты:
+              </h2>
+              <div className="flex items-center justify-start gap-3 md:flex-row lg:flex-row flex-col">
+                <PaymeForm
+                  amount={courseInfo.reduce(
+                    (total, item) => total + item.price,
+                    0
+                  )}
+                  name={invoice.clientName}
+                  phone={invoice.clientPhone}
+                  address={invoice.clientAddress}
+                  courseId={courseInfo[0]._id}
+                  invoiceId={invoice.invoiceNumber}
+                  courseName={courseInfo.map((item) => item.title).join(", ")}
+                  courseDescription={courseInfo
+                    .map((item) => item.description)
+                    .join(", ")}
+                />
+                <ClickForm
+                  amount={courseInfo.reduce(
+                    (total, item) => total + item.price,
+                    0
+                  )}
+                />
+                <UzumForm
+                  amount={courseInfo.reduce(
+                    (total, item) => total + item.price,
+                    0
+                  )}
+                  name={invoice.clientName}
+                  phone={invoice.clientPhone}
+                  courseName={courseInfo[0].title}
+                  courseDescription={courseInfo[0].description}
+                />
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </div>
     </div>
