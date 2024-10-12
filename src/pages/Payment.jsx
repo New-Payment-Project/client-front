@@ -52,6 +52,11 @@ const Payment = () => {
     fetchCourses();
   }, [clientId, route]);
 
+  const courseAmount = courseInfo.reduce(
+    (total, item) => total + item.price,
+    0
+  )
+
   const formatDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -99,14 +104,13 @@ const Payment = () => {
 
         <div className="p-8">
           <h1 className="text-2xl lg:text-3xl font-bold text-center mb-8 text-gray-700">
-            СЧЕТ НА ОПЛАТУ № {invoice.invoiceNumber} от{" "}
+            СЧЕТ НА ОПЛАТУ № {courseInfo.prefix}/{invoice.invoiceNumber} от{" "}
             {
               invoice?.createdAt
                 ?.replace("T", " ")
                 .replace("Z", "")
                 .split(".")[0]
             }
-            <br /> к Договору № ДХ-1404-06/20 от 03.06.2020
           </h1>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
@@ -119,11 +123,11 @@ const Payment = () => {
                 <span className="font-bold">Адрес:</span> Toshkent shaxar,
                 Olmazor tumani, Yuqori Sebzor MFY, Sebzor S17/18, 52A uy
               </p>
-              <p className="text-gray-600">
-                <span className="font-bold">Телефоны:</span>
+              <p className="text-gray-600 flex items-center">
+                <span className="font-bold">Телефоны:</span> +998 99 846 66 17
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Эл.почта:</span>
+                <span className="font-bold">Эл.почта:</span> Info@norbekovmarkazi.uz
               </p>
               <p className="text-gray-600">
                 <span className="font-bold">Расчетный счет:</span>{" "}
@@ -141,15 +145,16 @@ const Payment = () => {
               <p className="text-gray-600">
                 <span className="font-bold">ОКПО:</span> 28940182
               </p>
-              <p className="text-gray-600">
-                <span className="font-bold">Рег. код НДС:</span>
-              </p>
             </div>
             <div className="bg-gray-50 p-6 rounded-lg shadow-md">
               <h2 className="text-gray-600">
                 <span className="font-bold">Заказчик:</span>{" "}
                 {invoice.clientName}
               </h2>
+              <p className="text-gray-600 whitespace-normal break-words">
+                <span className="font-bold">Паспорт:</span>{" "}
+                {invoice.passport}
+              </p>
               <p className="text-gray-600 whitespace-normal break-words">
                 <span className="font-bold">Адрес:</span>{" "}
                 {invoice.clientAddress}
@@ -158,6 +163,12 @@ const Payment = () => {
                 <span className="font-bold">Телефон:</span>{" "}
                 {invoice.clientPhone}
               </p>
+              {invoice.tgUsername && (
+                <p className="text-gray-600 whitespace-normal break-words">
+                  <span className="font-bold">Телеграм:</span>{" "}
+                  {invoice.tgUsername}
+                </p>
+              )}
             </div>
           </div>
 
@@ -189,7 +200,6 @@ const Payment = () => {
               </tbody>
             </table>
           </div>
-
           <div className="mt-6 text-center">
             <h2 className="lg:text-3xl text-xl md:text-2xl font-bold text-red-500">
               {invoice.status}
@@ -199,60 +209,56 @@ const Payment = () => {
             </p>
           </div>
 
-          <div className="mt-6">
-            <p className="font-bold text-gray-500">
-              Внимание! Оплата данного счета означает согласие с{" "}
-              <Link to="#" className="link link-primary text-gray-500">
-                условиями предоставления услуг
-              </Link>
-              .
-            </p>
-            <p className="mt-2 text-sm text-gray-500">
-              Уведомление об оплате необязательно. Услуги предоставляются по
-              факту поступления денежных средств на наш расчетный счет. После
-              предоставления услуги, мы отправим уведомление об этом вам на ваш{" "}
-              {invoice.email} электронный почтовый адрес.
-            </p>
-          </div>
-
-          <div className="flex flex-col items-start mt-8 space-y-4">
-            <h2 className="font-bold text-lg text-gray-500">
-              Выберите метод оплаты:
-            </h2>
-            <div className="flex items-center justify-start gap-3 md:flex-row lg:flex-row flex-col">
-              <PaymeForm
-                amount={courseInfo.reduce(
-                  (total, item) => total + item.price,
-                  0
-                )}
-                name={invoice.clientName}
-                phone={invoice.clientPhone}
-                address={invoice.clientAddress}
-                courseId={courseInfo[0]._id}
-                invoiceId={invoice.invoiceNumber}
-                courseName={courseInfo.map((item) => item.title).join(", ")}
-                courseDescription={courseInfo
-                  .map((item) => item.description)
-                  .join(", ")}
-              />
-              <ClickForm
-                amount={courseInfo.reduce(
-                  (total, item) => total + item.price,
-                  0
-                )}
-              />
-              <UzumForm
-                amount={courseInfo.reduce(
-                  (total, item) => total + item.price,
-                  0
-                )}
-                name={invoice.clientName}
-                phone={invoice.clientPhone}
-                courseName={courseInfo[0].title}
-                courseDescription={courseInfo[0].description}
-              />
+          {invoice.status !== 'ОПЛАЧЕНО' && invoice.status !== 'ОТМЕНЕНО' ? (
+            <div>
+              <div className="mt-6">
+                <p className="font-bold text-gray-500">
+                  Внимание! Оплата данного счета означает согласие с{" "}
+                  <Link to="#" className="link link-primary text-gray-500">
+                    условиями предоставления услуг
+                  </Link>
+                  .
+                </p>
+              </div>
+              <div className="flex flex-col items-start mt-6 space-y-4">
+                <h2 className="font-bold text-lg text-gray-500">
+                  Выберите метод оплаты:
+                </h2>
+                <div className="flex items-center justify-start gap-3 md:flex-row lg:flex-row flex-col">
+                  <PaymeForm
+                    amount={courseAmount}
+                    tgUsername={invoice.tgUsername}
+                    passport={invoice.passport}
+                    name={invoice.clientName}
+                    phone={invoice.clientPhone}
+                    address={invoice.clientAddress}
+                    courseId={courseInfo[0]._id}
+                    invoiceId={invoice.invoiceNumber}
+                    courseName={courseInfo.map((item) => item.title).join(", ")}
+                    courseDescription={courseInfo
+                      .map((item) => item.description)
+                      .join(", ")}
+                  />
+                  <ClickForm
+                    amount={courseInfo.reduce(
+                      (total, item) => total + item.price,
+                      0
+                    )}
+                  />
+                  <UzumForm
+                    amount={courseInfo.reduce(
+                      (total, item) => total + item.price,
+                      0
+                    )}
+                    name={invoice.clientName}
+                    phone={invoice.clientPhone}
+                    courseName={courseInfo[0].title}
+                    courseDescription={courseInfo[0].description}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </div>
     </div>

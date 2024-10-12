@@ -1,155 +1,46 @@
-import axios from "axios";
-import React, { useRef, useState } from "react";
-import errorToastify from "../toastify/errorToastify";
+import React from "react";
+import { Base64 } from 'js-base64';
+
+const base64EncodeUnicode = (str) => {
+  return btoa(unescape(encodeURIComponent(str.replace(/%20/g, " "))));
+};
 
 const PaymeForm = ({
   name,
   phone,
   address,
   amount,
-  courseName,
-  courseDescription,
   courseId,
   invoiceId,
+  tgUsername,
+  passport
 }) => {
-  const formRef = useRef(null);
-  const [paymentStatus, setPaymentStatus] = useState("");
-
-  const createTransaction = async () => {
-    const transactionTime = Date.now();
-
-    try {
-      const response = await axios.post(
-        "https://course-server-327v.onrender.com/",
-        {
-          jsonrpc: "2.0",
-          method: "CreateTransaction",
-          params: {
-            account: {
-              course_id: courseId,
-              clientName: name,
-              clientPhone: phone,
-              clientAddress: address,
-            },
-            amount: amount,
-            id: invoiceId,
-            time: transactionTime,
-          },
-        }
-      );
-
-      console.log("CreateTransaction Response:", response.data);
-      return response.data.result.transaction;
-    } catch (error) {
-      console.error("Error in CreateTransaction request:", error);
-      errorToastify(
-        "An error occurred while creating the transaction. Please try again."
-      );
-      throw error;
-    }
-  };
-
-  const performTransaction = async (transactionId) => {
-    try {
-      const response = await axios.post(
-        "https://course-server-327v.onrender.com/",
-        {
-          jsonrpc: "2.0",
-          id: invoiceId,
-          method: "PerformTransaction",
-          params: {
-            id: transactionId,
-          },
-        }
-      );
-
-      console.log("PerformTransaction Response:", response.data);
-
-      if (response.data.result && response.data.result.success) {
-        setPaymentStatus("Оплачено");
-      } else {
-        setPaymentStatus("Не оплачено");
-        errorToastify("Payment failed. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error in PerformTransaction request:", error);
-      setPaymentStatus("Не оплачено");
-      errorToastify("An error occurred during payment. Please try again.");
-    }
-  };
-
-  const handlePaymeClick = async (e) => {
+  const handlePaymeClick = (e) => {
     e.preventDefault();
 
-    try {
-      const checkResponse = await axios.post(
-        "https://course-server-327v.onrender.com/",
-        {
-          jsonrpc: "2.0",
-          method: "CheckPerformTransaction",
-          params: {
-            amount: amount,
-            account: {
-              course_id: courseId,
-            },
-          },
-        }
-      );
+    const merchantId = "66f53ec035370d1d99fb8bff";
 
-      console.log("CheckPerformTransaction Response:", checkResponse.data);
+    const encodedPhone = encodeURIComponent(phone).replace(/%2B/g, '+');
+    const encodedName = encodeURIComponent(name).replace(/%20/g, " ")
+    const encodedAddress = encodeURIComponent(address).replace(/%20/g, " ")
 
-      if (checkResponse.data.result.allow) {
-        const transactionId = await createTransaction();
+    const paramsString = `m=${merchantId};ac.course_id=${courseId};ac.clientName=${encodedName};ac.clientPhone=${encodedPhone};ac.clientAddress=${encodedAddress};a=${amount * 100};`;
 
-        if (formRef.current) {
-          formRef.current.submit();
-        }
+    const encodedParams = Base64.encodeURI(paramsString);
 
-        await performTransaction(transactionId);
-      } else {
-        errorToastify(
-          "Transaction not allowed. Please check your details or try again."
-        );
-      }
-    } catch (error) {
-      console.error("Error in CheckPerformTransaction request:", error);
-      errorToastify("An error occurred. Please try again later.");
-    }
+    const paymeLink = `https://checkout.paycom.uz/${encodedParams}`;
+    console.log("Generated Payme Link:", paymeLink);
+
+    window.location.href = paymeLink;
   };
 
   return (
-    <>
-      <form ref={formRef} method="POST" action="https://checkout.paycom.uz">
-        <input type="hidden" name="merchant" value="65cc5f073c319dec9d8ae9d9" />
-        <input type="hidden" name="amount" value={`${amount}00`} />
-        <input type="hidden" name="description" value={courseDescription} />
-        <input type="hidden" name="account[name]" value={name} />
-        <input type="hidden" name="account[phone]" value={phone} />
-        <input type="hidden" name="account[payment]" value={courseName} />
-
-        <input
-          type="hidden"
-          name="callback"
-          value="https://your-server.com/payme-callback"
-        />
-
-        <button
-          onClick={handlePaymeClick}
-          className="flex items-center justify-center cursor-pointer space-x-2 p-4 w-48 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"
-        >
-          <img src={`payme.png`} className="h-6" alt={`Payme Logo`} />
-        </button>
-      </form>
-
-      {paymentStatus && (
-        <div
-          className={`mt-4 text-lg ${paymentStatus === "Оплачено" ? "text-green-500" : "text-red-500"
-            }`}
-        >
-          Статус оплаты: {paymentStatus}
-        </div>
-      )}
-    </>
+    <button
+      onClick={handlePaymeClick}
+      className="flex items-center justify-center cursor-pointer space-x-2 p-4 w-48 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"
+    >
+      <img src="payme.png" className="h-6" alt="Payme Logo" />
+    </button>
   );
 };
 
