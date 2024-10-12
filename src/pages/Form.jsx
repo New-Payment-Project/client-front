@@ -7,7 +7,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import constants from "../constants/constants";
-import phoneValidation from "../components/validations/phoneValidation";
 import warningToastify from "../components/toastify/warningToastify";
 import errorToastify from "../components/toastify/errorToastify";
 
@@ -22,13 +21,10 @@ export default function Form() {
   const [formData, setFormData] = useState({
     fullName: "",
     location: "",
+    passport: "",
+    tg: "",
     phonePrefix: "+998",
     phoneNumber: "",
-  });
-
-  const { formatPhoneNumber } = phoneValidation({
-    formData: formData,
-    phoneFormats: phoneFormats,
   });
 
   const containsNumber = (str) => {
@@ -40,7 +36,12 @@ export default function Form() {
     e.preventDefault();
     const splitedName = formData.fullName.trim().split(" ");
 
-    if (!formData.fullName || !formData.location || !formData.phoneNumber) {
+    if (
+      !formData.fullName ||
+      !formData.location ||
+      !formData.phoneNumber ||
+      !formData.passport
+    ) {
       return warningToastify("Заполните данные для оплаты");
     }
 
@@ -52,13 +53,16 @@ export default function Form() {
       return warningToastify("Имя не может содержать цифры");
     }
 
+    if (formData.passport.length < 9) {
+      return warningToastify("Введите номер паспорта в правильном формате");
+    }
+
     const phoneRegex = phoneFormats[formData.phonePrefix];
-    const cleanedPhoneNumber = formData.phoneNumber.replace(/\s+/g, "");
     const expectedLength = String(phoneRegex)
       .match(/\d/g)
       .reduce((total, current) => total + parseInt(current), 0);
 
-    if (cleanedPhoneNumber.length !== expectedLength) {
+    if (formData.phoneNumber.length !== expectedLength) {
       return warningToastify("Введите номер телефона в правильном формате");
     }
     return handleSubmit(e);
@@ -73,7 +77,9 @@ export default function Form() {
         {
           clientName: formData?.fullName,
           clientAddress: formData?.location,
-          clientPhone: `${formData?.phonePrefix} ${formData?.phoneNumber}`,
+          clientPhone: `${formData?.phonePrefix}${formData?.phoneNumber.split(' ').join("")}`,
+          passport: formData?.passport,
+          tgUsername: formData?.tg,
         }
       );
 
@@ -97,9 +103,8 @@ export default function Form() {
   };
 
   const handlePhoneNumberChange = (e) => {
-    const value = e.target.value;
-    const formattedValue = formatPhoneNumber(value);
-    setFormData({ ...formData, phoneNumber: formattedValue });
+    const value = e.target.value.replace(/\s+/g, "");
+    setFormData({ ...formData, phoneNumber: value });
   };
 
   return (
@@ -142,6 +147,24 @@ export default function Form() {
 
           <div className="space-y-2">
             <label
+              htmlFor="passport"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Паспорт
+            </label>
+            <input
+              id="passport"
+              name="passport"
+              type="text"
+              className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block transition duration-200 ease-in-out"
+              placeholder="Введите номер паспорта"
+              value={formData.passport}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label
               htmlFor="location"
               className="block text-sm font-medium text-gray-700"
             >
@@ -154,6 +177,24 @@ export default function Form() {
               className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block transition duration-200 ease-in-out"
               placeholder="Введите Адрес"
               value={formData.location}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label
+              htmlFor="tg"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Телеграм
+            </label>
+            <input
+              id="tg"
+              name="tg"
+              type="text"
+              className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block transition duration-200 ease-in-out"
+              placeholder="Введите телеграм юзернейм"
+              value={formData.tg}
               onChange={handleChange}
             />
           </div>
@@ -192,8 +233,13 @@ export default function Form() {
                 id="phoneNumber"
                 name="phoneNumber"
                 type="tel"
+                inputMode="numeric"
+                pattern="\d*"
                 className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block transition duration-200 ease-in-out"
-                placeholder={phonePlaceholders[formData.phonePrefix]}
+                placeholder={phonePlaceholders[formData.phonePrefix].replace(
+                  /\s+/g,
+                  ""
+                )}
                 value={formData.phoneNumber}
                 onChange={handlePhoneNumberChange}
               />
