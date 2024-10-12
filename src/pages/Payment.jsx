@@ -31,10 +31,6 @@ const Payment = () => {
 
         setInvoice(invoiceResponse.data);
         setCourseInfo(filteredCourse);
-        console.log(process.env.REACT_APP_API_URL);
-
-        console.log("invoice: ", invoiceResponse.data);
-        console.log("course: ", filteredCourse);
       } catch (error) {
         setError(error.message);
         console.log(error);
