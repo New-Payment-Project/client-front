@@ -112,11 +112,11 @@ const Payment = () => {
                 Olmazor tumani, Yuqori Sebzor MFY, Sebzor S17/18, 52A uy
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Телефоны:</span>
+                <span className="font-bold">Телефоны:</span>{" "}
                 +998 99 846 66 17
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Эл.почта:</span>
+                <span className="font-bold">Эл.почта:</span>{" "}
                 Info@norbekovmarkazi.uz
               </p>
               <p className="text-gray-600">
@@ -206,12 +206,6 @@ const Payment = () => {
                 условиями предоставления услуг
               </Link>
               .
-            </p>
-            <p className="mt-2 text-sm text-gray-500">
-              Уведомление об оплате необязательно. Услуги предоставляются по
-              факту поступления денежных средств на наш расчетный счет. После
-              предоставления услуги, мы отправим уведомление об этом вам на ваш{" "}
-              {invoice.email} электронный почтовый адрес.
             </p>
           </div>
 
