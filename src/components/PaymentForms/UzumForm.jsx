@@ -15,8 +15,6 @@ const UzumForm = ({ name, phone, amount, courseName, courseDescription }) => {
       />
 
       <input type="hidden" name="description" value={`${courseDescription}`} />
-      <input type="hidden" name="phone" value={`${phone}`} />
-      <input type="hidden" name="name" value={`${name}`} />
 
       <input type="hidden" name="extraData" value={`${courseName}`} />
 

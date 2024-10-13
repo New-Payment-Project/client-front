@@ -7,7 +7,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import constants from "../constants/constants";
-import phoneValidation from "../components/validations/phoneValidation";
 import warningToastify from "../components/toastify/warningToastify";
 import errorToastify from "../components/toastify/errorToastify";
 
@@ -22,13 +21,11 @@ export default function Form() {
   const [formData, setFormData] = useState({
     fullName: "",
     location: "",
+    passportLetters: "",
+    passportNumbers: "",
+    tg: "",
     phonePrefix: "+998",
     phoneNumber: "",
-  });
-
-  const { formatPhoneNumber } = phoneValidation({
-    formData: formData,
-    phoneFormats: phoneFormats,
   });
 
   const containsNumber = (str) => {
@@ -40,7 +37,13 @@ export default function Form() {
     e.preventDefault();
     const splitedName = formData.fullName.trim().split(" ");
 
-    if (!formData.fullName || !formData.location || !formData.phoneNumber) {
+    if (
+      !formData.fullName ||
+      !formData.location ||
+      !formData.phoneNumber ||
+      !formData.passportLetters ||
+      !formData.passportNumbers
+    ) {
       return warningToastify("Заполните данные для оплаты");
     }
 
@@ -52,17 +55,16 @@ export default function Form() {
       return warningToastify("Имя не может содержать цифры");
     }
 
-    if (formData.location.length < 25) {
-      return warningToastify("Введите полный адрес проживания");
+    if (formData.passportLetters.length !== 2 || formData.passportNumbers.length !== 7) {
+      return warningToastify("Введите номер паспорта в правильном формате (2 буквы и 7 цифр)");
     }
 
     const phoneRegex = phoneFormats[formData.phonePrefix];
-    const cleanedPhoneNumber = formData.phoneNumber.replace(/\s+/g, "");
     const expectedLength = String(phoneRegex)
       .match(/\d/g)
       .reduce((total, current) => total + parseInt(current), 0);
 
-    if (cleanedPhoneNumber.length !== expectedLength) {
+    if (formData.phoneNumber.length !== expectedLength) {
       return warningToastify("Введите номер телефона в правильном формате");
     }
     return handleSubmit(e);
@@ -72,12 +74,15 @@ export default function Form() {
     e.preventDefault();
     try {
       setLoading(true);
+      const passport = `${formData.passportLetters.toUpperCase()}${formData.passportNumbers}`;
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/invoices`,
         {
           clientName: formData?.fullName,
           clientAddress: formData?.location,
-          clientPhone: `${formData?.phonePrefix} ${formData?.phoneNumber}`,
+          clientPhone: `${formData?.phonePrefix}${formData?.phoneNumber.split(' ').join("")}`,
+          passport: passport, // Concatenate letters and numbers
+          tgUsername: formData?.tg,
         }
       );
 
@@ -101,9 +106,8 @@ export default function Form() {
   };
 
   const handlePhoneNumberChange = (e) => {
-    const value = e.target.value;
-    const formattedValue = formatPhoneNumber(value);
-    setFormData({ ...formData, phoneNumber: formattedValue });
+    const value = e.target.value.replace(/\s+/g, "");
+    setFormData({ ...formData, phoneNumber: value });
   };
 
   return (
@@ -126,12 +130,13 @@ export default function Form() {
         </div>
 
         <form onSubmit={validateForm} className="space-y-6 p-8 bg-gray-50">
+          {/* Full Name Input */}
           <div className="space-y-2">
             <label
               htmlFor="fullName"
-              className="block text-sm font-medium text-gray-700"
+              className=" text-sm font-medium text-gray-700 flex"
             >
-              ФИО*
+              ФИО<span className="text-red-500">*</span>
             </label>
             <input
               id="fullName"
@@ -144,12 +149,44 @@ export default function Form() {
             />
           </div>
 
+          {/* Passport Input */}
+          <div className="space-y-2">
+            <label htmlFor="passportLetters" className=" text-sm font-medium text-gray-700">
+              Паспорт<span className="text-red-500">*</span>
+            </label>
+            <div className="flex gap-2">
+              <input
+                id="passportLetters"
+                name="passportLetters"
+                type="text"
+                maxLength="2"
+                className="w-1/4 px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 uppercase"
+                placeholder="AD"
+                value={formData.passportLetters}
+                onChange={handleChange}
+              />
+              <input
+                id="passportNumbers"
+                name="passportNumbers"
+                type="text"
+                maxLength="7"
+                inputMode="numeric"
+                pattern="\d*"
+                className="w-3/4 px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="1234567"
+                value={formData.passportNumbers}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          {/* Location Input */}
           <div className="space-y-2">
             <label
               htmlFor="location"
-              className="block text-sm font-medium text-gray-700"
+              className=" text-sm font-medium text-gray-700 flex"
             >
-              Адрес*
+              Адрес<span className="text-red-500">*</span>
             </label>
             <input
               id="location"
@@ -162,13 +199,33 @@ export default function Form() {
             />
           </div>
 
+          {/* Telegram Input */}
+          <div className="space-y-2">
+            <label
+              htmlFor="tg"
+              className=" text-sm font-medium text-gray-700"
+            >
+              Телеграм
+            </label>
+            <input
+              id="tg"
+              name="tg"
+              type="text"
+              className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block transition duration-200 ease-in-out"
+              placeholder="@username"
+              value={formData.tg}
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* Phone Input */}
           <div className="flex gap-4">
             <div className="space-y-2">
               <label
                 htmlFor="phonePrefix"
-                className="block text-sm font-medium text-gray-700"
+                className=" text-sm font-medium text-gray-700 flex"
               >
-                Код страны*
+                Код страны<span className="text-red-500">*</span>
               </label>
               <select
                 id="phonePrefix"
@@ -188,16 +245,21 @@ export default function Form() {
             <div className="flex-1 space-y-2">
               <label
                 htmlFor="phoneNumber"
-                className="block text-sm font-medium text-gray-700"
+                className=" text-sm font-medium text-gray-700 flex"
               >
-                Номер телефона*
+                Номер телефона<span className="text-red-500">*</span>
               </label>
               <input
                 id="phoneNumber"
                 name="phoneNumber"
                 type="tel"
+                inputMode="numeric"
+                pattern="\d*"
                 className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block transition duration-200 ease-in-out"
-                placeholder={phonePlaceholders[formData.phonePrefix]}
+                placeholder={phonePlaceholders[formData.phonePrefix].replace(
+                  /\s+/g,
+                  ""
+                )}
                 value={formData.phoneNumber}
                 onChange={handlePhoneNumberChange}
               />
