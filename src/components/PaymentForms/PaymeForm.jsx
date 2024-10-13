@@ -1,15 +1,11 @@
 import React from "react";
 import { Base64 } from 'js-base64';
 
-const base64EncodeUnicode = (str) => {
-  return btoa(unescape(encodeURIComponent(str.replace(/%20/g, " "))));
-};
-
 const PaymeForm = ({
   name,
   phone,
-  address,
   amount,
+  address,
   courseId,
   invoiceId,
   tgUsername,

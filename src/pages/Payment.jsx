@@ -84,6 +84,10 @@ const Payment = () => {
     );
   }
 
+  const formattedCreatedAt = invoice?.createdAt
+    ? formatDate(new Date(invoice.createdAt))
+    : "";
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
@@ -94,7 +98,8 @@ const Payment = () => {
 
         <div className="p-8">
           <h1 className="text-2xl lg:text-3xl font-bold text-center mb-8 text-gray-700">
-            СЧЕТ НА ОПЛАТУ ДОГОВОРА № {courseInfo[0].prefix}/{invoice.invoiceNumber} от {invoice?.createdAt?.split("T")[0]}
+            СЧЕТ НА ОПЛАТУ ДОГОВОРА № {courseInfo[0].prefix}/
+            {invoice.invoiceNumber} от {formattedCreatedAt}
           </h1>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
@@ -112,7 +117,7 @@ const Payment = () => {
               </p>
               <p className="text-gray-600">
                 <span className="font-bold">Эл.почта:</span>{" "}
-                Info@norbekovmarkazi.uz
+                Info@norbekovgroup.uz
               </p>
               <p className="text-gray-600">
                 <span className="font-bold">Расчетный счет:</span>{" "}
@@ -151,7 +156,11 @@ const Payment = () => {
               {invoice.tgUsername && (
                 <p className="text-gray-600 whitespace-normal break-words">
                   <span className="font-bold">Телеграм:</span>{" "}
-                  {invoice.tgUsername}
+                  <a
+                    href={`https://t.me/${invoice.tgUsername.replace("@", "")}`}
+                  >
+                    {invoice.tgUsername}
+                  </a>
                 </p>
               )}
             </div>
