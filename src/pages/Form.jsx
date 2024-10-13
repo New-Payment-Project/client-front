@@ -33,6 +33,12 @@ export default function Form() {
     return regex.test(str);
   };
 
+  const containsLetter = (str) => {
+    const regex = /[a-zA-Z]/;
+    return regex.test(str);
+};
+
+
   const validateForm = (e) => {
     e.preventDefault();
     const splitedName = formData.fullName.trim().split(" ");
@@ -55,8 +61,17 @@ export default function Form() {
       return warningToastify("Имя не может содержать цифры");
     }
 
-    if (formData.passportLetters.length !== 2 || formData.passportNumbers.length !== 7) {
-      return warningToastify("Введите номер паспорта в правильном формате (2 буквы и 7 цифр)");
+    if (
+      formData.passportLetters.length !== 2 ||
+      formData.passportNumbers.length !== 7
+    ) {
+      return warningToastify(
+        "Введите номер паспорта в правильном формате (2 буквы и 7 цифр)"
+      );
+    }
+
+    if (containsLetter(formData.phoneNumber)) {
+      return warningToastify("Телефонный номер не может содержать буквы");
     }
 
     const phoneRegex = phoneFormats[formData.phonePrefix];
@@ -74,13 +89,17 @@ export default function Form() {
     e.preventDefault();
     try {
       setLoading(true);
-      const passport = `${formData.passportLetters.toUpperCase()}${formData.passportNumbers}`;
+      const passport = `${formData.passportLetters.toUpperCase()}${
+        formData.passportNumbers
+      }`;
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/invoices`,
         {
           clientName: formData?.fullName,
           clientAddress: formData?.location,
-          clientPhone: `${formData?.phonePrefix}${formData?.phoneNumber.split(' ').join("")}`,
+          clientPhone: `${formData?.phonePrefix}${formData?.phoneNumber
+            .split(" ")
+            .join("")}`,
           passport: passport,
           tgUsername: formData?.tg,
         }
@@ -149,7 +168,10 @@ export default function Form() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="passportLetters" className=" text-sm font-medium text-gray-700">
+            <label
+              htmlFor="passportLetters"
+              className=" text-sm font-medium text-gray-700"
+            >
               Паспорт<span className="text-red-500">*</span>
             </label>
             <div className="flex gap-2">
@@ -199,10 +221,7 @@ export default function Form() {
 
           {/* Telegram Input */}
           <div className="space-y-2">
-            <label
-              htmlFor="tg"
-              className=" text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="tg" className=" text-sm font-medium text-gray-700">
               Телеграм
             </label>
             <input
@@ -223,7 +242,7 @@ export default function Form() {
                 htmlFor="phonePrefix"
                 className=" text-sm font-medium text-gray-700 flex"
               >
-                Код страны<span className="text-red-500">*</span>
+                Код страны
               </label>
               <select
                 id="phonePrefix"
@@ -250,9 +269,10 @@ export default function Form() {
               <input
                 id="phoneNumber"
                 name="phoneNumber"
-                type="tel"
-                inputMode="numeric"
-                pattern="\d*"
+                type="text"
+                maxLength={String(phoneFormats[formData.phonePrefix])
+                  .match(/\d/g)
+                  .reduce((total, current) => total + parseInt(current), 0)}  
                 className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block transition duration-200 ease-in-out"
                 placeholder={phonePlaceholders[formData.phonePrefix].replace(
                   /\s+/g,
