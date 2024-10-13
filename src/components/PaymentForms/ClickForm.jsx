@@ -12,8 +12,8 @@ const ClickForm = ({ amount, merchant_trans_id }) => {
     const paymentUrl = `https://my.click.uz/services/pay/?service_id=${service_id}&merchant_id=${merchant_id}&merchant_user_id=${merchant_user_id}&transaction_param=${transaction_param}&amount=${amount}&return_url=${encodeURIComponent(
       return_url
     )}`;
-
-    window.location.href = paymentUrl;
+      console.log(transaction_param, "aaaa")
+      window.location.href = paymentUrl;
   };
   return (
     <button

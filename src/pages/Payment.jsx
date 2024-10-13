@@ -31,7 +31,7 @@ const Payment = () => {
 
         setInvoice(invoiceResponse.data);
         setCourseInfo(filteredCourse);
-        console.log(filteredCourse);
+        console.log(filteredCourse[0]._id);
         console.log("invoice: ", invoiceResponse.data);
         console.log("course: ", courseResponse.data);
       } catch (error) {

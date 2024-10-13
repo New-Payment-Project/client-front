@@ -131,7 +131,7 @@ export default function Form() {
               htmlFor="fullName"
               className="block text-sm font-medium text-gray-700"
             >
-              ФИО
+              ФИО*
             </label>
             <input
               id="fullName"
@@ -149,7 +149,7 @@ export default function Form() {
               htmlFor="location"
               className="block text-sm font-medium text-gray-700"
             >
-              Адрес
+              Адрес*
             </label>
             <input
               id="location"
@@ -168,7 +168,7 @@ export default function Form() {
                 htmlFor="phonePrefix"
                 className="block text-sm font-medium text-gray-700"
               >
-                Код страны
+                Код страны*
               </label>
               <select
                 id="phonePrefix"
@@ -190,7 +190,7 @@ export default function Form() {
                 htmlFor="phoneNumber"
                 className="block text-sm font-medium text-gray-700"
               >
-                Номер телефона
+                Номер телефона*
               </label>
               <input
                 id="phoneNumber"
