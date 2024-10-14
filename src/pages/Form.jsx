@@ -36,8 +36,7 @@ export default function Form() {
   const containsLetter = (str) => {
     const regex = /[a-zA-Z]/;
     return regex.test(str);
-};
-
+  };
 
   const validateForm = (e) => {
     e.preventDefault();
@@ -92,7 +91,8 @@ export default function Form() {
       const passport = `${formData.passportLetters.toUpperCase()}${
         formData.passportNumbers
       }`;
-      const response = await axios.post(
+      const tgUsername = formData?.tg.length === 0 ? 'Не указан' : formData?.tg
+      const invoiceResponse = await axios.post(
         `${process.env.REACT_APP_API_URL}/invoices`,
         {
           clientName: formData?.fullName,
@@ -101,11 +101,26 @@ export default function Form() {
             .split(" ")
             .join("")}`,
           passport: passport,
-          tgUsername: formData?.tg,
+          tgUsername: tgUsername,
         }
       );
 
-      dispatch(setAuthData(response.data._id));
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/orders/create`,
+        {
+          clientName: formData?.fullName,
+          clientAddress: formData?.location,
+          clientPhone: `${formData?.phonePrefix}${formData?.phoneNumber
+            .split(" ")
+            .join("")}`,
+          passport: passport,
+          tgUsername: tgUsername,
+          invoiceNumber: invoiceResponse?.data?.invoiceNumber,
+          status: "ВЫСТАВЛЕНО",
+        }
+      );
+
+      dispatch(setAuthData(invoiceResponse.data._id));
       dispatch(setRoute(route));
       navigate("/course-info");
     } catch (error) {
@@ -272,7 +287,7 @@ export default function Form() {
                 type="text"
                 maxLength={String(phoneFormats[formData.phonePrefix])
                   .match(/\d/g)
-                  .reduce((total, current) => total + parseInt(current), 0)}  
+                  .reduce((total, current) => total + parseInt(current), 0)}
                 className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block transition duration-200 ease-in-out"
                 placeholder={phonePlaceholders[formData.phonePrefix].replace(
                   /\s+/g,
