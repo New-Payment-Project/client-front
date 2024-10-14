@@ -28,7 +28,17 @@ export default function Form() {
     phoneNumber: "",
   });
 
-  const englishLetterRegex = /^[a-zA-Z\s@]*$/;
+  const englishLetterRegex = /^[a-zA-Z0-9\s@,.'`/_]*$/;
+
+  const containsNumber = (str) => {
+    const regex = /\d/;
+    return regex.test(str);
+  };
+
+  const containsLetter = (str) => {
+    const regex = /[a-zA-Z]/;
+    return regex.test(str);
+  };
 
   const validateForm = (e) => {
     e.preventDefault();
@@ -43,12 +53,19 @@ export default function Form() {
       return warningToastify("Заполните данные для оплаты");
     }
 
-    if (formData.passportLetters.length !== 2 || formData.passportNumbers.length !== 7) {
-      return warningToastify("Введите номер паспорта в правильном формате (2 буквы и 7 цифр)");
+    if (
+      formData.passportLetters.length !== 2 ||
+      formData.passportNumbers.length !== 7
+    ) {
+      return warningToastify(
+        "Введите номер паспорта в правильном формате (2 буквы и 7 цифр)"
+      );
     }
 
     if (!englishLetterRegex.test(formData.passportLetters)) {
-      return warningToastify("Паспорт должен содержать только английские буквы");
+      return warningToastify(
+        "Паспорт должен содержать только английские буквы"
+      );
     }
 
     if (!englishLetterRegex.test(formData.location)) {
@@ -56,11 +73,9 @@ export default function Form() {
     }
 
     if (!englishLetterRegex.test(formData.tg)) {
-      return warningToastify("Telegram username должен содержать только английские буквы");
-    }
-
-    if (/\d/.test(formData.phoneNumber)) {
-      return warningToastify("Телефонный номер не может содержать буквы");
+      return warningToastify(
+        "Telegram username должен содержать только английские буквы"
+      );
     }
 
     const phoneRegex = phoneFormats[formData.phonePrefix];
@@ -70,6 +85,14 @@ export default function Form() {
 
     if (formData.phoneNumber.length !== expectedLength) {
       return warningToastify("Введите номер телефона в правильном формате");
+    }
+
+    if (containsLetter(formData.phoneNumber)) {
+      return warningToastify("Телефонный номер не может содержать буквы");
+    }
+
+    if (containsNumber(formData.fullName)) {
+      return warningToastify("Имя не может содержать цифры");
     }
 
     return handleSubmit(e);
@@ -82,20 +105,10 @@ export default function Form() {
       const passport = `${formData.passportLetters.toUpperCase()}${
         formData.passportNumbers
       }`;
-      const tgUsername = formData?.tg.length === 0 ? 'Kiritilmagan' : formData?.tg
+      const tgUsername =
+        formData?.tg.length === 0 ? "Kiritilmagan" : formData?.tg;
       const invoiceResponse = await axios.post(
         `${process.env.REACT_APP_API_URL}/invoices`,
-        {
-          clientName: formData?.fullName,
-          clientAddress: formData?.location,
-          clientPhone: `${formData?.phonePrefix}${formData?.phoneNumber.split(" ").join("")}`,
-          passport: passport,
-          tgUsername: tgUsername,
-        }
-      );
-      
-      await axios.post(
-        `${process.env.REACT_APP_API_URL}/orders/create`,
         {
           clientName: formData?.fullName,
           clientAddress: formData?.location,
@@ -104,10 +117,32 @@ export default function Form() {
             .join("")}`,
           passport: passport,
           tgUsername: tgUsername,
-          invoiceNumber: invoiceResponse?.data?.invoiceNumber,
-          status: "ВЫСТАВЛЕНО",
         }
       );
+
+      const courseResponse = await axios.get(
+        `${process.env.REACT_APP_API_URL}/courses`
+      );
+
+      const filteredCourse = courseResponse.data.filter(
+        (course) => course.route === route
+      );
+
+      await axios.post(`${process.env.REACT_APP_API_URL}/orders/create`, {
+        clientName: formData?.fullName,
+        clientAddress: formData?.location,
+        clientPhone: `${formData?.phonePrefix}${formData?.phoneNumber
+          .split(" ")
+          .join("")}`,
+        passport: passport,
+        tgUsername: tgUsername,
+        invoiceNumber: invoiceResponse?.data?.invoiceNumber,
+        status: "ВЫСТАВЛЕНО",
+        create_time: Date.now(),
+        course_id: filteredCourse[0].id,
+        courseTitle: filteredCourse[0].title,
+        amount: filteredCourse[0].price,
+      });
 
       dispatch(setAuthData(invoiceResponse.data._id));
       dispatch(setRoute(route));
@@ -122,7 +157,12 @@ export default function Form() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "passportLetters" || name === "location" || name === "tg" || name === "fullName") {
+    if (
+      name === "passportLetters" ||
+      name === "location" ||
+      name === "tg" ||
+      name === "fullName"
+    ) {
       if (!englishLetterRegex.test(value)) {
         warningToastify("Пожалуйста используйте только латинские буквы");
         return;
@@ -162,7 +202,10 @@ export default function Form() {
 
         <form onSubmit={validateForm} className="space-y-6 p-8 bg-gray-50">
           <div className="space-y-2">
-            <label htmlFor="fullName" className="text-sm font-medium text-gray-700 flex">
+            <label
+              htmlFor="fullName"
+              className="text-sm font-medium text-gray-700 flex"
+            >
               ФИО<span className="text-red-500">*</span>
             </label>
             <input
@@ -177,7 +220,10 @@ export default function Form() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="passportLetters" className="text-sm font-medium text-gray-700">
+            <label
+              htmlFor="passportLetters"
+              className="text-sm font-medium text-gray-700"
+            >
               Паспорт<span className="text-red-500">*</span>
             </label>
             <div className="flex gap-2">
@@ -207,7 +253,10 @@ export default function Form() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="location" className="text-sm font-medium text-gray-700 flex">
+            <label
+              htmlFor="location"
+              className="text-sm font-medium text-gray-700 flex"
+            >
               Адрес<span className="text-red-500">*</span>
             </label>
             <input
@@ -238,7 +287,10 @@ export default function Form() {
 
           <div className="flex gap-4">
             <div className="space-y-2">
-              <label htmlFor="phonePrefix" className="text-sm font-medium text-gray-700 flex">
+              <label
+                htmlFor="phonePrefix"
+                className="text-sm font-medium text-gray-700 flex"
+              >
                 Код страны
               </label>
               <select
@@ -257,7 +309,10 @@ export default function Form() {
             </div>
 
             <div className="flex-1 space-y-2">
-              <label htmlFor="phoneNumber" className="text-sm font-medium text-gray-700 flex">
+              <label
+                htmlFor="phoneNumber"
+                className="text-sm font-medium text-gray-700 flex"
+              >
                 Номер телефона<span className="text-red-500">*</span>
               </label>
               <input
@@ -268,7 +323,10 @@ export default function Form() {
                   .match(/\d/g)
                   .reduce((total, current) => total + parseInt(current), 0)}
                 className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg"
-                placeholder={phonePlaceholders[formData.phonePrefix].replace(/\s+/g, "")}
+                placeholder={phonePlaceholders[formData.phonePrefix].replace(
+                  /\s+/g,
+                  ""
+                )}
                 value={formData.phoneNumber}
                 onChange={handlePhoneNumberChange}
               />
