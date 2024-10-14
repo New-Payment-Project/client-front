@@ -28,7 +28,7 @@ export default function Form() {
     phoneNumber: "",
   });
 
-  const englishLetterRegex = /^[a-zA-Z\s@]*$/;
+  const englishLetterRegex = /^[a-zA-Z0-9\s@,./]*$/;
 
   const validateForm = (e) => {
     e.preventDefault();
