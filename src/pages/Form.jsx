@@ -91,7 +91,7 @@ export default function Form() {
       const passport = `${formData.passportLetters.toUpperCase()}${
         formData.passportNumbers
       }`;
-      const tgUsername = formData?.tg.length === 0 ? 'Не указан' : formData?.tg
+      const tgUsername = formData?.tg.length === 0 ? 'Kiritilmagan' : formData?.tg
       const invoiceResponse = await axios.post(
         `${process.env.REACT_APP_API_URL}/invoices`,
         {

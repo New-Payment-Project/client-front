@@ -156,11 +156,7 @@ const Payment = () => {
               {invoice.tgUsername && (
                 <p className="text-gray-600 whitespace-normal break-words">
                   <span className="font-bold">Телеграм:</span>{" "}
-                  <a
-                    href={`https://t.me/${invoice.tgUsername.replace("@", "")}`}
-                  >
-                    {invoice.tgUsername}
-                  </a>
+                  {invoice.tgUsername}
                 </p>
               )}
             </div>
