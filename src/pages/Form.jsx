@@ -59,7 +59,7 @@ export default function Form() {
       return warningToastify("Telegram username должен содержать только английские буквы");
     }
 
-    if (/[^0-9]/.test(formData.phoneNumber)) {
+    if (/\d/.test(formData.phoneNumber)) {
       return warningToastify("Телефонный номер не может содержать буквы");
     }
 

@@ -11,7 +11,7 @@ const PaymeForm = ({
   prefix,
   tgUsername,
   passport,
-  title,
+  courseTitle
 }) => {
   const handlePaymeClick = (e) => {
     e.preventDefault();
@@ -25,7 +25,7 @@ const PaymeForm = ({
       "@"
     );
     const encodedAddress = encodeURIComponent(address).replace(/%20/g, " ");
-    const encodedTitle = encodeURIComponent(title).replace(/%20/g, " ");
+    const encodedTitle = encodeURIComponent(courseTitle).replace(/%20/g, " ");
     const encodedPassport = encodeURIComponent(passport).replace(/%20/g, " ");
 
     const paramsString = `m=${merchantId};ac.course_id=${courseId};ac.courseTitle=${encodedTitle};ac.clientName=${encodedName};ac.passport=${encodedPassport};ac.tgUsername=${encodedTgusername};ac.prefix=${prefix};ac.invoiceNumber=${invoiceId};ac.clientPhone=${encodedPhone};ac.clientAddress=${encodedAddress};a=${
