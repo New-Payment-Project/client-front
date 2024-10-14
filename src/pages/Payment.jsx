@@ -231,6 +231,7 @@ const Payment = () => {
                     amount={courseAmount}
                     tgUsername={invoice.tgUsername}
                     passport={invoice.passport}
+                    prefix={courseInfo.prefix}
                     name={invoice.clientName}
                     phone={invoice.clientPhone}
                     address={invoice.clientAddress}

@@ -8,6 +8,7 @@ const PaymeForm = ({
   address,
   courseId,
   invoiceId,
+  prefix,
   tgUsername,
   passport
 }) => {
@@ -19,8 +20,10 @@ const PaymeForm = ({
     const encodedPhone = encodeURIComponent(phone).replace(/%2B/g, '+');
     const encodedName = encodeURIComponent(name).replace(/%20/g, " ")
     const encodedAddress = encodeURIComponent(address).replace(/%20/g, " ")
+    const encodedPassport = encodeURIComponent(passport).replace(/%20/g, " ")
+    const encodedTgUsername = encodeURIComponent(tgUsername).replace(/%20/g, " ")
 
-    const paramsString = `m=${merchantId};ac.course_id=${courseId};ac.clientName=${encodedName};ac.clientPhone=${encodedPhone};ac.clientAddress=${encodedAddress};a=${amount * 100};`;
+    const paramsString = `m=${merchantId};ac.course_id=${courseId};ac.clientName=${encodedName};ac.passport=${encodedPassport};ac.tgUsername=${encodedTgUsername};ac.invoiceNumber=${`${prefix}${invoiceId}`};ac.clientPhone=${encodedPhone};ac.clientAddress=${encodedAddress};a=${amount * 100};`;
 
     const encodedParams = Base64.encodeURI(paramsString);
 
