@@ -15,47 +15,37 @@ const Payment = () => {
   const route = useSelector((state) => state.auth.route);
 
   useEffect(() => {
-    const fetchCourses = async () => {
+    const fetchAPI = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
+        const invoiceResponse = await axios.get(
+          `${process.env.REACT_APP_API_URL}/invoices/${clientId}`
+        );
+        const courseResponse = await axios.get(
           `${process.env.REACT_APP_API_URL}/courses`
         );
 
-        const filteredData = response.data.filter(
+        const filteredCourse = courseResponse.data.filter(
           (course) => course.route === route
         );
-        setCourseInfo(filteredData);
+
+        setInvoice(invoiceResponse.data);
+        setCourseInfo(filteredCourse);
       } catch (error) {
         setError(error.message);
+        console.log(error);
       } finally {
         setLoading(false);
       }
     };
 
-    const fetchInvoices = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/invoices/${clientId}`
-        );
-        setInvoice(response.data);
-        console.log(response.data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchInvoices();
-    fetchCourses();
+    fetchAPI();
   }, [clientId, route]);
 
   const courseAmount = courseInfo.reduce(
     (total, item) => total + item.price,
     0
-  )
+  );
 
   const formatDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
@@ -94,6 +84,10 @@ const Payment = () => {
     );
   }
 
+  const formattedCreatedAt = invoice?.createdAt
+    ? formatDate(new Date(invoice.createdAt))
+    : "";
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
@@ -104,13 +98,8 @@ const Payment = () => {
 
         <div className="p-8">
           <h1 className="text-2xl lg:text-3xl font-bold text-center mb-8 text-gray-700">
-            СЧЕТ НА ОПЛАТУ № {courseInfo.prefix}/{invoice.invoiceNumber} от{" "}
-            {
-              invoice?.createdAt
-                ?.replace("T", " ")
-                .replace("Z", "")
-                .split(".")[0]
-            }
+            СЧЕТ НА ОПЛАТУ ДОГОВОРА № {courseInfo[0].prefix}/
+            {invoice.invoiceNumber} от {formattedCreatedAt}
           </h1>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
@@ -123,18 +112,20 @@ const Payment = () => {
                 <span className="font-bold">Адрес:</span> Toshkent shaxar,
                 Olmazor tumani, Yuqori Sebzor MFY, Sebzor S17/18, 52A uy
               </p>
-              <p className="text-gray-600 flex items-center">
+              <p className="text-gray-600">
                 <span className="font-bold">Телефоны:</span> +998 99 846 66 17
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Эл.почта:</span> Info@norbekovmarkazi.uz
+                <span className="font-bold">Эл.почта:</span>{" "}
+                Info@norbekovgroup.uz
               </p>
               <p className="text-gray-600">
                 <span className="font-bold">Расчетный счет:</span>{" "}
                 20208000005113167001
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Банк:</span> MILLIY BANK, Головной офис
+                <span className="font-bold">Банк:</span> MILLIY BANK, Головной
+                офис
               </p>
               <p className="text-gray-600">
                 <span className="font-bold">МФО:</span> 00450
@@ -152,8 +143,7 @@ const Payment = () => {
                 {invoice.clientName}
               </h2>
               <p className="text-gray-600 whitespace-normal break-words">
-                <span className="font-bold">Паспорт:</span>{" "}
-                {invoice.passport}
+                <span className="font-bold">Паспорт:</span> {invoice.passport}
               </p>
               <p className="text-gray-600 whitespace-normal break-words">
                 <span className="font-bold">Адрес:</span>{" "}
@@ -166,7 +156,11 @@ const Payment = () => {
               {invoice.tgUsername && (
                 <p className="text-gray-600 whitespace-normal break-words">
                   <span className="font-bold">Телеграм:</span>{" "}
-                  {invoice.tgUsername}
+                  <a
+                    href={`https://t.me/${invoice.tgUsername.replace("@", "")}`}
+                  >
+                    {invoice.tgUsername}
+                  </a>
                 </p>
               )}
             </div>
@@ -201,15 +195,23 @@ const Payment = () => {
             </table>
           </div>
           <div className="mt-6 text-center">
-            <h2 className="lg:text-3xl text-xl md:text-2xl font-bold text-red-500">
-              {invoice.status}
+            <h2
+              className={`lg:text-3xl text-xl md:text-2xl font-bold ${
+                invoice?.status === "НЕ ОПЛАЧЕНО"
+                  ? "text-red-500"
+                  : invoice?.status === "ВЫСТАВЛЕНО"
+                  ? "text-orange-500"
+                  : "text-green-500"
+              } `}
+            >
+              {invoice?.status}
             </h2>
             <p className="text-gray-500">
               Срок оплаты: {expirationDate(invoice.createdAt)}
             </p>
           </div>
 
-          {invoice.status !== 'ОПЛАЧЕНО' && invoice.status !== 'ОТМЕНЕНО' ? (
+          {invoice.status !== "ОПЛАЧЕНО" && invoice.status !== "ОТМЕНЕНО" ? (
             <div>
               <div className="mt-6">
                 <p className="font-bold text-gray-500">
