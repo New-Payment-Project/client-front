@@ -196,12 +196,13 @@ const Payment = () => {
           </div>
           <div className="mt-6 text-center">
             <h2
-              className={`lg:text-3xl text-xl md:text-2xl font-bold ${invoice?.status === "НЕ ОПЛАЧЕНО"
+              className={`lg:text-3xl text-xl md:text-2xl font-bold ${
+                invoice?.status === "НЕ ОПЛАЧЕНО"
                   ? "text-red-500"
                   : invoice?.status === "ВЫСТАВЛЕНО"
-                    ? "text-orange-500"
-                    : "text-green-500"
-                } `}
+                  ? "text-orange-500"
+                  : "text-green-500"
+              } `}
             >
               {invoice?.status}
             </h2>
@@ -231,15 +232,12 @@ const Payment = () => {
                     tgUsername={invoice.tgUsername}
                     passport={invoice.passport}
                     prefix={courseInfo[0].prefix}
+                    courseTitle={courseInfo[0].title}
                     name={invoice.clientName}
                     phone={invoice.clientPhone}
                     address={invoice.clientAddress}
                     courseId={courseInfo[0]._id}
                     invoiceId={invoice.invoiceNumber}
-                    courseName={courseInfo.map((item) => item.title).join(", ")}
-                    courseDescription={courseInfo
-                      .map((item) => item.description)
-                      .join(", ")}
                   />
                   <ClickForm
                     amount={courseInfo.reduce(

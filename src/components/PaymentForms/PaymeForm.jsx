@@ -1,5 +1,5 @@
 import React from "react";
-import { Base64 } from 'js-base64';
+import { Base64 } from "js-base64";
 
 const PaymeForm = ({
   name,
@@ -10,20 +10,27 @@ const PaymeForm = ({
   invoiceId,
   prefix,
   tgUsername,
-  passport
+  passport,
+  title,
 }) => {
   const handlePaymeClick = (e) => {
     e.preventDefault();
 
     const merchantId = "66f53ec035370d1d99fb8bff";
 
-    const encodedPhone = encodeURIComponent(phone).replace(/%2B/g, '+');
-    const encodedName = encodeURIComponent(name).replace(/%20/g, " ")
-    const encodedAddress = encodeURIComponent(address).replace(/%20/g, " ")
-    const encodedPassport = encodeURIComponent(passport).replace(/%20/g, " ")
-    const encodedTgUsername = encodeURIComponent(tgUsername).replace(/%20/g, " ")
+    const encodedPhone = encodeURIComponent(phone).replace(/%2B/g, "+");
+    const encodedName = encodeURIComponent(name).replace(/%20/g, " ");
+    const encodedTgusername = encodeURIComponent(tgUsername).replace(
+      /%40/g,
+      "@"
+    );
+    const encodedAddress = encodeURIComponent(address).replace(/%20/g, " ");
+    const encodedTitle = encodeURIComponent(title).replace(/%20/g, " ");
+    const encodedPassport = encodeURIComponent(passport).replace(/%20/g, " ");
 
-    const paramsString = `m=${merchantId};ac.course_id=${courseId};ac.clientName=${encodedName};ac.passport=${encodedPassport};ac.tgUsername=${encodedTgUsername};ac.prefix=${prefix};ac.invoiceNumber=${invoiceId};ac.clientPhone=${encodedPhone};ac.clientAddress=${encodedAddress};a=${amount * 100};`;
+    const paramsString = `m=${merchantId};ac.course_id=${courseId};ac.courseTitle=${encodedTitle};ac.clientName=${encodedName};ac.passport=${encodedPassport};ac.tgUsername=${encodedTgusername};ac.prefix=${prefix};ac.invoiceNumber=${invoiceId};ac.clientPhone=${encodedPhone};ac.clientAddress=${encodedAddress};a=${
+      amount * 100
+    };`;
 
     const encodedParams = Base64.encodeURI(paramsString);
 
