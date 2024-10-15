@@ -70,7 +70,7 @@ export default function Form() {
 
     if (/\d/.test(formData.phoneNumber)) {
       return warningToastify("Телефонный номер не может содержать буквы");
-    }
+    } 
 
     const phoneRegex = phoneFormats[formData.phonePrefix];
     const expectedLength = String(phoneRegex)
