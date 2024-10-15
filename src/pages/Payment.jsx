@@ -235,7 +235,7 @@ const Payment = () => {
                     courseId={courseInfo[0]._id}
                     invoiceId={invoice.invoiceNumber}
                   />
-                  <ClickForm
+                  {/* <ClickForm
                     amount={courseInfo.reduce(
                       (total, item) => total + item.price,
                       0
@@ -250,7 +250,7 @@ const Payment = () => {
                     phone={invoice.clientPhone}
                     courseName={courseInfo[0].title}
                     courseDescription={courseInfo[0].description}
-                  />
+                  /> */}
                 </div>
               </div>
             </div>

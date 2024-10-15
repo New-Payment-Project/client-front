@@ -128,6 +128,10 @@ export default function Form() {
         (course) => course.route === route
       );
 
+      if (filteredCourse.length === 0) {
+        return errorToastify("Курс с указанным путем не найден");
+      }
+
       await axios.post(`${process.env.REACT_APP_API_URL}/orders/create`, {
         clientName: formData?.fullName,
         clientAddress: formData?.location,
@@ -139,7 +143,8 @@ export default function Form() {
         invoiceNumber: invoiceResponse?.data?.invoiceNumber,
         status: "ВЫСТАВЛЕНО",
         create_time: Date.now(),
-        course_id: filteredCourse[0].id,
+        prefix: filteredCourse[0].prefix,
+        course_id: filteredCourse[0]._id,
         courseTitle: filteredCourse[0].title,
         amount: filteredCourse[0].price,
       });
