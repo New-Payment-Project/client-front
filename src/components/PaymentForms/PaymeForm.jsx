@@ -28,15 +28,13 @@ const PaymeForm = ({
     const encodedTitle = encodeURIComponent(courseTitle).replace(/%20/g, " ");
     const encodedPassport = encodeURIComponent(passport).replace(/%20/g, " ");
 
-    const paramsString = `m=${merchantId};ac.course_id=${courseId};ac.courseTitle=${encodedTitle};ac.clientName=${encodedName};ac.passport=${encodedPassport};ac.tgUsername=${encodedTgusername};ac.prefix=${prefix};ac.invoiceNumber=${invoiceId};ac.clientPhone=${encodedPhone};ac.clientAddress=${encodedAddress};a=${
-      amount * 100
-    };`;
+    const paramsString = `m=${merchantId};ac.course_id=${courseId};ac.courseTitle=${encodedTitle};ac.clientName=${encodedName};ac.passport=${encodedPassport};ac.tgUsername=${encodedTgusername};ac.prefix=${prefix};ac.invoiceNumber=${invoiceId};ac.clientPhone=${encodedPhone};ac.clientAddress=${encodedAddress};a=${amount * 100
+      };`;
 
     const encodedParams = Base64.encodeURI(paramsString);
 
     const paymeLink = `https://checkout.paycom.uz/${encodedParams}`;
     console.log("Generated Payme Link:", paymeLink);
-
     window.location.href = paymeLink;
   };
 
