@@ -156,11 +156,7 @@ const Payment = () => {
               {invoice.tgUsername && (
                 <p className="text-gray-600 whitespace-normal break-words">
                   <span className="font-bold">Телеграм:</span>{" "}
-                  <a
-                    href={`https://t.me/${invoice.tgUsername.replace("@", "")}`}
-                  >
-                    {invoice.tgUsername}
-                  </a>
+                  {invoice.tgUsername}
                 </p>
               )}
             </div>
@@ -238,13 +234,17 @@ const Payment = () => {
                     address={invoice.clientAddress}
                     courseId={courseInfo[0]._id}
                     invoiceId={invoice.invoiceNumber}
+
                   />
                   <ClickForm
                     amount={courseInfo.reduce(
                       (total, item) => total + item.price,
                       0
                     )}
+                    merchant_trans_id={invoice.invoiceNumber}
+                    course_id={courseInfo[0]._id}
                   />
+                  {/* 
                   <UzumForm
                     amount={courseInfo.reduce(
                       (total, item) => total + item.price,
@@ -254,10 +254,10 @@ const Payment = () => {
                     phone={invoice.clientPhone}
                     courseName={courseInfo[0].title}
                     courseDescription={courseInfo[0].description}
-                  />
+                  /> */}
                 </div>
-              </div>
-            </div>
+              </div>  
+            </div>  
           ) : null}
         </div>
       </div>

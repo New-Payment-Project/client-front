@@ -24,7 +24,7 @@ const PaymeForm = ({
       /%40/g,
       "@"
     );
-    const encodedAddress = encodeURIComponent(address).replace(/%20/g, " ");
+    const encodedAddress = encodeURIComponent(address).replace(/%20/g, " ").replace(/%2/g, ", ");
     const encodedTitle = encodeURIComponent(courseTitle).replace(/%20/g, " ");
     const encodedPassport = encodeURIComponent(passport).replace(/%20/g, " ");
 

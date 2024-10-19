@@ -28,7 +28,17 @@ export default function Form() {
     phoneNumber: "",
   });
 
-  const englishLetterRegex = /^[a-zA-Z0-9\s@,.'/]*$/;
+  const englishLetterRegex = /^[a-zA-Z0-9\s@,.'`/_]*$/;
+
+  const containsNumber = (str) => {
+    const regex = /\d/;
+    return regex.test(str);
+  };
+
+  const containsLetter = (str) => {
+    const regex = /[a-zA-Z]/;
+    return regex.test(str);
+  };
 
   const validateForm = (e) => {
     e.preventDefault();
@@ -68,10 +78,6 @@ export default function Form() {
       );
     }
 
-    if (/\d/.test(formData.phoneNumber)) {
-      return warningToastify("Телефонный номер не может содержать буквы");
-    } 
-
     const phoneRegex = phoneFormats[formData.phonePrefix];
     const expectedLength = String(phoneRegex)
       .match(/\d/g)
@@ -79,6 +85,14 @@ export default function Form() {
 
     if (formData.phoneNumber.length !== expectedLength) {
       return warningToastify("Введите номер телефона в правильном формате");
+    }
+
+    if (containsLetter(formData.phoneNumber)) {
+      return warningToastify("Телефонный номер не может содержать буквы");
+    }
+
+    if (containsNumber(formData.fullName)) {
+      return warningToastify("Имя не может содержать цифры");
     }
 
     return handleSubmit(e);
@@ -91,7 +105,9 @@ export default function Form() {
       const passport = `${formData.passportLetters.toUpperCase()}${
         formData.passportNumbers
       }`;
-      const response = await axios.post(
+      const tgUsername =
+        formData?.tg.length === 0 ? "Kiritilmagan" : formData?.tg;
+      const invoiceResponse = await axios.post(
         `${process.env.REACT_APP_API_URL}/invoices`,
         {
           clientName: formData?.fullName,
@@ -100,11 +116,40 @@ export default function Form() {
             .split(" ")
             .join("")}`,
           passport: passport,
-          tgUsername: formData?.tg,
+          tgUsername: tgUsername,
         }
       );
 
-      dispatch(setAuthData(response.data._id));
+      const courseResponse = await axios.get(
+        `${process.env.REACT_APP_API_URL}/courses`
+      );
+
+      const filteredCourse = courseResponse.data.filter(
+        (course) => course.route === route
+      );
+
+      if (filteredCourse.length === 0) {
+        return errorToastify("Курс с указанным путем не найден");
+      }
+
+      await axios.post(`${process.env.REACT_APP_API_URL}/orders/create`, {
+        clientName: formData?.fullName,
+        clientAddress: formData?.location,
+        clientPhone: `${formData?.phonePrefix}${formData?.phoneNumber
+          .split(" ")
+          .join("")}`,
+        passport: passport,
+        tgUsername: tgUsername,
+        invoiceNumber: invoiceResponse?.data?.invoiceNumber,
+        status: "ВЫСТАВЛЕНО",
+        create_time: Date.now(),
+        prefix: filteredCourse[0].prefix,
+        course_id: filteredCourse[0]._id,
+        courseTitle: filteredCourse[0].title,
+        amount: filteredCourse[0].price,
+      });
+
+      dispatch(setAuthData(invoiceResponse.data._id));
       dispatch(setRoute(route));
       navigate("/course-info");
     } catch (error) {
@@ -117,7 +162,6 @@ export default function Form() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Apply validation for passport, location, and Telegram fields
     if (
       name === "passportLetters" ||
       name === "location" ||
