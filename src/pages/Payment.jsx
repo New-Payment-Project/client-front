@@ -11,6 +11,7 @@ const Payment = () => {
   const [error, setError] = useState(null);
   const [courseInfo, setCourseInfo] = useState([]);
   const [invoice, setInvoice] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
   const clientId = useSelector((state) => state.auth.clientId);
   const route = useSelector((state) => state.auth.route);
 
@@ -210,7 +211,13 @@ const Payment = () => {
           {invoice.status !== "ОПЛАЧЕНО" && invoice.status !== "ОТМЕНЕНО" ? (
             <div>
               <div className="mt-6">
-                <p className="font-bold text-gray-500">
+                <p className="font-bold text-gray-500 flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    className="checkbox"
+                    checked={isChecked} // Make sure this updates with state
+                    onChange={(e) => setIsChecked(e.target.checked)} // Update the state on change
+                  />
                   Внимание! Оплата данного счета означает согласие с{" "}
                   <Link to="#" className="link link-primary text-gray-500">
                     условиями предоставления услуг
@@ -224,26 +231,28 @@ const Payment = () => {
                 </h2>
                 <div className="flex items-center justify-start gap-3 md:flex-row lg:flex-row flex-col">
                   <PaymeForm
-                    amount={courseAmount}
-                    tgUsername={invoice.tgUsername}
-                    passport={invoice.passport}
-                    prefix={courseInfo[0].prefix}
-                    courseTitle={courseInfo[0].title}
                     name={invoice.clientName}
                     phone={invoice.clientPhone}
+                    amount={courseAmount}
                     address={invoice.clientAddress}
                     courseId={courseInfo[0]._id}
                     invoiceId={invoice.invoiceNumber}
-
+                    prefix={courseInfo[0].prefix}
+                    tgUsername={invoice.tgUsername}
+                    passport={invoice.passport}
+                    courseTitle={courseInfo[0].title}
+                    disabled={!isChecked} // Disable button if checkbox is not checked
                   />
-                  <ClickForm
+
+                  {/* <ClickForm
                     amount={courseInfo.reduce(
                       (total, item) => total + item.price,
                       0
                     )}
                     merchant_trans_id={invoice.invoiceNumber}
                     course_id={courseInfo[0]._id}
-                  />
+                    disabled={!isChecked}
+                  /> */}
                   {/* 
                   <UzumForm
                     amount={courseInfo.reduce(
@@ -256,8 +265,8 @@ const Payment = () => {
                     courseDescription={courseInfo[0].description}
                   /> */}
                 </div>
-              </div>  
-            </div>  
+              </div>
+            </div>
           ) : null}
         </div>
       </div>

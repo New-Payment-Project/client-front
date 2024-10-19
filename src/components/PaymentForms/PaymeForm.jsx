@@ -11,10 +11,13 @@ const PaymeForm = ({
   prefix,
   tgUsername,
   passport,
-  courseTitle
+  courseTitle,
+  disabled // Accept the disabled prop
 }) => {
   const handlePaymeClick = (e) => {
     e.preventDefault();
+
+    if (disabled) return; // Prevent the function from executing if disabled
 
     const merchantId = "66f53ec035370d1d99fb8bff";
 
@@ -24,7 +27,9 @@ const PaymeForm = ({
       /%40/g,
       "@"
     );
-    const encodedAddress = encodeURIComponent(address).replace(/%20/g, " ").replace(/%2/g, ", ");
+    const encodedAddress = encodeURIComponent(address)
+      .replace(/%20/g, " ")
+      .replace(/%2/g, ", ");
     const encodedTitle = encodeURIComponent(courseTitle).replace(/%20/g, " ");
     const encodedPassport = encodeURIComponent(passport).replace(/%20/g, " ");
 
@@ -43,7 +48,10 @@ const PaymeForm = ({
   return (
     <button
       onClick={handlePaymeClick}
-      className="flex items-center justify-center cursor-pointer space-x-2 p-4 w-48 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"
+      disabled={disabled} // Disable the button when disabled is true
+      className={`flex items-center justify-center cursor-pointer space-x-2 p-4 w-48 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 ${
+        disabled ? "cursor-not-allowed opacity-50" : ""
+      }`}
     >
       <img src="payme.png" className="h-6" alt="Payme Logo" />
     </button>
