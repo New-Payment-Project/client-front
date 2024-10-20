@@ -510,7 +510,7 @@ const Payment = () => {
                     disabled={!isChecked} // Disable button if checkbox is not checked
                   />
 
-                  {/* <ClickForm
+                  <ClickForm
                     amount={courseInfo.reduce(
                       (total, item) => total + item.price,
                       0
@@ -518,7 +518,7 @@ const Payment = () => {
                     merchant_trans_id={invoice.invoiceNumber}
                     course_id={courseInfo[0]._id}
                     disabled={!isChecked}
-                  /> */}
+                  />
                   {/* 
                   <UzumForm
                     amount={courseInfo.reduce(
