@@ -8,6 +8,7 @@ import FormPage from "./pages/Form";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import NotFound from "./pages/NotFound";
+import Oferta from "./pages/Oferta";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: "/:route", element: <FormPage /> },
+      { path: "/oferta", element: <Oferta /> },
       { path: "/course-info", element: <Payment /> },
     ],
   },

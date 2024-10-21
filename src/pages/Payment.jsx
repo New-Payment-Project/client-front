@@ -219,7 +219,7 @@ const Payment = () => {
                     onChange={(e) => setIsChecked(e.target.checked)} // Update the state on change
                   />
                   Внимание! Оплата данного счета означает согласие с{" "}
-                  <Link to="#" className="link link-primary text-gray-500">
+                  <Link to="/oferta" className="link link-primary text-gray-500">
                     условиями предоставления услуг
                   </Link>
                   .
