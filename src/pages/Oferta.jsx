@@ -6,10 +6,20 @@ const Oferta = () => {
 
   const handleClick = () => {
     navigate("/course-info");
+
+  };
+
+
+  const scrollToBottom = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
   };
 
   return (
-    <div className="font-serif max-w-4xl mx-auto p-6 bg-white shadow-md rounded-md">
+    
+      <div className="font-serif max-w-4xl mx-auto flex flex-col justify-center p-6 bg-white shadow-md rounded-md">
       <h2 className="text-center font-bold text-2xl mb-4">OMMAVIY OFERTA</h2>
       <p className="text-justify leading-relaxed mb-4">
         Mazkur «Psixologik va biznes treyning tadbiriga chipta sotish
@@ -495,20 +505,20 @@ const Oferta = () => {
       </h3>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.1.</span>
-        Ushbu kelishuv shartlarini bajarmaslik yoki lozim darajada bajarmaslik
+         Ushbu kelishuv shartlarini bajarmaslik yoki lozim darajada bajarmaslik
         uchun tomonlar O‘zbekiston Respublikasining amaldagi qonunchiligiga
         muvofiq javobgar bo‘ladilar.
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.2.</span>
-        Sotuvchi Tadbirning sanasi, vaqti va joyiga chiptalarning mavjud
+         Sotuvchi Tadbirning sanasi, vaqti va joyiga chiptalarning mavjud
         emasligi yoki kerakli narx toifasidagi chiptalarning yo‘qligi sababli
         Tomoshabinga xizmatlarni taqdim etishning iloji bo‘lmagan hollarda
         javobgarlikni o‘z zimmasiga olmaydi.
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.3.</span>
-        Agar ushbu kelishuv shartlarini bajarishning imkonsizligi yoki lozim
+         Agar ushbu kelishuv shartlarini bajarishning imkonsizligi yoki lozim
         darajada bajarilmasligi tomonlarning irodasi va istagidan tashqarida
         bo‘lgan hamda oldini olish, bartaraf etish yoxud oldindan ko‘ra olish
         imkoni bo‘lmagan holatlar (fors-major holatlari) bilan bog‘liq bo‘lsa,
@@ -516,7 +526,7 @@ const Oferta = () => {
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.4.</span>
-        Sotuvchi Saytning ishlamay qolishi, vaqtinchalik uzilishlar yoki
+         Sotuvchi Saytning ishlamay qolishi, vaqtinchalik uzilishlar yoki
         Sotuvchining o‘ziga bog‘liq bo‘lmagan sabablar bilan bog‘liq holatlarda,
         shuningdek, aloqa va energiya ta’minoti xizmatlarini ko‘rsatuvchi
         uchinchi shaxslarning harakatlari va/yoki harakatsizligi natijasida
@@ -526,7 +536,7 @@ const Oferta = () => {
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.5.</span>
-        Tomoshabin O‘zbekiston Respublikasining amaldagi qonunchiligiga muvofiq,
+         Tomoshabin O‘zbekiston Respublikasining amaldagi qonunchiligiga muvofiq,
         noto‘g‘ri yoki ataylab yolg‘on ma’lumotlarni taqdim etish natijasida
         yuzaga kelgan oqibatlar uchun, shuningdek, bunday harakatlar natijasida
         boshqa shaxslarning huquq va manfaatlarini buzganlik uchun javobgar
@@ -534,14 +544,14 @@ const Oferta = () => {
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.6.</span>
-        Tomoshabin ushbu Oferta bo‘yicha to‘lovlarni amalga oshirishda bank
+         Tomoshabin ushbu Oferta bo‘yicha to‘lovlarni amalga oshirishda bank
         kartalari yoki boshqa to‘lov vositalaridan noqonuniy foydalanish uchun
         O‘zbekiston Respublikasining amaldagi qonunchiligiga muvofiq
         javobgarlikka tortiladi.
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.7.</span>
-        Tomoshabin boshqa shaxsning Elektron chiptasini noqonuniy egallab olish,
+         Tomoshabin boshqa shaxsning Elektron chiptasini noqonuniy egallab olish,
         qo‘lga kiritish, Saytni buzish, Sotuvchining yoki boshqa shaxsning
         elektron pochtasini, telegram messenjeridagi hisobi(akkaunti)ni buzish
         holatlari uchun O‘zbekiston Respublikasining amaldagi qonunchiligiga
@@ -549,27 +559,27 @@ const Oferta = () => {
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.8.</span>
-        Tomoshabin o‘z ma’lumotlarida xato qilish yoki noaniqliklarga yo‘l
+         Tomoshabin o‘z ma’lumotlarida xato qilish yoki noaniqliklarga yo‘l
         qo‘yish natijasida yuzaga keladigan barcha tijoriy xatarlar, shuningdek,
         Elektron chiptasining yo‘qolishi bilan bog‘liq xavflarni o‘z zimmasiga
         oladi.
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.9.</span>
-        Agar Tomoshabin Chiptalarni Sotuvchining Saytidan tashqari joylarda (pul
+         Agar Tomoshabin Chiptalarni Sotuvchining Saytidan tashqari joylarda (pul
         to‘lash orqali yoki bepul) sotib olgan bo‘lsa, u bunday harakatlar
         natijasida yuzaga keladigan barcha xatarlar va zararni o‘z zimmasiga
         oladi.
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.10.</span>
-        Tomoshabin ushbu Oferta 1.4-bandida belgilangan majburiyatlarini buzgan
+         Tomoshabin ushbu Oferta 1.4-bandida belgilangan majburiyatlarini buzgan
         taqdirda, jabrlangan shaxs va Sotuvchi oldidagi barcha zararni to‘liq
         qoplash majburiyatini oladi.
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.11.</span>
-        Sotuvchi, Tomoshabin tomonidan chipta(lar)ni olish, ular uchun to‘lovni
+         Sotuvchi, Tomoshabin tomonidan chipta(lar)ni olish, ular uchun to‘lovni
         amalga oshirish va chiptani sotib olish bilan bog‘liq boshqa harakatlar
         tartibi haqidagi ma’lumotlarni noto‘g‘ri tushunishi yoki tushunmasligi
         natijasida Tomoshabin ko‘rgan har qanday zarar va ma’naviy ziyon uchun
@@ -577,7 +587,7 @@ const Oferta = () => {
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.12.</span>
-        Sotuvchi, Tomoshabinning shaxsiy ma’lumotlariga ruxsatsiz kirish
+         Sotuvchi, Tomoshabinning shaxsiy ma’lumotlariga ruxsatsiz kirish
         natijasida yuzaga kelgan zararlari, shu jumladan, boy berilgan foydasi
         uchun javobgar emas, bundan Sotuvchi ushbu ma’lumotlarni saqlash va
         himoya qilish bo‘yicha qonunda nazarda tutilgan barcha choralarni
@@ -585,7 +595,7 @@ const Oferta = () => {
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.13.</span>
-        Agarda Tomonlar o‘z majburiyatlarini mavjud sharoitlarda oldini olish
+         Agarda Tomonlar o‘z majburiyatlarini mavjud sharoitlarda oldini olish
         imkoni bo‘lmagan favqulodda holatlar, yengib bo‘lmas kuch (fors-major
         holati) natijasida to‘liq yoki qisman bajara olmasalar bunday bajara
         olmaganliklari uchun javobgarlikdan ozod etiladi. Fors-major holatlarga
@@ -686,10 +696,17 @@ const Oferta = () => {
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">10.1.</span> Ushbu Oferta bo‘yicha barcha takliflar, savollar va bildirishnomalar <span className="bg-yellow-300">norbekovforum.com</span> manziliga yuborilishi lozim.
       </p>
+      <button
+        onClick={scrollToBottom}
+        className="fixed bottom-5 right-5 bg-blue-500 text-white px-5 py-3 rounded-full shadow-md hover:bg-blue-700 focus:outline-none transition-all"
+        style={{ zIndex: 1000 }}
+      >
+        ↓
+      </button>
 
       <button
         onClick={handleClick}
-        className="mt-6 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-700"
+        className="mt-6 w-1/2 bg-blue-500 text-white py-2 mx-auto rounded-md hover:bg-blue-700"
       >
       Davom ettirish
       </button>
