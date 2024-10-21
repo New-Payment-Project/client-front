@@ -211,20 +211,26 @@ const Payment = () => {
           {invoice.status !== "ОПЛАЧЕНО" && invoice.status !== "ОТМЕНЕНО" ? (
             <div>
               <div className="mt-6">
-                <p className="font-bold text-gray-500 flex items-center gap-2">
+                <p className="font-bold text-gray-500 flex flex-col md:flex-row items-start md:items-center gap-2">
                   <input
                     type="checkbox"
                     className="checkbox"
                     checked={isChecked} // Make sure this updates with state
                     onChange={(e) => setIsChecked(e.target.checked)} // Update the state on change
                   />
-                  Внимание! Оплата данного счета означает согласие с{" "}
-                  <Link to="/oferta" className="link link-primary text-gray-500">
-                    условиями предоставления услуг
-                  </Link>
-                  .
+                  <span className="flex-1">
+                    Внимание! Оплата данного счета означает согласие с{" "}
+                    <Link
+                      to="/oferta"
+                      className="link link-primary text-gray-500 underline"
+                    >
+                      условиями предоставления услуг
+                    </Link>
+                    .
+                  </span>
                 </p>
               </div>
+
               <div className="flex flex-col items-start mt-6 space-y-4">
                 <h2 className="font-bold text-lg text-gray-500">
                   Выберите метод оплаты:

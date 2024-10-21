@@ -1,5 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { IoArrowDown } from "react-icons/io5";
+
 
 const Oferta = () => {
   const navigate = useNavigate();
@@ -698,10 +700,10 @@ const Oferta = () => {
       </p>
       <button
         onClick={scrollToBottom}
-        className="fixed bottom-5 right-5 bg-blue-500 text-white px-5 py-3 rounded-full shadow-md hover:bg-blue-700 focus:outline-none transition-all"
+        className="fixed bottom-5 right-5 lg:right-56 bg-blue-500 lg:px-5 lg:py-5 text-white px-4 py-4 rounded-full shadow-md hover:bg-blue-700 focus:outline-none transition-all"
         style={{ zIndex: 1000 }}
       >
-        ↓
+        <IoArrowDown className="md:size-[25px] size-[20px]"/>
       </button>
 
       <button
