@@ -1,6 +1,16 @@
 import React from "react";
 
-const UzumForm = ({ name, phone, amount, courseName, courseDescription }) => {
+const UzumForm = ({
+  courseId,
+  invoiceNumber,
+  amount,
+  clientName,
+  clientName,
+  clientPhone,
+  passport,
+  tgUsername,
+  disabled,
+}) => {
   return (
     <form
       method="POST"
@@ -18,7 +28,10 @@ const UzumForm = ({ name, phone, amount, courseName, courseDescription }) => {
 
       <input type="hidden" name="extraData" value={`${courseName}`} />
 
-      <button className="flex items-center justify-center cursor-pointer space-x-2 p-4 w-48 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105">
+      <button
+        className="flex items-center justify-center cursor-pointer space-x-2 p-4 w-48 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105"
+        disabled={disabled}
+      >
         <img src={`uzum-bank.png`} className="h-6" alt={`Uzum Bank Logo`} />
       </button>
     </form>
