@@ -143,13 +143,6 @@ const Payment = () => {
                 <span className="font-bold">Заказчик:</span>{" "}
                 {invoice.clientName}
               </h2>
-              <p className="text-gray-600 whitespace-normal break-words">
-                <span className="font-bold">Паспорт:</span> {invoice.passport}
-              </p>
-              <p className="text-gray-600 whitespace-normal break-words">
-                <span className="font-bold">Адрес:</span>{" "}
-                {invoice.clientAddress}
-              </p>
               <p className="text-gray-600">
                 <span className="font-bold">Телефон:</span>{" "}
                 {invoice.clientPhone}

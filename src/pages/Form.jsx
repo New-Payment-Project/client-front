@@ -20,9 +20,9 @@ export default function Form() {
 
   const [formData, setFormData] = useState({
     fullName: "",
-    location: "",
+    location: "Kiritilmagan",
     passportLetters: "",
-    passportNumbers: "",
+    passportNumbers: "Kiritilmagan",
     tg: "",
     phonePrefix: "+998",
     phoneNumber: "",
@@ -43,33 +43,8 @@ export default function Form() {
   const validateForm = (e) => {
     e.preventDefault();
 
-    if (
-      !formData.fullName ||
-      !formData.location ||
-      !formData.phoneNumber ||
-      !formData.passportLetters ||
-      !formData.passportNumbers
-    ) {
+    if (!formData.fullName || !formData.phoneNumber) {
       return warningToastify("Заполните данные для оплаты");
-    }
-
-    if (
-      formData.passportLetters.length !== 2 ||
-      formData.passportNumbers.length !== 7
-    ) {
-      return warningToastify(
-        "Введите номер паспорта в правильном формате (2 буквы и 7 цифр)"
-      );
-    }
-
-    if (!englishLetterRegex.test(formData.passportLetters)) {
-      return warningToastify(
-        "Паспорт должен содержать только английские буквы"
-      );
-    }
-
-    if (!englishLetterRegex.test(formData.location)) {
-      return warningToastify("Адрес должен содержать только английские буквы");
     }
 
     if (!englishLetterRegex.test(formData.tg)) {
@@ -162,12 +137,7 @@ export default function Form() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (
-      name === "passportLetters" ||
-      name === "location" ||
-      name === "tg" ||
-      name === "fullName"
-    ) {
+    if (name === "tg" || name === "fullName") {
       if (!englishLetterRegex.test(value)) {
         warningToastify("Пожалуйста используйте только латинские буквы");
         return;
@@ -220,57 +190,6 @@ export default function Form() {
               className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg"
               placeholder="Введите ФИО"
               value={formData.fullName}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label
-              htmlFor="passportLetters"
-              className="text-sm font-medium text-gray-700"
-            >
-              Паспорт<span className="text-red-500">*</span>
-            </label>
-            <div className="flex gap-2">
-              <input
-                id="passportLetters"
-                name="passportLetters"
-                type="text"
-                maxLength="2"
-                className="w-1/4 px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg uppercase"
-                placeholder="AD"
-                value={formData.passportLetters}
-                onChange={handleChange}
-              />
-              <input
-                id="passportNumbers"
-                name="passportNumbers"
-                type="text"
-                maxLength="7"
-                inputMode="numeric"
-                pattern="\d*"
-                className="w-3/4 px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg"
-                placeholder="1234567"
-                value={formData.passportNumbers}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label
-              htmlFor="location"
-              className="text-sm font-medium text-gray-700 flex"
-            >
-              Адрес<span className="text-red-500">*</span>
-            </label>
-            <input
-              id="location"
-              name="location"
-              type="text"
-              className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg"
-              placeholder="Введите Адрес"
-              value={formData.location}
               onChange={handleChange}
             />
           </div>
