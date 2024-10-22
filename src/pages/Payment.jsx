@@ -210,20 +210,26 @@ const Payment = () => {
           {invoice.status !== "ОПЛАЧЕНО" && invoice.status !== "ОТМЕНЕНО" ? (
             <div>
               <div className="mt-6">
-                <p className="font-bold text-gray-500 flex items-center gap-2">
+                <p className="font-bold text-gray-500 flex flex-col md:flex-row items-start md:items-center gap-2">
                   <input
                     type="checkbox"
                     className="checkbox"
                     checked={isChecked} // Make sure this updates with state
                     onChange={(e) => setIsChecked(e.target.checked)} // Update the state on change
                   />
-                  Внимание! Оплата данного счета означает согласие с{" "}
-                  <Link to="#" className="link link-primary text-gray-500">
-                    условиями предоставления услуг
-                  </Link>
-                  .
+                  <span className="flex-1">
+                    Внимание! Оплата данного счета означает согласие с{" "}
+                    <Link
+                      to="/oferta"
+                      className="link link-primary text-gray-500 underline"
+                    >
+                      условиями предоставления услуг
+                    </Link>
+                    .
+                  </span>
                 </p>
               </div>
+
               <div className="flex flex-col items-start mt-6 space-y-4">
                 <h2 className="font-bold text-lg text-gray-500">
                   Выберите метод оплаты:
@@ -243,7 +249,7 @@ const Payment = () => {
                     disabled={!isChecked} // Disable button if checkbox is not checked
                   />
 
-                  <ClickForm
+                  {/* <ClickForm
                     amount={courseInfo.reduce(
                       (total, item) => total + item.price,
                       0
@@ -251,17 +257,21 @@ const Payment = () => {
                     merchant_trans_id={invoice.invoiceNumber}
                     course_id={courseInfo[0]._id}
                     disabled={!isChecked}
-                  />
-                  {/* 
-                  <UzumForm
+                  /> */}
+                  
+                  {/* <UzumForm
+                    courseId={courseInfo[0]._id}
+                    invoiceNumber={courseInfo[0].description}
                     amount={courseInfo.reduce(
                       (total, item) => total + item.price,
                       0
                     )}
-                    name={invoice.clientName}
-                    phone={invoice.clientPhone}
-                    courseName={courseInfo[0].title}
-                    courseDescription={courseInfo[0].description}
+                    clientName={invoice.clientName}
+                    clientPhone={invoice.clientPhone}
+                    clientAddress={invoice.clientAddress}
+                    passport={invoice.passport}
+                    tgUsername={invoice.tgUsername}
+                    disabled={!isChecked}
                   /> */}
                 </div>
               </div>
