@@ -30,7 +30,6 @@ const ClickForm = ({ amount, merchant_trans_id, course_id, disabled }) => {
       console.error("Error occurred during payment:", error);
     }
   };
-
   return (
     <button
       onClick={handlePayment}
