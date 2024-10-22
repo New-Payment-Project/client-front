@@ -20,7 +20,7 @@ jobs:
 
       - name: Deploy to server
         run: |
-          ssh -o StrictHostKeyChecking=no root@norbekovgroup.uz"
+          ssh -o StrictHostKeyChecking=no root@norbekovgroup.uz "
           cd /var/www/Payment-Client && \
 
           screen -S client-react -X quit || true && \
