@@ -12,12 +12,9 @@ const PaymeForm = ({
   tgUsername,
   passport,
   courseTitle,
-  disabled // Accept the disabled prop
 }) => {
   const handlePaymeClick = (e) => {
     e.preventDefault();
-
-    if (disabled) return; // Prevent the function from executing if disabled
 
     const merchantId = "66f53ec035370d1d99fb8bff";
     const newMerchantId = "6719e607e51de1c6a3a69819"
@@ -49,10 +46,7 @@ const PaymeForm = ({
   return (
     <button
       onClick={handlePaymeClick}
-      disabled={disabled} // Disable the button when disabled is true
-      className={`flex items-center justify-center cursor-pointer space-x-2 p-4 w-48 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 ${
-        disabled ? "cursor-not-allowed opacity-50" : ""
-      }`}
+      className={`flex items-center justify-center cursor-pointer space-x-2 p-4 w-48 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105`}
     >
       <img src="payme.png" className="h-6" alt="Payme Logo" />
     </button>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuthData, setRoute } from "../redux/slices/AuthSlice";
 import axios from "axios";
@@ -12,6 +12,7 @@ import errorToastify from "../components/toastify/errorToastify";
 
 export default function Form() {
   const [loading, setLoading] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { route } = useParams();
@@ -203,7 +204,7 @@ export default function Form() {
               name="tg"
               type="text"
               className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg"
-              placeholder="@username"
+              placeholder="Куда отправить чек и онлайн билет?"
               value={formData.tg}
               onChange={handleChange}
             />
@@ -259,10 +260,34 @@ export default function Form() {
             </div>
           </div>
 
+          <div className="mt-6">
+            <p className="font-bold text-gray-500 flex flex-col md:flex-row items-start md:items-center gap-2">
+              <input
+                type="checkbox"
+                className="checkbox"
+                checked={isChecked} // Make sure this updates with state
+                onChange={(e) => setIsChecked(e.target.checked)} // Update the state on change
+              />
+              <span className="flex-1">
+                Я соглашаюсь на обработку моих персональных данных, соглашаюсь
+                на получение рассылок от NORBEKOV GROUP и принимаю{" "}
+                <Link
+                  to="/oferta"
+                  className="link link-primary text-gray-500 underline"
+                >
+                  условиями предоставления услуг
+                </Link>
+                .
+              </span>
+            </p>
+          </div>
+
           <button
             type="submit"
-            className="w-full bg-[#60a5fa] hover:bg-[#488eff] text-white text-sm py-3 rounded-lg"
-            disabled={loading}
+            disabled={!isChecked || loading}
+            className={`w-full bg-[#60a5fa] hover:bg-[#488eff] text-white text-sm py-3 rounded-lg ${
+              !isChecked && "cursor-not-allowed opacity-50"
+            }`}
           >
             {loading ? (
               <span className="loading loading-dots loading-md"></span>

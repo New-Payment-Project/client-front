@@ -1,6 +1,6 @@
 import React from "react";
 
-const UzumForm = ({ courseId, invoiceNumber, amount, disabled }) => {
+const UzumForm = ({ courseId, invoiceNumber, amount }) => {
   const handlePayment = (e) => {
     const serviceId = 498614016;
     const amountInTiyin = amount * 100;
@@ -9,11 +9,8 @@ const UzumForm = ({ courseId, invoiceNumber, amount, disabled }) => {
   };
   return (
     <button
-      className={`flex items-center justify-center cursor-pointer space-x-2 p-4 w-48 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 ${
-        disabled && "cursor-not-allowed opacity-50"
-      }`}
+      className={`flex items-center justify-center cursor-pointer space-x-2 p-4 w-48 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105`}
       onClick={handlePayment}
-      disabled={disabled}
     >
       <img src={`uzum-bank.png`} className="h-6" alt={`Uzum Bank Logo`} />
     </button>
