@@ -1,13 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { IoArrowDown } from "react-icons/io5";
+import { useSelector } from "react-redux";
 
 
 const Oferta = () => {
   const navigate = useNavigate();
 
+  const route = useSelector((state) => state.auth.route);
+
   const handleClick = () => {
-    navigate("/course-info");
+    navigate(`/${route}`);
 
   };
 
