@@ -255,16 +255,11 @@ const Payment = () => {
                   
                   {/* <UzumForm
                     courseId={courseInfo[0]._id}
-                    invoiceNumber={courseInfo[0].description}
+                    invoiceNumber={invoice.invoiceNumber}
                     amount={courseInfo.reduce(
                       (total, item) => total + item.price,
                       0
                     )}
-                    clientName={invoice.clientName}
-                    clientPhone={invoice.clientPhone}
-                    clientAddress={invoice.clientAddress}
-                    passport={invoice.passport}
-                    tgUsername={invoice.tgUsername}
                     disabled={!isChecked}
                   /> */}
                 </div>

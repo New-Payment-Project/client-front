@@ -20,6 +20,7 @@ const PaymeForm = ({
     if (disabled) return; // Prevent the function from executing if disabled
 
     const merchantId = "66f53ec035370d1d99fb8bff";
+    const newMerchantId = "6719e607e51de1c6a3a69819"
 
     const encodedPhone = encodeURIComponent(phone).replace(/%2B/g, "+");
     const encodedName = encodeURIComponent(name).replace(/%20/g, " ");
@@ -33,7 +34,7 @@ const PaymeForm = ({
     const encodedTitle = encodeURIComponent(courseTitle).replace(/%20/g, " ");
     const encodedPassport = encodeURIComponent(passport).replace(/%20/g, " ");
 
-    const paramsString = `m=${merchantId};ac.course_id=${courseId};ac.courseTitle=${encodedTitle};ac.clientName=${encodedName};ac.passport=${encodedPassport};ac.tgUsername=${encodedTgusername};ac.prefix=${prefix};ac.invoiceNumber=${invoiceId};ac.clientPhone=${encodedPhone};ac.clientAddress=${encodedAddress};a=${
+    const paramsString = `m=${newMerchantId};ac.course_id=${courseId};ac.courseTitle=${encodedTitle};ac.clientName=${encodedName};ac.passport=${encodedPassport};ac.tgUsername=${encodedTgusername};ac.prefix=${prefix};ac.invoiceNumber=${invoiceId};ac.clientPhone=${encodedPhone};ac.clientAddress=${encodedAddress};a=${
       amount * 100
     };`;
 
