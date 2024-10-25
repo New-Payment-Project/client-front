@@ -268,7 +268,7 @@ export default function Form() {
                 checked={isChecked} // Make sure this updates with state
                 onChange={(e) => setIsChecked(e.target.checked)} // Update the state on change
               />
-              <span className="flex-1">
+              <span className="flex-1 text-[10px]">
                 Я соглашаюсь на обработку моих персональных данных, соглашаюсь
                 на получение рассылок от NORBEKOV GROUP и принимаю{" "}
                 <Link
