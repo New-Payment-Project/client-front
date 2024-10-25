@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuthData, setRoute } from "../redux/slices/AuthSlice";
 import axios from "axios";
@@ -12,6 +12,7 @@ import errorToastify from "../components/toastify/errorToastify";
 
 export default function Form() {
   const [loading, setLoading] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { route } = useParams();
@@ -20,9 +21,9 @@ export default function Form() {
 
   const [formData, setFormData] = useState({
     fullName: "",
-    location: "",
+    location: "Kiritilmagan",
     passportLetters: "",
-    passportNumbers: "",
+    passportNumbers: "Kiritilmagan",
     tg: "",
     phonePrefix: "+998",
     phoneNumber: "",
@@ -43,33 +44,8 @@ export default function Form() {
   const validateForm = (e) => {
     e.preventDefault();
 
-    if (
-      !formData.fullName ||
-      !formData.location ||
-      !formData.phoneNumber ||
-      !formData.passportLetters ||
-      !formData.passportNumbers
-    ) {
+    if (!formData.fullName || !formData.phoneNumber) {
       return warningToastify("Заполните данные для оплаты");
-    }
-
-    if (
-      formData.passportLetters.length !== 2 ||
-      formData.passportNumbers.length !== 7
-    ) {
-      return warningToastify(
-        "Введите номер паспорта в правильном формате (2 буквы и 7 цифр)"
-      );
-    }
-
-    if (!englishLetterRegex.test(formData.passportLetters)) {
-      return warningToastify(
-        "Паспорт должен содержать только английские буквы"
-      );
-    }
-
-    if (!englishLetterRegex.test(formData.location)) {
-      return warningToastify("Адрес должен содержать только английские буквы");
     }
 
     if (!englishLetterRegex.test(formData.tg)) {
@@ -162,12 +138,7 @@ export default function Form() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (
-      name === "passportLetters" ||
-      name === "location" ||
-      name === "tg" ||
-      name === "fullName"
-    ) {
+    if (name === "tg" || name === "fullName") {
       if (!englishLetterRegex.test(value)) {
         warningToastify("Пожалуйста используйте только латинские буквы");
         return;
@@ -225,57 +196,6 @@ export default function Form() {
           </div>
 
           <div className="space-y-2">
-            <label
-              htmlFor="passportLetters"
-              className="text-sm font-medium text-gray-700"
-            >
-              Паспорт<span className="text-red-500">*</span>
-            </label>
-            <div className="flex gap-2">
-              <input
-                id="passportLetters"
-                name="passportLetters"
-                type="text"
-                maxLength="2"
-                className="w-1/4 px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg uppercase"
-                placeholder="AD"
-                value={formData.passportLetters}
-                onChange={handleChange}
-              />
-              <input
-                id="passportNumbers"
-                name="passportNumbers"
-                type="text"
-                maxLength="7"
-                inputMode="numeric"
-                pattern="\d*"
-                className="w-3/4 px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg"
-                placeholder="1234567"
-                value={formData.passportNumbers}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label
-              htmlFor="location"
-              className="text-sm font-medium text-gray-700 flex"
-            >
-              Адрес<span className="text-red-500">*</span>
-            </label>
-            <input
-              id="location"
-              name="location"
-              type="text"
-              className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg"
-              placeholder="Введите Адрес"
-              value={formData.location}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="space-y-2">
             <label htmlFor="tg" className="text-sm font-medium text-gray-700">
               Телеграм
             </label>
@@ -284,7 +204,7 @@ export default function Form() {
               name="tg"
               type="text"
               className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg"
-              placeholder="@username"
+              placeholder="Куда отправить чек и онлайн билет?"
               value={formData.tg}
               onChange={handleChange}
             />
@@ -340,10 +260,34 @@ export default function Form() {
             </div>
           </div>
 
+          <div className="mt-6">
+            <p className="font-bold text-gray-500 flex flex-col md:flex-row items-start md:items-center gap-2">
+              <input
+                type="checkbox"
+                className="checkbox"
+                checked={isChecked} // Make sure this updates with state
+                onChange={(e) => setIsChecked(e.target.checked)} // Update the state on change
+              />
+              <span className="flex-1 text-[10px]">
+                Я соглашаюсь на обработку моих персональных данных, соглашаюсь
+                на получение рассылок от NORBEKOV GROUP и принимаю{" "}
+                <Link
+                  to="/oferta"
+                  className="link link-primary text-gray-500 underline"
+                >
+                  условиями предоставления услуг
+                </Link>
+                .
+              </span>
+            </p>
+          </div>
+
           <button
             type="submit"
-            className="w-full bg-[#60a5fa] hover:bg-[#488eff] text-white text-sm py-3 rounded-lg"
-            disabled={loading}
+            disabled={!isChecked || loading}
+            className={`w-full bg-[#60a5fa] hover:bg-[#488eff] text-white text-sm py-3 rounded-lg ${
+              !isChecked && "cursor-not-allowed opacity-50"
+            }`}
           >
             {loading ? (
               <span className="loading loading-dots loading-md"></span>

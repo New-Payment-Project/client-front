@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import PaymeForm from "../components/PaymentForms/PaymeForm";
 import UzumForm from "../components/PaymentForms/UzumForm";
@@ -11,7 +10,6 @@ const Payment = () => {
   const [error, setError] = useState(null);
   const [courseInfo, setCourseInfo] = useState([]);
   const [invoice, setInvoice] = useState([]);
-  const [isChecked, setIsChecked] = useState(false);
   const clientId = useSelector((state) => state.auth.clientId);
   const route = useSelector((state) => state.auth.route);
 
@@ -143,13 +141,6 @@ const Payment = () => {
                 <span className="font-bold">Заказчик:</span>{" "}
                 {invoice.clientName}
               </h2>
-              <p className="text-gray-600 whitespace-normal break-words">
-                <span className="font-bold">Паспорт:</span> {invoice.passport}
-              </p>
-              <p className="text-gray-600 whitespace-normal break-words">
-                <span className="font-bold">Адрес:</span>{" "}
-                {invoice.clientAddress}
-              </p>
               <p className="text-gray-600">
                 <span className="font-bold">Телефон:</span>{" "}
                 {invoice.clientPhone}
@@ -209,27 +200,6 @@ const Payment = () => {
 
           {invoice.status !== "ОПЛАЧЕНО" && invoice.status !== "ОТМЕНЕНО" ? (
             <div>
-              <div className="mt-6">
-                <p className="font-bold text-gray-500 flex flex-col md:flex-row items-start md:items-center gap-2">
-                  <input
-                    type="checkbox"
-                    className="checkbox"
-                    checked={isChecked} // Make sure this updates with state
-                    onChange={(e) => setIsChecked(e.target.checked)} // Update the state on change
-                  />
-                  <span className="flex-1">
-                    Внимание! Оплата данного счета означает согласие с{" "}
-                    <Link
-                      to="/oferta"
-                      className="link link-primary text-gray-500 underline"
-                    >
-                      условиями предоставления услуг
-                    </Link>
-                    .
-                  </span>
-                </p>
-              </div>
-
               <div className="flex flex-col items-start mt-6 space-y-4">
                 <h2 className="font-bold text-lg text-gray-500">
                   Выберите метод оплаты:
@@ -246,7 +216,6 @@ const Payment = () => {
                     tgUsername={invoice.tgUsername}
                     passport={invoice.passport}
                     courseTitle={courseInfo[0].title}
-                    disabled={!isChecked} // Disable button if checkbox is not checked
                   />
 
                   <ClickForm
@@ -261,16 +230,11 @@ const Payment = () => {
                   
                   {/* <UzumForm
                     courseId={courseInfo[0]._id}
-                    invoiceNumber={courseInfo[0].description}
+                    invoiceNumber={invoice.invoiceNumber}
                     amount={courseInfo.reduce(
                       (total, item) => total + item.price,
                       0
                     )}
-                    clientName={invoice.clientName}
-                    clientPhone={invoice.clientPhone}
-                    clientAddress={invoice.clientAddress}
-                    passport={invoice.passport}
-                    tgUsername={invoice.tgUsername}
                     disabled={!isChecked}
                   /> */}
                 </div>
