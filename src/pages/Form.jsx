@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuthData, setRoute } from "../redux/slices/AuthSlice";
@@ -28,6 +28,10 @@ export default function Form() {
     phonePrefix: "+998",
     phoneNumber: "",
   });
+
+  useEffect(() => {
+    dispatch(setRoute(route));
+  }, []);
 
   const englishLetterRegex = /^[a-zA-Z0-9\s@,.'`/_]*$/;
 
@@ -126,7 +130,6 @@ export default function Form() {
       });
 
       dispatch(setAuthData(invoiceResponse.data._id));
-      dispatch(setRoute(route));
       navigate("/course-info");
     } catch (error) {
       errorToastify("Возникла ошибка при выполнении");

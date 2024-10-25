@@ -23,12 +23,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no root@norbekovgroup.uz "
           cd /var/www/Payment-Client && \
 
-          screen -S client-react -X quit || true && \
-
           git pull origin main && \
 
-          npm install && \
-          npm run build && \
-
-          screen -dmS client-react npm start
+          npm install
           "
