@@ -91,7 +91,11 @@ const Payment = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
         <div className="p-6 bg-gradient-to-r from-[#bed6fd] to-[#60a5fa] flex justify-between items-center text-white rounded-t-xl">
-          <img src="norbekov.png" className="lg:h-[60px] h-[40px]" alt="Logo" />
+          <img
+            src="norbekov2.png"
+            className="lg:h-[60px] h-[40px]"
+            alt="Logo"
+          />
           <h1 className="text-lg lg:text-2xl font-bold">Оплата услуг</h1>
         </div>
 
@@ -102,7 +106,8 @@ const Payment = () => {
           </h1>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <div className="bg-gray-50 p-6 rounded-lg shadow-md">
+            {/* NORBEKOV 1 */}
+            {/* <div className="bg-gray-50 p-6 rounded-lg shadow-md">
               <h2 className="font-bold text-gray-700">
                 <span className="font-bold">Исполнитель:</span> "NORBEKOV
                 SOG`LOMLASHTIRISH VA MASLAHAT MARKAZI" MCHJ
@@ -134,6 +139,42 @@ const Payment = () => {
               </p>
               <p className="text-gray-600">
                 <span className="font-bold">ОКПО:</span> 28940182
+              </p>
+            </div> */}
+
+            {/* NORBEKOV 2 */}
+            <div className="bg-gray-50 p-6 rounded-lg shadow-md">
+              <h2 className="font-bold text-gray-700">
+                <span className="font-bold">Исполнитель:</span> "NORBEKOV
+                PSIXOLOGIK VA FIZIOLOGIK KURSLARI" MCHJ
+              </h2>
+              <p className="text-gray-600">
+                <span className="font-bold">Адрес:</span> Toshkent shahar,
+                Olmazor tumani, Yuqori Sebzor MFY, Sebzor S17/18, 52A uy
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold">Телефоны:</span> +998 99 846 66 17
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold">Эл.почта:</span>{" "}
+                info@norbekovgroup.uz
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold">Расчетный счет:</span>{" "}
+                2020 8000 7071 6186 2001
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold">Банк:</span> MILLIY BANK, Головной
+                офис
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold">МФО:</span> 01158
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold">ИНН:</span> 311 696 576
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold">ОКЭД:</span> 64190
               </p>
             </div>
             <div className="bg-gray-50 p-6 rounded-lg shadow-md">
