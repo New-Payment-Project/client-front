@@ -1,10 +1,8 @@
 import React from "react";
 
-const ClickForm = ({ amount, merchant_trans_id, course_id, disabled }) => {
+const ClickForm = ({ amount, merchant_trans_id, course_id }) => {
   const handlePayment = async (event) => {
     event.preventDefault();
-
-    if (disabled) return;
 
     try {
       const response = await fetch(
@@ -41,10 +39,7 @@ const ClickForm = ({ amount, merchant_trans_id, course_id, disabled }) => {
   return (
     <button
       onClick={handlePayment}
-      disabled={disabled}
-      className={`flex items-center justify-center cursor-pointer space-x-2 p-4 w-48 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 ${
-        disabled ? "cursor-not-allowed opacity-50" : ""
-      }`}
+      className={`flex items-center justify-center cursor-pointer space-x-2 p-4 w-48 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105`}
     >
       <img src={`click.png`} className="h-6" alt={`Click Logo`} />
     </button>

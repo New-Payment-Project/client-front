@@ -184,12 +184,13 @@ const Payment = () => {
           </div>
           <div className="mt-6 text-center">
             <h2
-              className={`lg:text-3xl text-xl md:text-2xl font-bold ${invoice?.status === "НЕ ОПЛАЧЕНО"
-                ? "text-red-500"
-                : invoice?.status === "ВЫСТАВЛЕНО"
+              className={`lg:text-3xl text-xl md:text-2xl font-bold ${
+                invoice?.status === "НЕ ОПЛАЧЕНО"
+                  ? "text-red-500"
+                  : invoice?.status === "ВЫСТАВЛЕНО"
                   ? "text-orange-500"
                   : "text-green-500"
-                } `}
+              } `}
             >
               {invoice?.status}
             </h2>
@@ -225,9 +226,8 @@ const Payment = () => {
                     )}
                     merchant_trans_id={invoice.invoiceNumber}
                     course_id={courseInfo[0]._id}
-                    disabled={!isChecked}
                   />
-                  
+
                   {/* <UzumForm
                     courseId={courseInfo[0]._id}
                     invoiceNumber={invoice.invoiceNumber}
@@ -235,7 +235,6 @@ const Payment = () => {
                       (total, item) => total + item.price,
                       0
                     )}
-                    disabled={!isChecked}
                   /> */}
                 </div>
               </div>
