@@ -94,7 +94,7 @@ export default function Form() {
         formData?.tg.length === 0 ? "Kiritilmagan" : formData?.tg;
 
       const courseResponse = await axios.get(
-        `${process.env.REACT_APP_API_URL_TEST}/courses`
+        `${process.env.REACT_APP_API_URL}/courses`
       );
       const filteredCourse = courseResponse.data.filter(
         (course) => course.route === route
@@ -106,7 +106,7 @@ export default function Form() {
       }
 
       const invoiceResponse = await axios.post(
-        `${process.env.REACT_APP_API_URL_TEST}/invoices`,
+        `${process.env.REACT_APP_API_URL}/invoices`,
         {
           clientName: formData?.fullName,
           clientPhone: `${formData?.phonePrefix}${formData?.phoneNumber
@@ -123,7 +123,7 @@ export default function Form() {
 
       const invoiceNumber = invoiceResponse.data.invoiceNumber;
 
-      await axios.post(`${process.env.REACT_APP_API_URL_TEST}/orders/create`, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/orders/create`, {
         clientName: formData?.fullName,
         clientPhone: `${formData?.phonePrefix}${formData?.phoneNumber
           .split(" ")
