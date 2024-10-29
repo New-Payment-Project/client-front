@@ -160,8 +160,8 @@ const Payment = () => {
                 info@norbekovgroup.uz
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Расчетный счет:</span>{" "}
-                2020 8000 7071 6186 2001
+                <span className="font-bold">Расчетный счет:</span> 2020 8000
+                7071 6186 2001
               </p>
               <p className="text-gray-600">
                 <span className="font-bold">Банк:</span> MILLIY BANK, Головной
@@ -260,14 +260,14 @@ const Payment = () => {
                     courseTitle={courseInfo[0].title}
                   />
 
-                  {/* <ClickForm
+                  <ClickForm
                     amount={courseInfo.reduce(
                       (total, item) => total + item.price,
                       0
                     )}
                     merchant_trans_id={invoice.invoiceNumber}
                     course_id={courseInfo[0]._id}
-                  /> */}
+                  />
 
                   {/* <UzumForm
                     courseId={courseInfo[0]._id}

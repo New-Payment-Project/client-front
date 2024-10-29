@@ -31,19 +31,20 @@ export default function Form() {
 
   useEffect(() => {
     dispatch(setRoute(route));
+
+    const savedClientName = localStorage.getItem("clientName");
+    const savedTgUsername = localStorage.getItem("tgUsername");
+    const savedPhoneNumber = localStorage.getItem("phoneNumber");
+
+    if (savedClientName && savedTgUsername && savedPhoneNumber) {
+      navigate("/course-info");
+    }
   }, []);
 
   const englishLetterRegex = /^[a-zA-Z0-9\s@,.'`/_]*$/;
 
-  const containsNumber = (str) => {
-    const regex = /\d/;
-    return regex.test(str);
-  };
-
-  const containsLetter = (str) => {
-    const regex = /[a-zA-Z]/;
-    return regex.test(str);
-  };
+  const containsNumber = (str) => /\d/.test(str);
+  const containsLetter = (str) => /[a-zA-Z]/.test(str);
 
   const validateForm = (e) => {
     e.preventDefault();
@@ -130,6 +131,11 @@ export default function Form() {
       });
 
       dispatch(setAuthData(invoiceResponse.data._id));
+
+      localStorage.setItem("clientName", formData.fullName);
+      localStorage.setItem("tgUsername", tgUsername);
+      localStorage.setItem("phoneNumber", formData.phoneNumber);
+
       navigate("/course-info");
     } catch (error) {
       errorToastify("Возникла ошибка при выполнении");
@@ -156,7 +162,7 @@ export default function Form() {
   };
 
   const handlePhoneNumberChange = (e) => {
-    const value = e.target.value.replace(/[^0-9]/g, ""); // Replace any non-numeric character
+    const value = e.target.value.replace(/[^0-9]/g, "");
     setFormData({ ...formData, phoneNumber: value });
   };
 
@@ -268,8 +274,8 @@ export default function Form() {
               <input
                 type="checkbox"
                 className="checkbox"
-                checked={isChecked} // Make sure this updates with state
-                onChange={(e) => setIsChecked(e.target.checked)} // Update the state on change
+                checked={isChecked}
+                onChange={(e) => setIsChecked(e.target.checked)}
               />
               <span className="flex-1 text-[10px]">
                 Я соглашаюсь на обработку моих персональных данных, соглашаюсь
