@@ -44,7 +44,6 @@ export default function Form() {
   const containsLetter = (str) => /[a-zA-Z]/.test(str);
 
   useEffect(() => {
-    // Check if data exists in localStorage on component mount
     const storedClientName = localStorage.getItem("clientName");
     const storedTgUsername = localStorage.getItem("tgUsername");
     const storedPhoneNumber = localStorage.getItem("phoneNumber");
@@ -94,6 +93,18 @@ export default function Form() {
       const tgUsername =
         formData?.tg.length === 0 ? "Kiritilmagan" : formData?.tg;
 
+      const courseResponse = await axios.get(
+        `${process.env.REACT_APP_API_URL_TEST}/courses`
+      );
+      const filteredCourse = courseResponse.data.filter(
+        (course) => course.route === route
+      );
+
+      if (filteredCourse.length === 0) {
+        errorToastify("Курс с указанным путем не найден");
+        return;
+      }
+
       const invoiceResponse = await axios.post(
         `${process.env.REACT_APP_API_URL_TEST}/invoices`,
         {
@@ -105,17 +116,12 @@ export default function Form() {
         }
       );
 
-      const courseResponse = await axios.get(
-        `${process.env.REACT_APP_API_URL_TEST}/courses`
-      );
-
-      const filteredCourse = courseResponse.data.filter(
-        (course) => course.route === route
-      );
-
-      if (filteredCourse.length === 0) {
-        return errorToastify("Курс с указанным путем не найден");
+      if (!invoiceResponse.data || !invoiceResponse.data.invoiceNumber) {
+        errorToastify("Ошибка создания счета. Пожалуйста, повторите попытку.");
+        return;
       }
+
+      const invoiceNumber = invoiceResponse.data.invoiceNumber;
 
       await axios.post(`${process.env.REACT_APP_API_URL_TEST}/orders/create`, {
         clientName: formData?.fullName,
@@ -123,7 +129,7 @@ export default function Form() {
           .split(" ")
           .join("")}`,
         tgUsername: tgUsername,
-        invoiceNumber: invoiceResponse?.data?.invoiceNumber,
+        invoiceNumber: invoiceNumber, 
         status: "ВЫСТАВЛЕНО",
         create_time: Date.now(),
         prefix: filteredCourse[0].prefix,
@@ -132,16 +138,10 @@ export default function Form() {
         amount: filteredCourse[0].price,
       });
 
-      // Save data to localStorage
       localStorage.setItem("clientName", formData?.fullName);
       localStorage.setItem("tgUsername", tgUsername);
       localStorage.setItem("phoneNumber", formData.phoneNumber);
-
       dispatch(setAuthData(invoiceResponse.data._id));
-
-      localStorage.setItem("clientName", formData.fullName);
-      localStorage.setItem("tgUsername", tgUsername);
-      localStorage.setItem("phoneNumber", formData.phoneNumber);
 
       navigate("/course-info");
     } catch (error) {
