@@ -12,12 +12,12 @@ const PaymeForm = ({
   tgUsername,
   passport,
   courseTitle,
-  disabled 
+  disabled,
 }) => {
   const handlePaymeClick = (e) => {
     e.preventDefault();
 
-    if (disabled) return; 
+    if (disabled) return;
 
     const merchantId = "6719e607e51de1c6a3a69819";
 
@@ -48,7 +48,7 @@ const PaymeForm = ({
   return (
     <button
       onClick={handlePaymeClick}
-      disabled={disabled} 
+      disabled={disabled}
       className={`flex items-center justify-center cursor-pointer space-x-2 p-4 w-48 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 ${
         disabled ? "cursor-not-allowed opacity-50" : ""
       }`}

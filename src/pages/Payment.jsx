@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import PaymeForm from "../components/PaymentForms/PaymeForm";
 import UzumForm from "../components/PaymentForms/UzumForm";
@@ -11,7 +10,6 @@ const Payment = () => {
   const [error, setError] = useState(null);
   const [courseInfo, setCourseInfo] = useState([]);
   const [invoice, setInvoice] = useState([]);
-  const [isChecked, setIsChecked] = useState(false);
   const clientId = useSelector((state) => state.auth.clientId);
   const route = useSelector((state) => state.auth.route);
 
@@ -93,7 +91,11 @@ const Payment = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
         <div className="p-6 bg-gradient-to-r from-[#bed6fd] to-[#60a5fa] flex justify-between items-center text-white rounded-t-xl">
-          <img src="norbekov.png" className="lg:h-[60px] h-[40px]" alt="Logo" />
+          <img
+            src="norbekov2.png"
+            className="lg:h-[60px] h-[40px]"
+            alt="Logo"
+          />
           <h1 className="text-lg lg:text-2xl font-bold">Оплата услуг</h1>
         </div>
 
@@ -104,7 +106,8 @@ const Payment = () => {
           </h1>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <div className="bg-gray-50 p-6 rounded-lg shadow-md">
+            {/* NORBEKOV 1 */}
+            {/* <div className="bg-gray-50 p-6 rounded-lg shadow-md">
               <h2 className="font-bold text-gray-700">
                 <span className="font-bold">Исполнитель:</span> "NORBEKOV
                 SOG`LOMLASHTIRISH VA MASLAHAT MARKAZI" MCHJ
@@ -137,19 +140,48 @@ const Payment = () => {
               <p className="text-gray-600">
                 <span className="font-bold">ОКПО:</span> 28940182
               </p>
+            </div> */}
+
+            {/* NORBEKOV 2 */}
+            <div className="bg-gray-50 p-6 rounded-lg shadow-md">
+              <h2 className="font-bold text-gray-700">
+                <span className="font-bold">Исполнитель:</span> "NORBEKOV
+                PSIXOLOGIK VA FIZIOLOGIK KURSLARI" MCHJ
+              </h2>
+              <p className="text-gray-600">
+                <span className="font-bold">Адрес:</span> Toshkent shahar,
+                Olmazor tumani, Yuqori Sebzor MFY, Sebzor S17/18, 52A uy
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold">Телефоны:</span> +998 99 846 66 17
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold">Эл.почта:</span>{" "}
+                info@norbekovgroup.uz
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold">Расчетный счет:</span> 2020 8000
+                7071 6186 2001
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold">Банк:</span> MILLIY BANK, Головной
+                офис
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold">МФО:</span> 01158
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold">ИНН:</span> 311 696 576
+              </p>
+              <p className="text-gray-600">
+                <span className="font-bold">ОКЭД:</span> 64190
+              </p>
             </div>
             <div className="bg-gray-50 p-6 rounded-lg shadow-md">
               <h2 className="text-gray-600">
                 <span className="font-bold">Заказчик:</span>{" "}
                 {invoice.clientName}
               </h2>
-              <p className="text-gray-600 whitespace-normal break-words">
-                <span className="font-bold">Паспорт:</span> {invoice.passport}
-              </p>
-              <p className="text-gray-600 whitespace-normal break-words">
-                <span className="font-bold">Адрес:</span>{" "}
-                {invoice.clientAddress}
-              </p>
               <p className="text-gray-600">
                 <span className="font-bold">Телефон:</span>{" "}
                 {invoice.clientPhone}
@@ -193,12 +225,13 @@ const Payment = () => {
           </div>
           <div className="mt-6 text-center">
             <h2
-              className={`lg:text-3xl text-xl md:text-2xl font-bold ${invoice?.status === "НЕ ОПЛАЧЕНО"
-                ? "text-red-500"
-                : invoice?.status === "ВЫСТАВЛЕНО"
+              className={`lg:text-3xl text-xl md:text-2xl font-bold ${
+                invoice?.status === "НЕ ОПЛАЧЕНО"
+                  ? "text-red-500"
+                  : invoice?.status === "ВЫСТАВЛЕНО"
                   ? "text-orange-500"
                   : "text-green-500"
-                } `}
+              } `}
             >
               {invoice?.status}
             </h2>
@@ -209,27 +242,6 @@ const Payment = () => {
 
           {invoice.status !== "ОПЛАЧЕНО" && invoice.status !== "ОТМЕНЕНО" ? (
             <div>
-              <div className="mt-6">
-                <p className="font-bold text-gray-500 flex flex-col md:flex-row items-start md:items-center gap-2">
-                  <input
-                    type="checkbox"
-                    className="checkbox"
-                    checked={isChecked} // Make sure this updates with state
-                    onChange={(e) => setIsChecked(e.target.checked)} // Update the state on change
-                  />
-                  <span className="flex-1">
-                    Внимание! Оплата данного счета означает согласие с{" "}
-                    <Link
-                      to="/oferta"
-                      className="link link-primary text-gray-500 underline"
-                    >
-                      условиями предоставления услуг
-                    </Link>
-                    .
-                  </span>
-                </p>
-              </div>
-
               <div className="flex flex-col items-start mt-6 space-y-4">
                 <h2 className="font-bold text-lg text-gray-500">
                   Выберите метод оплаты:
@@ -246,32 +258,24 @@ const Payment = () => {
                     tgUsername={invoice.tgUsername}
                     passport={invoice.passport}
                     courseTitle={courseInfo[0].title}
-                    disabled={!isChecked} // Disable button if checkbox is not checked
                   />
 
-                  {/* <ClickForm
+                  <ClickForm
                     amount={courseInfo.reduce(
                       (total, item) => total + item.price,
                       0
                     )}
                     merchant_trans_id={invoice.invoiceNumber}
                     course_id={courseInfo[0]._id}
-                    disabled={!isChecked}
-                  /> */}
-                  
+                  />
+
                   {/* <UzumForm
                     courseId={courseInfo[0]._id}
-                    invoiceNumber={courseInfo[0].description}
+                    invoiceNumber={invoice.invoiceNumber}
                     amount={courseInfo.reduce(
                       (total, item) => total + item.price,
                       0
                     )}
-                    clientName={invoice.clientName}
-                    clientPhone={invoice.clientPhone}
-                    clientAddress={invoice.clientAddress}
-                    passport={invoice.passport}
-                    tgUsername={invoice.tgUsername}
-                    disabled={!isChecked}
                   /> */}
                 </div>
               </div>

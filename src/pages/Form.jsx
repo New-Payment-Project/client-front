@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuthData, setRoute } from "../redux/slices/AuthSlice";
 import axios from "axios";
@@ -12,6 +12,7 @@ import errorToastify from "../components/toastify/errorToastify";
 
 export default function Form() {
   const [loading, setLoading] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { route } = useParams();
@@ -25,17 +26,22 @@ export default function Form() {
     phoneNumber: "",
   });
 
+  useEffect(() => {
+    dispatch(setRoute(route));
+
+    const savedClientName = localStorage.getItem("clientName");
+    const savedTgUsername = localStorage.getItem("tgUsername");
+    const savedPhoneNumber = localStorage.getItem("phoneNumber");
+
+    if (savedClientName && savedTgUsername && savedPhoneNumber) {
+      navigate("/course-info");
+    }
+  }, []);
+
   const englishLetterRegex = /^[a-zA-Z0-9\s@,.'`/_]*$/;
 
-  const containsNumber = (str) => {
-    const regex = /\d/;
-    return regex.test(str);
-  };
-
-  const containsLetter = (str) => {
-    const regex = /[a-zA-Z]/;
-    return regex.test(str);
-  };
+  const containsNumber = (str) => /\d/.test(str);
+  const containsLetter = (str) => /[a-zA-Z]/.test(str);
 
   useEffect(() => {
     // Check if data exists in localStorage on component mount
@@ -89,7 +95,7 @@ export default function Form() {
         formData?.tg.length === 0 ? "Kiritilmagan" : formData?.tg;
 
       const invoiceResponse = await axios.post(
-        `${process.env.REACT_APP_API_URL}/invoices`,
+        `${process.env.REACT_APP_API_URL_TEST}/invoices`,
         {
           clientName: formData?.fullName,
           clientPhone: `${formData?.phonePrefix}${formData?.phoneNumber
@@ -100,7 +106,7 @@ export default function Form() {
       );
 
       const courseResponse = await axios.get(
-        `${process.env.REACT_APP_API_URL}/courses`
+        `${process.env.REACT_APP_API_URL_TEST}/courses`
       );
 
       const filteredCourse = courseResponse.data.filter(
@@ -111,7 +117,7 @@ export default function Form() {
         return errorToastify("Курс с указанным путем не найден");
       }
 
-      await axios.post(`${process.env.REACT_APP_API_URL}/orders/create`, {
+      await axios.post(`${process.env.REACT_APP_API_URL_TEST}/orders/create`, {
         clientName: formData?.fullName,
         clientPhone: `${formData?.phonePrefix}${formData?.phoneNumber
           .split(" ")
@@ -132,7 +138,11 @@ export default function Form() {
       localStorage.setItem("phoneNumber", formData.phoneNumber);
 
       dispatch(setAuthData(invoiceResponse.data._id));
-      dispatch(setRoute(route));
+
+      localStorage.setItem("clientName", formData.fullName);
+      localStorage.setItem("tgUsername", tgUsername);
+      localStorage.setItem("phoneNumber", formData.phoneNumber);
+
       navigate("/course-info");
     } catch (error) {
       errorToastify("Возникла ошибка при выполнении");
@@ -159,7 +169,7 @@ export default function Form() {
   };
 
   const handlePhoneNumberChange = (e) => {
-    const value = e.target.value.replace(/[^0-9]/g, ""); // Replace any non-numeric character
+    const value = e.target.value.replace(/[^0-9]/g, "");
     setFormData({ ...formData, phoneNumber: value });
   };
 
@@ -210,7 +220,7 @@ export default function Form() {
               name="tg"
               type="text"
               className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg"
-              placeholder="@username"
+              placeholder="Куда отправить чек и онлайн билет?"
               value={formData.tg}
               onChange={handleChange}
             />
@@ -266,10 +276,34 @@ export default function Form() {
             </div>
           </div>
 
+          <div className="mt-6">
+            <p className="font-bold text-gray-500 flex flex-col md:flex-row items-start md:items-center gap-2">
+              <input
+                type="checkbox"
+                className="checkbox"
+                checked={isChecked}
+                onChange={(e) => setIsChecked(e.target.checked)}
+              />
+              <span className="flex-1 text-[10px]">
+                Я соглашаюсь на обработку моих персональных данных, соглашаюсь
+                на получение рассылок от NORBEKOV GROUP и принимаю{" "}
+                <Link
+                  to="/oferta"
+                  className="link link-primary text-gray-500 underline"
+                >
+                  условиями предоставления услуг
+                </Link>
+                .
+              </span>
+            </p>
+          </div>
+
           <button
             type="submit"
-            className="w-full bg-[#60a5fa] hover:bg-[#488eff] text-white text-sm py-3 rounded-lg"
-            disabled={loading}
+            disabled={!isChecked || loading}
+            className={`w-full bg-[#60a5fa] hover:bg-[#488eff] text-white text-sm py-3 rounded-lg ${
+              !isChecked && "cursor-not-allowed opacity-50"
+            }`}
           >
             {loading ? (
               <span className="loading loading-dots loading-md"></span>
