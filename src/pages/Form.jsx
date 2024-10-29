@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAuthData, setRoute } from "../redux/slices/AuthSlice";
@@ -20,9 +20,6 @@ export default function Form() {
 
   const [formData, setFormData] = useState({
     fullName: "",
-    location: "",
-    passportLetters: "",
-    passportNumbers: "",
     tg: "",
     phonePrefix: "+998",
     phoneNumber: "",
@@ -40,36 +37,26 @@ export default function Form() {
     return regex.test(str);
   };
 
+  useEffect(() => {
+    // Check if data exists in localStorage on component mount
+    const storedClientName = localStorage.getItem("clientName");
+    const storedTgUsername = localStorage.getItem("tgUsername");
+    const storedPhoneNumber = localStorage.getItem("phoneNumber");
+
+    if (storedClientName && storedTgUsername && storedPhoneNumber) {
+      navigate("/course-info");
+    }
+  }, [navigate]);
+
   const validateForm = (e) => {
     e.preventDefault();
 
-    if (
-      !formData.fullName ||
-      !formData.location ||
-      !formData.phoneNumber ||
-      !formData.passportLetters ||
-      !formData.passportNumbers
-    ) {
+    if (!formData.fullName || !formData.phoneNumber) {
       return warningToastify("Заполните данные для оплаты");
     }
 
-    if (
-      formData.passportLetters.length !== 2 ||
-      formData.passportNumbers.length !== 7
-    ) {
-      return warningToastify(
-        "Введите номер паспорта в правильном формате (2 буквы и 7 цифр)"
-      );
-    }
-
-    if (!englishLetterRegex.test(formData.passportLetters)) {
-      return warningToastify(
-        "Паспорт должен содержать только английские буквы"
-      );
-    }
-
-    if (!englishLetterRegex.test(formData.location)) {
-      return warningToastify("Адрес должен содержать только английские буквы");
+    if (containsNumber(formData.fullName)) {
+      return warningToastify("Имя не может содержать цифры");
     }
 
     if (!englishLetterRegex.test(formData.tg)) {
@@ -91,10 +78,6 @@ export default function Form() {
       return warningToastify("Телефонный номер не может содержать буквы");
     }
 
-    if (containsNumber(formData.fullName)) {
-      return warningToastify("Имя не может содержать цифры");
-    }
-
     return handleSubmit(e);
   };
 
@@ -102,20 +85,16 @@ export default function Form() {
     e.preventDefault();
     try {
       setLoading(true);
-      const passport = `${formData.passportLetters.toUpperCase()}${
-        formData.passportNumbers
-      }`;
       const tgUsername =
         formData?.tg.length === 0 ? "Kiritilmagan" : formData?.tg;
+
       const invoiceResponse = await axios.post(
         `${process.env.REACT_APP_API_URL}/invoices`,
         {
           clientName: formData?.fullName,
-          clientAddress: formData?.location,
           clientPhone: `${formData?.phonePrefix}${formData?.phoneNumber
             .split(" ")
             .join("")}`,
-          passport: passport,
           tgUsername: tgUsername,
         }
       );
@@ -134,11 +113,9 @@ export default function Form() {
 
       await axios.post(`${process.env.REACT_APP_API_URL}/orders/create`, {
         clientName: formData?.fullName,
-        clientAddress: formData?.location,
         clientPhone: `${formData?.phonePrefix}${formData?.phoneNumber
           .split(" ")
           .join("")}`,
-        passport: passport,
         tgUsername: tgUsername,
         invoiceNumber: invoiceResponse?.data?.invoiceNumber,
         status: "ВЫСТАВЛЕНО",
@@ -148,6 +125,11 @@ export default function Form() {
         courseTitle: filteredCourse[0].title,
         amount: filteredCourse[0].price,
       });
+
+      // Save data to localStorage
+      localStorage.setItem("clientName", formData?.fullName);
+      localStorage.setItem("tgUsername", tgUsername);
+      localStorage.setItem("phoneNumber", formData.phoneNumber);
 
       dispatch(setAuthData(invoiceResponse.data._id));
       dispatch(setRoute(route));
@@ -162,12 +144,7 @@ export default function Form() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (
-      name === "passportLetters" ||
-      name === "location" ||
-      name === "tg" ||
-      name === "fullName"
-    ) {
+    if (name === "tg" || name === "fullName") {
       if (!englishLetterRegex.test(value)) {
         warningToastify("Пожалуйста используйте только латинские буквы");
         return;
@@ -220,57 +197,6 @@ export default function Form() {
               className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg"
               placeholder="Введите ФИО"
               value={formData.fullName}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label
-              htmlFor="passportLetters"
-              className="text-sm font-medium text-gray-700"
-            >
-              Паспорт<span className="text-red-500">*</span>
-            </label>
-            <div className="flex gap-2">
-              <input
-                id="passportLetters"
-                name="passportLetters"
-                type="text"
-                maxLength="2"
-                className="w-1/4 px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg uppercase"
-                placeholder="AD"
-                value={formData.passportLetters}
-                onChange={handleChange}
-              />
-              <input
-                id="passportNumbers"
-                name="passportNumbers"
-                type="text"
-                maxLength="7"
-                inputMode="numeric"
-                pattern="\d*"
-                className="w-3/4 px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg"
-                placeholder="1234567"
-                value={formData.passportNumbers}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label
-              htmlFor="location"
-              className="text-sm font-medium text-gray-700 flex"
-            >
-              Адрес<span className="text-red-500">*</span>
-            </label>
-            <input
-              id="location"
-              name="location"
-              type="text"
-              className="w-full px-4 py-3 bg-white border-2 border-gray-300 text-sm rounded-lg"
-              placeholder="Введите Адрес"
-              value={formData.location}
               onChange={handleChange}
             />
           </div>
