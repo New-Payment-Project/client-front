@@ -142,7 +142,6 @@ export default function Form() {
       localStorage.setItem("tgUsername", tgUsername);
       localStorage.setItem("phoneNumber", formData.phoneNumber);
       dispatch(setAuthData(invoiceResponse.data._id));
-
       navigate("/course-info");
     } catch (error) {
       errorToastify("Возникла ошибка при выполнении");
