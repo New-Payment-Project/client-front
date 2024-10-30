@@ -17,6 +17,9 @@ export default function Form() {
   const dispatch = useDispatch();
   const { route } = useParams();
 
+  const login = "development";
+  const password = "LhNwNu2A0Rwq";
+
   const { phoneFormats, phonePlaceholders } = constants();
 
   const [formData, setFormData] = useState({
@@ -72,9 +75,22 @@ export default function Form() {
     try {
       setLoading(true);
 
-      const courseResponse = await axios.get(
-        `${process.env.REACT_APP_API_URL}/courses`
+      const getAccessToken = await axios.post(
+        `${process.env.REACT_APP_API_AUTH_URL}`,
+        {
+          login: login,
+          password: password,
+        }
       );
+      const token = getAccessToken.data?.token;
+      const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+      localStorage.setItem("token", token);
+
+      const courseResponse = await axios.get(
+        `${process.env.REACT_APP_API_URL}/courses`,
+        authHeader
+      );
+
       const filteredCourse = courseResponse.data.filter(
         (course) => course.route === route
       );
@@ -87,7 +103,8 @@ export default function Form() {
       const courseId = filteredCourse[0]._id;
 
       const orderResponse = await axios.get(
-        `${process.env.REACT_APP_API_URL}/orders`
+        `${process.env.REACT_APP_API_URL}/orders`,
+        authHeader
       );
 
       const existingOrder = orderResponse.data.data.find(
@@ -99,10 +116,8 @@ export default function Form() {
       );
 
       const invoiceResponse = await axios.get(
-        `${process.env.REACT_APP_API_URL}/invoices`
-      );
-      invoiceResponse.data.filter((invoice) =>
-        console.log(invoice.invoiceNumber)
+        `${process.env.REACT_APP_API_URL}/invoices`,
+        authHeader
       );
 
       if (existingOrder) {
@@ -112,7 +127,7 @@ export default function Form() {
         dispatch(setAuthData(filteredInvoice[0]._id));
         navigate("/course-info");
       } else {
-        await handleSubmit(courseId, filteredCourse[0]);
+        await handleSubmit(courseId, filteredCourse[0], authHeader);
       }
     } catch (error) {
       errorToastify("Ошибка при проверке заказа");
@@ -122,7 +137,7 @@ export default function Form() {
     }
   };
 
-  const handleSubmit = async (courseId, courseData) => {
+  const handleSubmit = async (courseId, courseData, authHeader) => {
     try {
       setLoading(true);
 
@@ -135,7 +150,8 @@ export default function Form() {
           clientName: formData.fullName,
           clientPhone: `${formData.phonePrefix}${formData.phoneNumber}`,
           tgUsername: tgUsername,
-        }
+        },
+        authHeader
       );
 
       if (!invoiceResponse.data || !invoiceResponse.data.invoiceNumber) {
@@ -145,18 +161,22 @@ export default function Form() {
 
       const invoiceNumber = invoiceResponse.data.invoiceNumber;
 
-      await axios.post(`${process.env.REACT_APP_API_URL}/orders/create`, {
-        clientName: formData.fullName,
-        clientPhone: `${formData.phonePrefix}${formData.phoneNumber}`,
-        tgUsername: tgUsername,
-        invoiceNumber: invoiceNumber,
-        status: "ВЫСТАВЛЕНО",
-        create_time: Date.now(),
-        prefix: courseData.prefix,
-        course_id: courseId,
-        courseTitle: courseData.title,
-        amount: courseData.price,
-      });
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/orders/create`,
+        {
+          clientName: formData.fullName,
+          clientPhone: `${formData.phonePrefix}${formData.phoneNumber}`,
+          tgUsername: tgUsername,
+          invoiceNumber: invoiceNumber,
+          status: "ВЫСТАВЛЕНО",
+          create_time: Date.now(),
+          prefix: courseData.prefix,
+          course_id: courseId,
+          courseTitle: courseData.title,
+          amount: courseData.price,
+        },
+        authHeader
+      );
 
       dispatch(setAuthData(invoiceResponse.data._id));
       navigate("/course-info");

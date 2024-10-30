@@ -13,15 +13,20 @@ const Payment = () => {
   const clientId = useSelector((state) => state.auth.clientId);
   const route = useSelector((state) => state.auth.route);
 
+  const token = localStorage.getItem("token");
+  const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+
   useEffect(() => {
     const fetchAPI = async () => {
       try {
         setLoading(true);
         const invoiceResponse = await axios.get(
-          `${process.env.REACT_APP_API_URL}/invoices/${clientId}`
+          `${process.env.REACT_APP_API_URL}/invoices/${clientId}`,
+          authHeader
         );
         const courseResponse = await axios.get(
-          `${process.env.REACT_APP_API_URL}/courses`
+          `${process.env.REACT_APP_API_URL}/courses`,
+          authHeader
         );
 
         const filteredCourse = courseResponse.data.filter(
