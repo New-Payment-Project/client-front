@@ -28,14 +28,6 @@ export default function Form() {
 
   useEffect(() => {
     dispatch(setRoute(route));
-
-    const savedClientName = localStorage.getItem("clientName");
-    const savedTgUsername = localStorage.getItem("tgUsername");
-    const savedPhoneNumber = localStorage.getItem("phoneNumber");
-
-    if (savedClientName && savedTgUsername && savedPhoneNumber) {
-      navigate("/course-info");
-    }
   }, []);
 
   const englishLetterRegex = /^[a-zA-Z0-9\s@,.'`/_]*$/;
@@ -43,17 +35,7 @@ export default function Form() {
   const containsNumber = (str) => /\d/.test(str);
   const containsLetter = (str) => /[a-zA-Z]/.test(str);
 
-  useEffect(() => {
-    const storedClientName = localStorage.getItem("clientName");
-    const storedTgUsername = localStorage.getItem("tgUsername");
-    const storedPhoneNumber = localStorage.getItem("phoneNumber");
-
-    if (storedClientName && storedTgUsername && storedPhoneNumber) {
-      navigate("/course-info");
-    }
-  }, [navigate]);
-
-  const validateForm = (e) => {
+  const validateForm = async (e) => {
     e.preventDefault();
 
     if (!formData.fullName || !formData.phoneNumber) {
@@ -83,15 +65,12 @@ export default function Form() {
       return warningToastify("Телефонный номер не может содержать буквы");
     }
 
-    return handleSubmit(e);
+    await checkForDuplicateOrder();
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const checkForDuplicateOrder = async () => {
     try {
       setLoading(true);
-      const tgUsername =
-        formData?.tg.length === 0 ? "Kiritilmagan" : formData?.tg;
 
       const courseResponse = await axios.get(
         `${process.env.REACT_APP_API_URL}/courses`
@@ -105,13 +84,56 @@ export default function Form() {
         return;
       }
 
+      const courseId = filteredCourse[0]._id;
+
+      const orderResponse = await axios.get(
+        `${process.env.REACT_APP_API_URL}/orders`
+      );
+
+      const existingOrder = orderResponse.data.data.find(
+        (order) =>
+          order?.course_id?._id === courseId &&
+          order?.clientPhone ===
+            `${formData.phonePrefix}${formData.phoneNumber}` &&
+          order.status === "ВЫСТАВЛЕНО"
+      );
+
+      const invoiceResponse = await axios.get(
+        `${process.env.REACT_APP_API_URL}/invoices`
+      );
+      invoiceResponse.data.filter((invoice) =>
+        console.log(invoice.invoiceNumber)
+      );
+
+      if (existingOrder) {
+        const filteredInvoice = invoiceResponse.data.filter(
+          (invoice) => invoice.invoiceNumber === existingOrder.invoiceNumber
+        );
+        dispatch(setAuthData(filteredInvoice[0]._id));
+        navigate("/course-info");
+      } else {
+        await handleSubmit(courseId, filteredCourse[0]);
+      }
+    } catch (error) {
+      errorToastify("Ошибка при проверке заказа");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (courseId, courseData) => {
+    try {
+      setLoading(true);
+
+      const tgUsername =
+        formData?.tg.length === 0 ? "Kiritilmagan" : formData?.tg;
+
       const invoiceResponse = await axios.post(
         `${process.env.REACT_APP_API_URL}/invoices`,
         {
-          clientName: formData?.fullName,
-          clientPhone: `${formData?.phonePrefix}${formData?.phoneNumber
-            .split(" ")
-            .join("")}`,
+          clientName: formData.fullName,
+          clientPhone: `${formData.phonePrefix}${formData.phoneNumber}`,
           tgUsername: tgUsername,
         }
       );
@@ -124,23 +146,18 @@ export default function Form() {
       const invoiceNumber = invoiceResponse.data.invoiceNumber;
 
       await axios.post(`${process.env.REACT_APP_API_URL}/orders/create`, {
-        clientName: formData?.fullName,
-        clientPhone: `${formData?.phonePrefix}${formData?.phoneNumber
-          .split(" ")
-          .join("")}`,
+        clientName: formData.fullName,
+        clientPhone: `${formData.phonePrefix}${formData.phoneNumber}`,
         tgUsername: tgUsername,
-        invoiceNumber: invoiceNumber, 
+        invoiceNumber: invoiceNumber,
         status: "ВЫСТАВЛЕНО",
         create_time: Date.now(),
-        prefix: filteredCourse[0].prefix,
-        course_id: filteredCourse[0]._id,
-        courseTitle: filteredCourse[0].title,
-        amount: filteredCourse[0].price,
+        prefix: courseData.prefix,
+        course_id: courseId,
+        courseTitle: courseData.title,
+        amount: courseData.price,
       });
 
-      localStorage.setItem("clientName", formData?.fullName);
-      localStorage.setItem("tgUsername", tgUsername);
-      localStorage.setItem("phoneNumber", formData.phoneNumber);
       dispatch(setAuthData(invoiceResponse.data._id));
       navigate("/course-info");
     } catch (error) {
