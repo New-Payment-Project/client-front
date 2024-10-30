@@ -265,23 +265,23 @@ const Payment = () => {
                     courseTitle={courseInfo[0].title}
                   />
 
-                  {/* <ClickForm
+                  <ClickForm
                     amount={courseInfo.reduce(
                       (total, item) => total + item.price,
                       0
                     )}
                     merchant_trans_id={invoice.invoiceNumber}
                     course_id={courseInfo[0]._id}
-                  /> */}
+                  />
 
-                  {/* <UzumForm
+                  <UzumForm
                     courseId={courseInfo[0]._id}
                     invoiceNumber={invoice.invoiceNumber}
                     amount={courseInfo.reduce(
                       (total, item) => total + item.price,
                       0
                     )}
-                  /> */}
+                  />
                 </div>
               </div>
             </div>
