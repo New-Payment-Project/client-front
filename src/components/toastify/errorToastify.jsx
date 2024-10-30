@@ -12,5 +12,4 @@ const errorToastify = (text) => {
     transition: Bounce,
   });
 };
-
 export default errorToastify;
