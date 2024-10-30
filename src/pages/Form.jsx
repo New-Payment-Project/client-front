@@ -84,6 +84,7 @@ export default function Form() {
       );
       const token = getAccessToken.data?.token;
       const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+      
       localStorage.setItem("token", token);
 
       const courseResponse = await axios.get(
