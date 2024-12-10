@@ -111,43 +111,6 @@ const Payment = () => {
           </h1>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            {/* NORBEKOV 1 */}
-            {/* <div className="bg-gray-50 p-6 rounded-lg shadow-md">
-              <h2 className="font-bold text-gray-700">
-                <span className="font-bold">Исполнитель:</span> "NORBEKOV
-                SOG`LOMLASHTIRISH VA MASLAHAT MARKAZI" MCHJ
-              </h2>
-              <p className="text-gray-600">
-                <span className="font-bold">Адрес:</span> Toshkent shaxar,
-                Olmazor tumani, Yuqori Sebzor MFY, Sebzor S17/18, 52A uy
-              </p>
-              <p className="text-gray-600">
-                <span className="font-bold">Телефоны:</span> +998 99 846 66 17
-              </p>
-              <p className="text-gray-600">
-                <span className="font-bold">Эл.почта:</span>{" "}
-                Info@norbekovgroup.uz
-              </p>
-              <p className="text-gray-600">
-                <span className="font-bold">Расчетный счет:</span>{" "}
-                20208000005113167001
-              </p>
-              <p className="text-gray-600">
-                <span className="font-bold">Банк:</span> MILLIY BANK, Головной
-                офис
-              </p>
-              <p className="text-gray-600">
-                <span className="font-bold">МФО:</span> 00450
-              </p>
-              <p className="text-gray-600">
-                <span className="font-bold">ИНН:</span> 306647621
-              </p>
-              <p className="text-gray-600">
-                <span className="font-bold">ОКПО:</span> 28940182
-              </p>
-            </div> */}
-
-            {/* NORBEKOV 2 */}
             <div className="bg-gray-50 p-6 rounded-lg shadow-md">
               <h2 className="font-bold text-gray-700">
                 <span className="font-bold">Исполнитель:</span> "NORBEKOV
