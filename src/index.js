@@ -18,7 +18,7 @@ const router = createBrowserRouter([
     element: <NotFound />,
   },
   {
-    path: "/",
+    path: "/", 
     element: <App />,
     children: [
       { path: "/:route", element: <FormPage /> },
