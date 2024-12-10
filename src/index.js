@@ -1,14 +1,16 @@
-import * as React from "react";
+import React, { lazy } from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import App from "./App";
-import Payment from "./pages/Payment";
-import FormPage from "./pages/Form";
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import NotFound from "./pages/NotFound";
-import Oferta from "./pages/Oferta";
+import Loadable from "./others/Loadable";
+
+const App = Loadable(lazy(() => import("./App")));
+const Payment = Loadable(lazy(() => import("./pages/Payment")));
+const FormPage = Loadable(lazy(() => import("./pages/Form")));
+const NotFound = Loadable(lazy(() => import("./pages/NotFound")));
+const Oferta = Loadable(lazy(() => import("./pages/Oferta")));
 
 const router = createBrowserRouter([
   {
