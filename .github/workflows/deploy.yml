@@ -25,5 +25,7 @@ jobs:
 
           git pull origin main --rebase && \
 
-          npm install
+          npm install && \
+
+          npm run build
           "
