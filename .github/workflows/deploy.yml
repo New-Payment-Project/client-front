@@ -1,31 +1,31 @@
-# name: Deploy React App
+name: Deploy React App
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-#       - name: Install SSH key
-#         uses: webfactory/ssh-agent@v0.5.3
-#         with:
-#           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-#       - name: Deploy to server
-#         run: |
-#           ssh -o StrictHostKeyChecking=no root@norbekovgroup.uz "
-#           cd /var/www/Payment-Client && \
+      - name: Deploy to server
+        run: |
+          ssh -o StrictHostKeyChecking=no root@104.236.217.100 "
+          cd /var/www/client-front && \
 
-#           git pull origin main --rebase && \
+          git pull origin main && \
 
-#           npm install && \
+          npm install && \
 
-#           npm run build
-#           "
+          npm run build
+          "
