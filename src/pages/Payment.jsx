@@ -227,7 +227,7 @@ const Payment = () => {
                     passport={invoice.passport}
                     courseTitle={courseInfo[0].title}
                   />
-
+{/* 
                   <ClickForm
                     amount={courseInfo.reduce(
                       (total, item) => total + item.price,
@@ -244,7 +244,7 @@ const Payment = () => {
                       (total, item) => total + item.price,
                       0
                     )}
-                  />
+                  /> */}
                 </div>
               </div>
             </div>
