@@ -96,11 +96,12 @@ const Payment = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
         <div className="p-6 bg-gradient-to-r from-[#bed6fd] to-[#60a5fa] flex justify-between items-center text-white rounded-t-xl">
-          <img
+          {/* <img
             src="norbekov2.png"
             className="lg:h-[60px] h-[40px]"
             alt="Logo"
-          />
+          /> */}
+          <p className="text-3xl lg:text-2xl font-bold">DMA</p>
           <h1 className="text-lg lg:text-2xl font-bold">Оплата услуг</h1>
         </div>
 
@@ -113,36 +114,32 @@ const Payment = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             <div className="bg-gray-50 p-6 rounded-lg shadow-md">
               <h2 className="font-bold text-gray-700">
-                <span className="font-bold">Исполнитель:</span> "NORBEKOV
-                PSIXOLOGIK VA FIZIOLOGIK KURSLARI" MCHJ
+                <span className="font-bold">Исполнитель:</span> "DIGITAL MASTERS ACADEMYI" MCHJ
               </h2>
               <p className="text-gray-600">
-                <span className="font-bold">Адрес:</span> Toshkent shahar,
-                Olmazor tumani, Yuqori Sebzor MFY, Sebzor S17/18, 52A uy
+                <span className="font-bold">Адрес:</span> Toshkent shahar, Beruniy ko'chasi, HUVAYDO MFY,  10A uy
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Телефоны:</span> +998 99 846 66 17
+                <span className="font-bold">Телефоны:</span> +998 95 083 1771
               </p>
               <p className="text-gray-600">
                 <span className="font-bold">Эл.почта:</span>{" "}
-                info@norbekovgroup.uz
+                info@womenforum.uz
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Расчетный счет:</span> 2020 8000
-                7071 6186 2001
+                <span className="font-bold">Расчетный счет:</span> 2020 8000 5071 8781 7001
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">Банк:</span> MILLIY BANK, Головной
-                офис
+                <span className="font-bold">Банк:</span> IPOTEKA BANK, MEHNAT FILLIALI
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">МФО:</span> 01158
+                <span className="font-bold">МФО:</span> 00423
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">ИНН:</span> 311 696 576
+                <span className="font-bold">ИНН:</span> 311 824 012
               </p>
               <p className="text-gray-600">
-                <span className="font-bold">ОКЭД:</span> 64190
+                <span className="font-bold">ОКЭД:</span> 58290
               </p>
             </div>
             <div className="bg-gray-50 p-6 rounded-lg shadow-md">

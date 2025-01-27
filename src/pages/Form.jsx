@@ -323,7 +323,7 @@ export default function Form() {
               />
               <span className="flex-1 text-[10px]">
                 Я соглашаюсь на обработку моих персональных данных, соглашаюсь
-                на получение рассылок от NORBEKOV GROUP и принимаю{" "}
+                на получение рассылок от DIGITAL MASTERS ACADEMY и принимаю{" "}
                 <Link
                   to="/oferta"
                   className="link link-primary text-gray-500 underline"

@@ -19,7 +19,7 @@ const PaymeForm = ({
 
     if (disabled) return;
 
-    const merchantId = "6719e607e51de1c6a3a69819";
+    const merchantId = "67909c17320c36e44deb5cd2";
 
     const encodedPhone = encodeURIComponent(phone).replace(/%2B/g, "+");
     const encodedName = encodeURIComponent(name).replace(/%20/g, " ");
