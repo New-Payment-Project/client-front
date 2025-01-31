@@ -41,7 +41,7 @@ export default function Form() {
   const validateForm = async (e) => {
     e.preventDefault();
 
-    if (!formData.fullName || !formData.phoneNumber) {
+    if (!formData.fullName || !formData.phoneNumber || !formData.tg) {
       return warningToastify("Заполните данные для оплаты");
     }
 
@@ -51,7 +51,7 @@ export default function Form() {
 
     if (!englishLetterRegex.test(formData.tg)) {
       return warningToastify(
-        "Telegram username должен содержать только английские буквы"
+        "E-mail должен содержать только английские буквы"
       );
     }
 
@@ -84,7 +84,7 @@ export default function Form() {
       );
       const token = getAccessToken.data?.token;
       const authHeader = { headers: { Authorization: `Bearer ${token}` } };
-      
+
       localStorage.setItem("token", token);
 
       const courseResponse = await axios.get(
@@ -150,7 +150,9 @@ export default function Form() {
         {
           clientName: formData.fullName,
           clientPhone: `${formData.phonePrefix}${formData.phoneNumber}`,
+          clientAddress: "Kiritilmagan",
           tgUsername: tgUsername,
+          passport: "Kiritilmagan",
         },
         authHeader
       );
@@ -250,7 +252,7 @@ export default function Form() {
 
           <div className="space-y-2">
             <label htmlFor="tg" className="text-sm font-medium text-gray-700">
-              Телеграм
+              Электронная Почта (E-Mail)<span className="text-red-500">*</span>
             </label>
             <input
               id="tg"
