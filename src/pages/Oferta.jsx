@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { IoArrowDown } from "react-icons/io5";
 import { useSelector } from "react-redux";
 
-
 const Oferta = () => {
   const navigate = useNavigate();
 
@@ -11,9 +10,7 @@ const Oferta = () => {
 
   const handleClick = () => {
     navigate(`/${route}`);
-
   };
-
 
   const scrollToBottom = () => {
     window.scrollTo({
@@ -23,19 +20,18 @@ const Oferta = () => {
   };
 
   return (
-    
-      <div className="font-serif max-w-4xl mx-auto flex flex-col justify-center p-6 bg-white shadow-md rounded-md">
+    <div className="font-serif max-w-4xl mx-auto flex flex-col justify-center p-6 bg-white shadow-md rounded-md">
       <h2 className="text-center font-bold text-2xl mb-4">OMMAVIY OFERTA</h2>
       <p className="text-justify leading-relaxed mb-4">
         Mazkur «Psixologik va biznes treyning tadbiriga chipta sotish
         xizmatlarini ko‘rsatish shartlari to‘g‘risidagi kelishuv» (keyingi
         o‘rinlarda – «Kelishuv/Shartnoma» deb yuritiladi) O‘zbekiston
         Respublikasi Fuqarolik kodeksining 358 va 369-moddalariga muvofiq,
-        «NORBEKOV SOG‘LOMLASHTIRISH VA MASLAHAT MARKAZI» MChJ tomonidan tuzilgan
-        ommaviy oferta hisoblanadi (keyingi o‘rinlarda «Sotuvchi» deb
-        yuritiladi) va ushbu chipta sotish Sotuvchi Sayti orqali tadbirlarga
-        chipta sotib olishni xohlagan har qanday shaxsga (keyingi o‘rinlarda
-        «Tomoshabin») yo‘naltirilgan.
+        «DIGITAL MASTERS ACADEMY» MChJ tomonidan tuzilgan ommaviy oferta
+        hisoblanadi (keyingi o‘rinlarda «Sotuvchi» deb yuritiladi) va ushbu
+        chipta sotish Sotuvchi Sayti orqali tadbirlarga chipta sotib olishni
+        xohlagan har qanday shaxsga (keyingi o‘rinlarda «Tomoshabin»)
+        yo‘naltirilgan.
       </p>
       <p className="text-justify leading-relaxed mb-4">
         Mazkur ommaviy oferta chiptalarni sotib olish va qaytarish shartlarini,
@@ -56,10 +52,11 @@ const Oferta = () => {
       </p>
       <ul className="list-disc pl-6 mb-4 space-y-2">
         <li>
-          <strong>Sotuvchi</strong> - “NORBEKOV SOG‘LOMLASHTIRISH VA MASLAHAT
-          MARKAZI” MChJ, Toshkent shahar, Olmazor tumani, Yuqori Sebzor MFY,
-          S-17/18-daha, 52A-uy manzilida joylashgan, mijozlarning buyurtmasi
-          asosida chiptalarni sotish xizmatini ko‘rsatuvchi.
+          <strong>Sotuvchi</strong> - “DIGITAL MASTERS ACADEMY” MChJ
+          (Masʼuliyati cheklangan jamiyati), Toshkent shahar, Shayhontohur
+          tumani, Huvaydo MFY, Beruniy ko’chasi 10A-uy manzilida joylashgan,
+          mijozlarning buyurtmasi asosida chiptalarni sotish xizmatini
+          ko‘rsatuvchi.
         </li>
         <li>
           <strong>Xaridor/Tomoshabin</strong> - jismoniy va yuridik shaxslar.
@@ -84,20 +81,20 @@ const Oferta = () => {
           va shartlarsiz qabul qilish va shartnomani tuzilgan deb hisoblash.
         </li>
         <li>
-          <strong>Shartnoma</strong> - sotuvchining xizmatini sotib olish
-          bo‘yicha sotuvchining shartlari bilan xaridorning tanishishi va
-          roziligi asosida taklif etilayotgan xizmatni sotib olish bo‘yicha
-          kelishuv.
+          <strong>Shartnoma (keying o‘rinlarda – shartnoma) </strong> -
+          sotuvchining xizmatini sotib olish bo‘yicha sotuvchining shartlari
+          bilan xaridorning tanishishi va roziligi asosida taklif etilayotgan
+          xizmatni sotib olish bo‘yicha kelishuv.
         </li>
         <li>
           <strong>Tomon</strong> - xaridor va/yoki sotuvchi.
         </li>
         <li>
-          <strong>Elektron chipta</strong> – iTicketga tegishli tizim tomonidan
-          tayyorlangan hujjat bo‘lib, u Tomoshabin tomonidan Chipta uchun to‘lov
-          amalga oshirilganligini, u chiptani Sotuvchining Saytidan olish huquqi
-          borligini hamda Tadbirda ishtirok etish huquqiga egaligini
-          tasdiqlanadi.
+          <strong>Elektron chipta</strong> – TakeTicketga tegishli tizim
+          tomonidan tayyorlangan hujjat bo‘lib, u Tomoshabin tomonidan Chipta
+          uchun to‘lov amalga oshirilganligini, u chiptani Sotuvchining Saytidan
+          olish huquqi borligini hamda Tadbirda ishtirok etish huquqiga
+          egaligini tasdiqlanadi;
         </li>
         <li>
           <strong>Taklifnoma</strong> - Sotuvchi tomonidan tayyorlangan elektron
@@ -127,7 +124,7 @@ const Oferta = () => {
         </li>
         <li>
           <strong>Sayt </strong> - Sotuvchining internetdagi veb-sayti:{" "}
-          <span className="bg-yellow-300">www.norbekovforum.com</span> manzilida
+          <span className="bg-yellow-300">www.womenforum.uz</span> manzilida
           joylashgan.
         </li>
       </ul>
@@ -226,8 +223,7 @@ const Oferta = () => {
       </p>
       <ol className="list-decimal pl-6 mb-4 space-y-2">
         <li>
-          <span className="font-semibold">“norbekovforum.com”</span> saytiga
-          kirish;
+          <span className="font-semibold">“womenorum.uz”</span> saytiga kirish;
         </li>
         <li>Tadbir o‘tkaziladigan joydagi mavjud o‘rindiqni tanlash;</li>
         <li>“Menejersiz to‘lov qilish” tugmasini bosish;</li>
@@ -298,12 +294,13 @@ const Oferta = () => {
         tasdiqnomasini (chekni) va Elektron chiptani yo‘qotgan (tasodifan
         o‘chirib yuborgan) bo‘lsa, u Tadbir o‘tkazilishidan kamida bir kun oldin
         Saytda ko‘rsatilgan telefon raqamlariga qo‘ng‘iroq qilish yoki elektron
-        pochta/telegram messenjeriga xabar yuborish orqali Sotuvchiga murojaat
-        qilib Elektron chiptani qayta yuborishni so‘rashi mumkin. Sotuvchi
-        Elektron chiptani qayta tiklash uchun murojaat qilgan shaxsdan Elektron
-        chiptani sotib olayotganda kiritgan barcha ma’lumotlarni, shuningdek,
-        shaxsni tasdiqlash bilan bog‘liq boshqa qo‘shimcha ma’lumotlarni taqdim
-        etishni talab qilishi mumkin.
+        pochta/<span className="bg-yellow-300">telegram messenjeri</span>ga
+        xabar yuborish orqali Sotuvchiga murojaat qilib Elektron chiptani qayta
+        yuborishni so‘rashi mumkin. Sotuvchi Elektron chiptani qayta tiklash
+        uchun murojaat qilgan shaxsdan Elektron chiptani sotib olayotganda
+        kiritgan barcha ma’lumotlarni, shuningdek, shaxsni tasdiqlash bilan
+        bog‘liq boshqa qo‘shimcha ma’lumotlarni taqdim etishni talab qilishi
+        mumkin.
       </p>
       <p className="text-justify leading-relaxed mb-4">
         Tadbir o‘tkazilgandan so‘ng yoki Sotuvchi Tadbirni bekor qilish yoki
@@ -510,20 +507,20 @@ const Oferta = () => {
       </h3>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.1.</span>
-         Ushbu kelishuv shartlarini bajarmaslik yoki lozim darajada bajarmaslik
+        Ushbu kelishuv shartlarini bajarmaslik yoki lozim darajada bajarmaslik
         uchun tomonlar O‘zbekiston Respublikasining amaldagi qonunchiligiga
         muvofiq javobgar bo‘ladilar.
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.2.</span>
-         Sotuvchi Tadbirning sanasi, vaqti va joyiga chiptalarning mavjud
+        Sotuvchi Tadbirning sanasi, vaqti va joyiga chiptalarning mavjud
         emasligi yoki kerakli narx toifasidagi chiptalarning yo‘qligi sababli
         Tomoshabinga xizmatlarni taqdim etishning iloji bo‘lmagan hollarda
         javobgarlikni o‘z zimmasiga olmaydi.
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.3.</span>
-         Agar ushbu kelishuv shartlarini bajarishning imkonsizligi yoki lozim
+        Agar ushbu kelishuv shartlarini bajarishning imkonsizligi yoki lozim
         darajada bajarilmasligi tomonlarning irodasi va istagidan tashqarida
         bo‘lgan hamda oldini olish, bartaraf etish yoxud oldindan ko‘ra olish
         imkoni bo‘lmagan holatlar (fors-major holatlari) bilan bog‘liq bo‘lsa,
@@ -531,7 +528,7 @@ const Oferta = () => {
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.4.</span>
-         Sotuvchi Saytning ishlamay qolishi, vaqtinchalik uzilishlar yoki
+        Sotuvchi Saytning ishlamay qolishi, vaqtinchalik uzilishlar yoki
         Sotuvchining o‘ziga bog‘liq bo‘lmagan sabablar bilan bog‘liq holatlarda,
         shuningdek, aloqa va energiya ta’minoti xizmatlarini ko‘rsatuvchi
         uchinchi shaxslarning harakatlari va/yoki harakatsizligi natijasida
@@ -541,7 +538,7 @@ const Oferta = () => {
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.5.</span>
-         Tomoshabin O‘zbekiston Respublikasining amaldagi qonunchiligiga muvofiq,
+        Tomoshabin O‘zbekiston Respublikasining amaldagi qonunchiligiga muvofiq,
         noto‘g‘ri yoki ataylab yolg‘on ma’lumotlarni taqdim etish natijasida
         yuzaga kelgan oqibatlar uchun, shuningdek, bunday harakatlar natijasida
         boshqa shaxslarning huquq va manfaatlarini buzganlik uchun javobgar
@@ -549,14 +546,14 @@ const Oferta = () => {
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.6.</span>
-         Tomoshabin ushbu Oferta bo‘yicha to‘lovlarni amalga oshirishda bank
+        Tomoshabin ushbu Oferta bo‘yicha to‘lovlarni amalga oshirishda bank
         kartalari yoki boshqa to‘lov vositalaridan noqonuniy foydalanish uchun
         O‘zbekiston Respublikasining amaldagi qonunchiligiga muvofiq
         javobgarlikka tortiladi.
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.7.</span>
-         Tomoshabin boshqa shaxsning Elektron chiptasini noqonuniy egallab olish,
+        Tomoshabin boshqa shaxsning Elektron chiptasini noqonuniy egallab olish,
         qo‘lga kiritish, Saytni buzish, Sotuvchining yoki boshqa shaxsning
         elektron pochtasini, telegram messenjeridagi hisobi(akkaunti)ni buzish
         holatlari uchun O‘zbekiston Respublikasining amaldagi qonunchiligiga
@@ -564,27 +561,27 @@ const Oferta = () => {
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.8.</span>
-         Tomoshabin o‘z ma’lumotlarida xato qilish yoki noaniqliklarga yo‘l
+        Tomoshabin o‘z ma’lumotlarida xato qilish yoki noaniqliklarga yo‘l
         qo‘yish natijasida yuzaga keladigan barcha tijoriy xatarlar, shuningdek,
         Elektron chiptasining yo‘qolishi bilan bog‘liq xavflarni o‘z zimmasiga
         oladi.
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.9.</span>
-         Agar Tomoshabin Chiptalarni Sotuvchining Saytidan tashqari joylarda (pul
+        Agar Tomoshabin Chiptalarni Sotuvchining Saytidan tashqari joylarda (pul
         to‘lash orqali yoki bepul) sotib olgan bo‘lsa, u bunday harakatlar
         natijasida yuzaga keladigan barcha xatarlar va zararni o‘z zimmasiga
         oladi.
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.10.</span>
-         Tomoshabin ushbu Oferta 1.4-bandida belgilangan majburiyatlarini buzgan
+        Tomoshabin ushbu Oferta 1.4-bandida belgilangan majburiyatlarini buzgan
         taqdirda, jabrlangan shaxs va Sotuvchi oldidagi barcha zararni to‘liq
         qoplash majburiyatini oladi.
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.11.</span>
-         Sotuvchi, Tomoshabin tomonidan chipta(lar)ni olish, ular uchun to‘lovni
+        Sotuvchi, Tomoshabin tomonidan chipta(lar)ni olish, ular uchun to‘lovni
         amalga oshirish va chiptani sotib olish bilan bog‘liq boshqa harakatlar
         tartibi haqidagi ma’lumotlarni noto‘g‘ri tushunishi yoki tushunmasligi
         natijasida Tomoshabin ko‘rgan har qanday zarar va ma’naviy ziyon uchun
@@ -592,7 +589,7 @@ const Oferta = () => {
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.12.</span>
-         Sotuvchi, Tomoshabinning shaxsiy ma’lumotlariga ruxsatsiz kirish
+        Sotuvchi, Tomoshabinning shaxsiy ma’lumotlariga ruxsatsiz kirish
         natijasida yuzaga kelgan zararlari, shu jumladan, boy berilgan foydasi
         uchun javobgar emas, bundan Sotuvchi ushbu ma’lumotlarni saqlash va
         himoya qilish bo‘yicha qonunda nazarda tutilgan barcha choralarni
@@ -600,7 +597,7 @@ const Oferta = () => {
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">6.13.</span>
-         Agarda Tomonlar o‘z majburiyatlarini mavjud sharoitlarda oldini olish
+        Agarda Tomonlar o‘z majburiyatlarini mavjud sharoitlarda oldini olish
         imkoni bo‘lmagan favqulodda holatlar, yengib bo‘lmas kuch (fors-major
         holati) natijasida to‘liq yoki qisman bajara olmasalar bunday bajara
         olmaganliklari uchun javobgarlikdan ozod etiladi. Fors-major holatlarga
@@ -653,7 +650,9 @@ const Oferta = () => {
         asosida tuzilgan kelishuvni bajarishda yuzaga keladigan nizolar da’vo
         tartibida hal qilinadi. Da’vo Sotuvchiga uning manziliga yozma shaklda,
         nizoga sabab bo‘lgan holat yuzaga kelgan kundan boshlab 10 kun ichida
-        taqdim etilishi lozim.
+        taqdim etilishi lozim.Da’voga asoslovchi hujjatlar ilova qilinishi
+        kerak. Sotuvchiga kelib tushgan da’vo 7 (yetti) ish kuni ichida ko‘rib
+        chiqiladi.
       </p>
       <p className="text-justify leading-relaxed mb-4">
         <span className="font-semibold">8.2.</span> Agar tomonlar o‘rtasidagi
@@ -667,53 +666,82 @@ const Oferta = () => {
       </p>
 
       <h3 className="text-center font-semibold text-xl mb-3">
-      IX. OFERTA O‘ZGARISHI VA BEKOR QILINISHI TARTIBI
+        IX. OFERTA O‘ZGARISHI VA BEKOR QILINISHI TARTIBI
       </h3>
       <p className="text-justify leading-relaxed mb-4">
-        <span className="font-semibold">9.1.</span> Ushbu Oferta Saytda joylashtirilgan kundan boshlab kuchga kiradi va tomonlar o‘z majburiyatlarini bajarib bo‘lgunga qadar amal qiladi.
+        <span className="font-semibold">9.1.</span> Ushbu Oferta Saytda
+        joylashtirilgan kundan boshlab kuchga kiradi va tomonlar o‘z
+        majburiyatlarini bajarib bo‘lgunga qadar amal qiladi.
       </p>
       <p className="text-justify leading-relaxed mb-4">
-        <span className="font-semibold">9.2.</span> Agar ushbu Ofertaning bir yoki bir nechta qoidalari O‘zbekiston Respublikasining amaldagi qonunchiligiga o‘zgartirishlar kiritilishi sababli bekor qilingan bo‘lsa yoki yaroqsiz deb topilsa, bu holat Ofertaning qolgan qoidalarini bekor qilish uchun asos bo‘lmaydi. Bekor qilingan qoidalar qonunchilikda ruxsat etilgan qoidalar bilan almashtirilishi kerak.
+        <span className="font-semibold">9.2.</span> Agar ushbu Ofertaning bir
+        yoki bir nechta qoidalari O‘zbekiston Respublikasining amaldagi
+        qonunchiligiga o‘zgartirishlar kiritilishi sababli bekor qilingan bo‘lsa
+        yoki yaroqsiz deb topilsa, bu holat Ofertaning qolgan qoidalarini bekor
+        qilish uchun asos bo‘lmaydi. Bekor qilingan qoidalar qonunchilikda
+        ruxsat etilgan qoidalar bilan almashtirilishi kerak.
       </p>
       <p className="text-justify leading-relaxed mb-4">
-        <span className="font-semibold">9.3.</span> Ushbu Ofertada nazarda tutilmagan barcha holatlar bo‘yicha tomonlar Saytda joylashtirilgan qoidalar va O‘zbekiston Respublikasining amaldagi qonunchiligiga amal qiladilar.
+        <span className="font-semibold">9.3.</span> Ushbu Ofertada nazarda
+        tutilmagan barcha holatlar bo‘yicha tomonlar Saytda joylashtirilgan
+        qoidalar va O‘zbekiston Respublikasining amaldagi qonunchiligiga amal
+        qiladilar.
       </p>
       <p className="text-justify leading-relaxed mb-4">
-        <span className="font-semibold">9.4.</span> Tomoshabin ushbu shartnomadagi huquq va majburiyatlarini Sotuvchining roziligisiz uchinchi shaxslarga o‘tkazish huquqiga ega emas.
+        <span className="font-semibold">9.4.</span> Tomoshabin ushbu
+        shartnomadagi huquq va majburiyatlarini Sotuvchining roziligisiz
+        uchinchi shaxslarga o‘tkazish huquqiga ega emas.
       </p>
       <p className="text-justify leading-relaxed mb-4">
-        <span className="font-semibold">9.5.</span> Tomonlar ushbu Ofertada ko‘rsatilgan manzillar bo‘yicha yozma shaklda yuborilgan har qanday bildirishnoma va yozishmalarni to‘g‘ri yuborilgan deb hisoblaydilar. Shu bilan birga, tomonlar quyidagi bildirishnoma usullarini ham to‘g‘ri deb hisoblaydilar:
+        <span className="font-semibold">9.5.</span> Tomonlar ushbu Ofertada
+        ko‘rsatilgan manzillar bo‘yicha yozma shaklda yuborilgan har qanday
+        bildirishnoma va yozishmalarni to‘g‘ri yuborilgan deb hisoblaydilar. Shu
+        bilan birga, tomonlar quyidagi bildirishnoma usullarini ham to‘g‘ri deb
+        hisoblaydilar:
       </p>
 
       <ul className="list-disc pl-6 mb-4 space-y-2">
-        <li>Tadbir o‘tkazilish shartlari (sana, vaqt, joy, dastur va h.k.), Tizim qoidalari, Oferta matni va keng ommaga taalluqli boshqa ma’lumotlarga oid o‘zgarishlar haqida Saytga ma’lumot joylashtirish orqali.</li>
-        <li>Telefon va Tomoshabinning elektron pochta manzili/telegram messenjeri orqali – keng ommaga taalluqli yoki shaxsan Tomoshabinga tegishli har qanday voqealar haqida bildirish uchun.</li>
+        <li>
+          Tadbir o‘tkazilish shartlari (sana, vaqt, joy, dastur va h.k.), Tizim
+          qoidalari, Oferta matni va keng ommaga taalluqli boshqa ma’lumotlarga
+          oid o‘zgarishlar haqida Saytga ma’lumot joylashtirish orqali.
+        </li>
+        <li>
+          Telefon va Tomoshabinning elektron pochta manzili/<span className="bg-yellow-300">telegram messenjeri</span>
+          orqali – keng ommaga taalluqli yoki shaxsan Tomoshabinga tegishli har
+          qanday voqealar haqida bildirish uchun.
+        </li>
       </ul>
 
       <p className="text-justify leading-relaxed mb-4">
-        <span className="font-semibold">9.6.</span> “Ish kunlari” deb dushanbadan shanbagacha bo‘lgan kunlar hisoblanadi, O‘zbekiston Respublikasida rasmiy ravishda bayram va/yoki dam olish kuni deb e’lon qilingan kunlar bundan mustasno.
+        <span className="font-semibold">9.6.</span> “Ish kunlari” deb
+        dushanbadan shanbagacha bo‘lgan kunlar hisoblanadi, O‘zbekiston
+        Respublikasida rasmiy ravishda bayram va/yoki dam olish kuni deb e’lon
+        qilingan kunlar bundan mustasno.
       </p>
 
-
       <h3 className="text-center font-semibold text-xl mb-3">
-      X. REKVIZITLAR. ALOQA
+        X. REKVIZITLAR. ALOQA
       </h3>
       <p className="text-justify leading-relaxed mb-4">
-        <span className="font-semibold">10.1.</span> Ushbu Oferta bo‘yicha barcha takliflar, savollar va bildirishnomalar <span className="bg-yellow-300">norbekovforum.com</span> manziliga yuborilishi lozim.
+        <span className="font-semibold">10.1.</span> Ushbu Oferta bo‘yicha
+        barcha takliflar, savollar va bildirishnomalar{" "}
+        <span className="bg-yellow-300">womenforum.uz</span> manziliga
+        yuborilishi lozim.
       </p>
       <button
         onClick={scrollToBottom}
         className="fixed bottom-5 right-5 lg:right-56 bg-blue-500 lg:px-5 lg:py-5 text-white px-4 py-4 rounded-full shadow-md hover:bg-blue-700 focus:outline-none transition-all"
         style={{ zIndex: 1000 }}
       >
-        <IoArrowDown className="md:size-[25px] size-[20px]"/>
+        <IoArrowDown className="md:size-[25px] size-[20px]" />
       </button>
 
       <button
         onClick={handleClick}
         className="mt-6 w-1/2 bg-blue-500 text-white py-2 mx-auto rounded-md hover:bg-blue-700"
       >
-      Davom ettirish
+        Davom ettirish
       </button>
     </div>
   );
